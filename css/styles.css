@@ -1,0 +1,174 @@
+.players {
+    display:inline-block;
+}
+.players div{
+    margin-bottom:10px;
+}
+.players div.active {
+ background: yellow;
+}
+.start-game,
+.end-turn,
+.build-settlement{
+    height:50px;
+    width:50px;
+    border:solid 1px black;
+    margin-bottom:20px;
+    position: absolute;
+    top: 50%;
+}
+.start-game {
+    left:100px;
+}
+.start-game:after {
+    content:"Начать игру!";
+}
+.end-turn:after {
+    content:"Зкончить ход!";
+}
+.end-turn {
+    left:200px;
+}
+.build-settlement:after {
+    content:"Построить";
+}
+.build-settlement {
+    left:300px;
+}
+.resources span {
+    display:inline-block;
+    width:30px;
+    height:30px;
+    background: lightpink;
+    text-align: center;
+}
+.resources .tree {
+    background: green;
+}
+.resources .wheat {
+    background: yellow;
+}
+.resources .sheep {
+    background: lightgray;
+}
+.resources .rock {
+    background: grey;
+}
+.resources .brick {
+    background: brown;
+}
+
+.field {
+    position:relative;
+    width:50%;
+    height:1000px;
+    margin:auto;
+    background: dodgerblue;
+}
+
+.hex {
+    position:absolute;
+    width:150px;
+    height:150px;
+    text-align: center;
+    font-size: 70px;
+    font-weight: bold;
+}
+.hex.wheat {
+    background:url("../img/wheat_hex.png") no-repeat 0 0;
+}
+.hex.rock {
+    background:url("../img/stone_hex.png") no-repeat 0 0;
+}
+.hex.tree {
+    background:url("../img/tree_hex.png") no-repeat 0 0;
+}
+.hex.sheep {
+    background:url("../img/sheep_hex.png") no-repeat 0 0;
+}
+.hex.brick {
+    background:url("../img/brick_hex.png") no-repeat 0 0;
+}
+.hex.desert {
+    background:url("../img/desert_hex.png") no-repeat 0 0;
+}
+
+.crossroad {
+    position:absolute;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    background: #FAEBD7;
+    z-index:2;
+    opacity:1;
+}
+
+
+.blinking{
+    -webkit-animation: blinking 1s linear infinite;
+    animation: blinking 1s linear infinite;
+}
+
+
+@keyframes blinking {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+/* Chrome, Safari, Opera */
+@-webkit-keyframes blinking {
+    from {opacity: 1;}
+    to {opacity: 0.3;}
+}
+
+.crossroad.harbor {
+    z-index:3;
+}
+.crossroad.wheat {
+    background: yellow;
+}
+.crossroad.sheep {
+    background: lightgray;
+}
+.crossroad.tree {
+    background: green;
+}
+.crossroad.brick {
+    background: brown;
+}
+.crossroad.rock {
+    background: grey;
+}
+.crossroad.general-harbor {
+    background: coral  ;
+}
+.road {
+    position:absolute;
+    width:64px;
+    height:10px;
+    background: #FAEBD7;
+    transform-origin:0 50% 0;
+}
+
+.dice {
+    display: inline-block;
+    position:absolute;
+    top:70%;
+    left:100px;
+}
+
+.value-1,
+.value-2 {
+    display: inline-block;
+    width:50px;
+    height:50px;
+    border:solid 1px black;
+    background: orange;
+    text-align: center;
+}
+
+
+
+#debug {
+    width: 100%;
+    height: 300px;
+}
