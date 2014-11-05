@@ -51,13 +51,17 @@ define([
             r = this.model.get("coords").r.toFixed(2);
             indexOfCurrentPlayer = this.model.get("game").get("currentPlayer");
             currentPlayer = this.model.get("game").get("players")[indexOfCurrentPlayer];
-
-
-
-//                if(this.CheckIfRoadIsBuilt(q,r,currentPlayer)){
-                this.setSettlement(q,r,currentPlayer);
-//                }
-//                return false;
+            this.setSettlement(q,r,currentPlayer);
+            if(currentPlayer.get("startTurn") === false && currentPlayer.get("secondTurn") === false){
+                currentPlayer.increaseResources("brick",-1);
+                currentPlayer.increaseResources("tree",-1);
+                currentPlayer.increaseResources("sheep",-1);
+                currentPlayer.increaseResources("wheat",-1);
+                this.model.get("game").get("bank").useResource("brick",1);
+                this.model.get("game").get("bank").useResource("tree",1);
+                this.model.get("game").get("bank").useResource("sheep",1);
+                this.model.get("game").get("bank").useResource("wheat",1);
+            }
         },
         setSettlement: function(q,r,currentPlayer) {
             if (this.model.get("type") === 0) {
@@ -69,9 +73,10 @@ define([
             }
             currentPlayer.get("settlements").push(this.model);
         },
-        CheckIfRoadIsBuilt: function(q,r,currentPlayer){
-            for(var i=0; i<currentPlayer.get("roads").length; i++){
-                if(currentPlayer.get("roads")[i].get("from").q.toFixed(2) === q || currentPlayer.get("roads")[i].get("from").r.toFixed(2) === r ){
+        checkIfRoadIsBuilt: function(q, r, currentPlayer) {
+            for (var i = 0; i < currentPlayer.get("roads").length; i++) {
+                if ((currentPlayer.get("roads")[i].get("from").q.toFixed(2) === q && currentPlayer.get("roads")[i].get("from").r.toFixed(2) === r ) ||
+                    (currentPlayer.get("roads")[i].get("to").q.toFixed(2) === q && currentPlayer.get("roads")[i].get("to").r.toFixed(2) === r)) {
                     return true;
                 }
             }
@@ -110,7 +115,7 @@ define([
                         }
                         else {
                             if(hex.get("crossroads")[0].get("type") !== 3 || hex.get("crossroads")[0].get("type") !== 1){
-                                hex.get("crossroads")[0].set("type",3);
+                               hex.get("crossroads")[0].set("type",3);
                             }
                             else {
                                 hex.get("crossroads")[0].set("type",0);
@@ -124,30 +129,39 @@ define([
         crossroadClick: function() {
             Debug.log('$(".crossroads .crossroad:nth-child(' + (this.$el.index() + 1) + ')").click();');
 
-            var index, currentPlayer, color;
+            var index, currentPlayer, color, q, r;
             index = this.model.get("game").get("currentPlayer");
             currentPlayer = this.model.get("game").get("players")[index];
+            color = currentPlayer.get("color");
+            q = this.model.get("coords").q.toFixed(2);
+            r = this.model.get("coords").r.toFixed(2);
+
 
             if (this.model.get("game").get("roadClicked") === false) {
 
                 if((currentPlayer.get("startTurn") === true && currentPlayer.get("settlements").length === 0) ||
                    (currentPlayer.get("startTurn") === false && currentPlayer.get("secondTurn") === true && currentPlayer.get("settlements").length === 1) ||
-                    currentPlayer.get("startTurn") === false && currentPlayer.get("secondTurn") === false && this.playerHaveResources(currentPlayer)){
-                    $(".crossroad.blinking").css({"background": "#FAEBD7"}).removeClass("blinking");
+                   (currentPlayer.get("startTurn") === false && currentPlayer.get("secondTurn") === false && this.checkPlayerResourcesForSettlement(currentPlayer) && this.checkIfRoadIsBuilt(q,r,currentPlayer))){
 
-                    color = currentPlayer.get("color");
-                    this.$el.css("background", color);
-                    this.$el.addClass("blinking");
-
+                    this.doCrossroadBlinking(color);
                     this.model.get("game").set("crossroadClicked", true);
 
                 }
             }
         },
-        playerHaveResources: function(currentPlayer) {
-
-
-
+        checkPlayerResourcesForSettlement: function(currentPlayer) {
+            if (currentPlayer.getResources("tree") >= 1 &&
+                currentPlayer.getResources("brick") >= 1 &&
+                currentPlayer.getResources("sheep") >= 1 &&
+                currentPlayer.getResources("wheat") >= 1) {
+                return true;
+            }
+            return false;
+        },
+        doCrossroadBlinking: function(color){
+            $(".road.blinking").css({"background": "#FAEBD7"}).removeClass("blinking");
+            this.$el.css("background", color);
+            this.$el.addClass("blinking");
         },
         renderCrossroadWithSettlement: function(){
                 if(this.model.get("type") === 3){

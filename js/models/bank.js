@@ -5,44 +5,34 @@
 ], function($, _, Backbone) {
     var bankModel = Backbone.Model.extend({
         defaults: {
-            resources: {
-                "wheat": 19,
-                "tree": 19,
-                "sheep": 19,
-                "rock": 19,
-                "brick": 19
-            },
-            devCards: {
-                "monopoly": 2,
-                "knight": 14,
-                "victoryPoint": 5,
-                "roadBonus": 2,
-                "resourcesBonus": 2
-            }
+            "res_wheat": 19,
+            "res_tree": 19,
+            "res_sheep": 19,
+            "res_rock": 19,
+            "res_brick": 19,
+            "devCard_monopoly": 2,
+            "devCard_knight": 14,
+            "devCard_victoryPoint": 5,
+            "devCard_roadBonus": 2,
+            "devCard_resourcesBonus": 2
         },
         initialize: function(options){
             if (options.resources) {
                 this.set('resources', options.resources);
             }
-            else {
-                this.set('resources', { "wheat": 19,
-                    "tree": 19,
-                    "sheep": 19,
-                    "rock": 19,
-                    "brick": 19});
-            }
             if (options.devCards) {
                 this.set('devCards', options.devCards);
             }
-            else {
-                this.set('devCards', {
-                    "monopoly": 2,
-                    "knight": 14,
-                    "victoryPoint": 5,
-                    "roadBonus": 2,
-                    "resourcesBonus": 2
-                });
-            }
+        },
+        getResource: function(resource){
+            return this.get("res_" + resource);
+        },
+        setResource: function(resource,value){
+            this.set("res_" + resource, value);
+        },
+        useResource: function(resource, quantity){
+            var newValue = this.getResource(resource) + quantity;
+            this.setResource(resource,newValue);
         }
     });
     return bankModel;

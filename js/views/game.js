@@ -14,7 +14,8 @@ define([
         events: {
             "click .start-game": "startGame",
             "click .end-turn": "endOfTurn",
-            'click .build-settlement': "build"
+            'click .build-settlement': "build",
+            "click .change-with-bank": "changeResourceInBank"
         },
         initialize: function(){
             this.addListeners();
@@ -60,14 +61,15 @@ define([
             this.$el.append("<div class='start-game'></div>");
             this.$el.append("<div class='end-turn'></div>");
             this.$el.append("<div class='build-settlement'></div>");
+            this.$el.append("<div class='change-with-bank'></div>");
         },
         renderDice: function() {
-            var diceView = new DiceView({model: this.model.get("diceAmount")});
+            var diceView = new DiceView({model:this.model.get("dice")});
             this.$el.append(diceView.render().el);
         },
         startGame: function(){
             Debug.log("$('.start-game').click();");
-            this.assignCurrentPlayer();
+            this.assignCurrentPlayerForStartTurn();
         },
         assignCurrentPlayer: function(){
             var currentPlayer;
@@ -77,6 +79,7 @@ define([
             else {
                 this.model.set("currentPlayer",(this.model.get("currentPlayer") + 1));
             }
+            this.renderCurrentPlayer();
         },
         assignCurrentPlayerForStartTurn: function(){
             var currentPlayer;
@@ -90,10 +93,16 @@ define([
             else {
                 this.model.set("currentPlayer",(this.model.get("currentPlayer") - 1));
             }
+            this.renderCurrentPlayer();
+        },
+        removeBlinkingElements: function(){
+           $(".blinking").removeClass("blinking");
         },
         endOfTurnForStartTurn: function(){
+            Debug.log("$('.end-of-turn-for-start-turn').click();");
             this.model.set("crossroadClicked", false);
             this.model.set("roadClicked", false);
+            this.removeBlinkingElements();
             this.assignCurrentPlayerForStartTurn();
         },
         renderCurrentPlayer: function(){
@@ -105,6 +114,15 @@ define([
             this.model.set("crossroadClicked", false);
             this.model.set("roadClicked", false);
             this.assignCurrentPlayer();
+            if (this.model.get("players")[this.model.get("currentPlayer")].get("startTurn") === false &&
+                this.model.get("players")[this.model.get("currentPlayer")].get("secondTurn") === false) {
+                this.doTurn();
+            }
+        },
+        doTurn: function(){
+            this.model.get("dice").setDiceValue();
+            this.checkResources();
+
         },
         build: function() {
             Debug.log("$('.build-settlement').click();");
@@ -134,9 +152,11 @@ define([
                 this.gatherResources(settlement,currentPlayer,hex);
              }
         },
+        getDiceAmount: function(){
+            return this.model.get("dice").get("value_1") + this.model.get("dice").get("value_2");
+        },
         checkResources: function(){
-            var diceAmount = this.model.get("diceAmount").value_1 + this.model.get("diceAmount").value_2;
-            var currentPlayer = this.model.get("players")[this.model.get("currentPlayer")];
+            var diceAmount = this.getDiceAmount();
             for(var i=0;i<this.model.get("players").length; i++){
                 var player = this.model.get("players")[i];
                 for(var j=0; j < player.get("settlements").length; j++){
@@ -144,7 +164,7 @@ define([
                     for( var k=0; k < settlement.get("hexes").length; k++){
                         var hex = settlement.get("hexes")[k];
                         if  (hex.get("value") === diceAmount){
-                            this.gatherResources(settlement,currentPlayer,hex);
+                            this.gatherResources(settlement,player,hex);
                         }
                     }
                 }
@@ -154,8 +174,10 @@ define([
             var resource = hex.get("type");
             var value = settlement.get("type");
             currentPlayer.increaseResources(resource,value);
-            this.model.get("bank").get("resources")[resource] -= settlement.get("type");
-//            this.$(".players div:nth-child(" + (this.model.get("currentPlayer") + 1) + ") .player ." + resource).text(currentPlayer.get("resources")[resource]);
+            this.model.get("bank").useResource(resource,-value);
+        },
+        changeResourceInBank: function(){
+            alert(123);
         }
     });
 

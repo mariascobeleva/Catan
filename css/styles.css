@@ -9,7 +9,8 @@
 }
 .start-game,
 .end-turn,
-.build-settlement{
+.build-settlement,
+.change-with-bank{
     height:50px;
     width:50px;
     border:solid 1px black;
@@ -34,6 +35,12 @@
 }
 .build-settlement {
     left:300px;
+}
+.change-with-bank:after {
+    content: "Поменять в банке"
+}
+.change-with-bank {
+    left:400px;
 }
 .resources span {
     display:inline-block;

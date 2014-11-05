@@ -19,11 +19,11 @@ define([
                 'color': this.model.get('color'),
                 'name': this.model.get('name'),
                 'vp': this.model.get('victoryPoints'),
-                "tree": this.model.get("resources").tree,
-                "sheep": this.model.get("resources").sheep,
-                "brick": this.model.get("resources").brick,
-                "rock": this.model.get("resources").rock,
-                "wheat": this.model.get("resources").wheat
+                "tree": this.model.get("res_tree"),
+                "sheep": this.model.get("res_sheep"),
+                "brick": this.model.get("res_brick"),
+                "rock": this.model.get("res_rock"),
+                "wheat": this.model.get("res_wheat")
             }));
             this.$el.append($player);
             return this;

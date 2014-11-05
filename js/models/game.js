@@ -13,7 +13,7 @@ define([
             map: null,
             bank: null,
             currentPlayer: false,
-            diceAmount: null,
+            dice: null,
             "crossroadClicked":false,
             "roadClicked":false,
             "counter":0
@@ -28,8 +28,8 @@ define([
             if(options.bank){
                 this.set('bank', options.bank);
             }
-            if(options.diceAmount){
-                this.set('diceAmount', options.diceAmount);
+            if(options.dice){
+                this.set('dice', options.dice);
             }
 
 
@@ -42,7 +42,7 @@ define([
             this.set("bank", newBank);
 
             var newDice = new Dice ({});
-            this.set("diceAmount", newDice);
+            this.set("dice", newDice);
 
 
 

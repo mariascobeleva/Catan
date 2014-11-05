@@ -87,6 +87,12 @@ define([
                 else if(currentPlayer.get("secondTurn")){
                     this.countTurn(currentPlayer,"secondTurn");
                 }
+                else {
+                    currentPlayer.increaseResources("brick",-1);
+                    currentPlayer.increaseResources("tree",-1);
+                    this.model.get("game").get("bank").useResource("brick",1);
+                    this.model.get("game").get("bank").useResource("tree",1);
+                }
             }
         },
         countTurn: function(currentPlayer,turn){
@@ -156,7 +162,7 @@ define([
 
             if (this.model.get("game").get("crossroadClicked") === false) {
                 if ((currentPlayer.get("startTurn") === true && currentPlayer.get("roads").length === 0) ||
-                    (currentPlayer.get("startTurn") === false && currentPlayer.get("secondTurn") === false && this.playerHaveResources(currentPlayer))) {
+                    (currentPlayer.get("startTurn") === false && currentPlayer.get("secondTurn") === false && this.checkPlayerResources(currentPlayer))) {
                     if (this.checkIfSettlementIsBuild(currentPlayer, from, to) || this.checkIfRoadIsBuilt(currentPlayer, from, to)) {
                         this.doRoadBlinking(color);
                         this.model.get("game").set("roadClicked", true);
@@ -190,14 +196,8 @@ define([
             this.$el.css("background", color);
 
         },
-        playerHaveResources: function(currentPlayer){
-            var brickQuantity = currentPlayer.get("resources").brick;
-            var treeQuantity  = currentPlayer.get("resources").tree;
-            if(brickQuantity >=1 && treeQuantity >= 1){
-                currentPlayer.get("resources").brick --;
-                currentPlayer.get("resources").tree --;
-                this.model.get("game").get("bank").get("resources").brick ++;
-                this.model.get("game").get("bank").get("resources").tree ++;
+        checkPlayerResources: function(currentPlayer){
+            if(currentPlayer.getResources("tree") >=1 && currentPlayer.getResources("brick") >= 1){
                 return true;
             }
             return false;

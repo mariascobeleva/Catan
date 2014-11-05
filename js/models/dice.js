@@ -1,12 +1,13 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
-], function($, _, Backbone) {
+    'backbone',
+    "models/const"
+], function($, _, Backbone, Const) {
     var diceModel = Backbone.Model.extend({
             defaults: {
-                value_1: 0,
-                value_2: 0
+                "value_1": 0,
+                "value_2": 0
             },
         initialize: function(options){
             if (options.value_1) {
@@ -16,7 +17,16 @@ define([
                 this.set('value_2', options.value_2);
             }
 
+        },
+        rollTheDice: function() {
+            var dice_value = Const.VALUES_OF_DICE[Math.floor(Math.random() * Const.VALUES_OF_DICE.length)];
+            return dice_value;
+        },
+        setDiceValue: function() {
+            this.set("value_1",this.rollTheDice());
+            this.set("value_2",this.rollTheDice());
         }
+
     });
     return diceModel;
 });
