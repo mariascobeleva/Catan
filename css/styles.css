@@ -1,3 +1,6 @@
+
+
+
 .players {
     display:inline-block;
 }
@@ -42,26 +45,126 @@
 .change-with-bank {
     left:400px;
 }
-.resources span {
+.exchange-field {
+    display:none;
+    position:fixed;
+    height:0px;
+    width:600px;
+    top: 50%;
+    left: 50%;
+    margin-top: -300px;
+    margin-left: -300px;
+    background:#fff;
+    text-align:left; /*resets text alignment from body tag */
+    border:1px solid #ccc;
+    border-top:none;
+    z-index:101;
+    -webkit-transition: height 1s ease;
+    -moz-transition: height 1s ease;
+    -ms-transition: height 1s ease;
+    -o-transition: height 1s;
+    transition: height 1s ease;
+}
+.exchange-field.active {
+    display:block;
+    height:600px;
+}
+#overlay {
+    display:none;
+    position:fixed; /* keeps the lightbox window in the current viewport */
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    text-align:center;
+    z-index:100;
+    opacity:0;
+    -webkit-transition: opacity 3s ;
+    -moz-transition: opacity 3s ;
+    -ms-transition: opacity 3s;
+    -o-transition: opacity 3s;
+    transition: opacity 3s;
+}
+#overlay.active {
+    display:block;
+    opacity:1;
+}
+#confirm {
+    position:absolute;
+    right:-40px;
+    top:calc(50% - 20px);
+    width:20px;
+    height:20px;
+    padding:10px;
+    background:lawngreen;
+    border-radius:50%;
+    cursor:pointer;
+}
+#close {
+    position:absolute;
+    top:0;
+    right:0;
+    width:20px;
+    height:20px;
+    background: url("../img/close.png") no-repeat 0 0;
+    cursor:pointer;
+}
+
+.change-resources {
+    width: 400px;
+    margin: 100px auto;
+    height: 400px;
+    position:relative;
+}
+.player-resources {
+    position:absolute;
+    top:0;
+}
+.player-resources,
+.resources-for-change {
+    width:100%;
+    height:50px;
+}
+.resources-for-change {
+    position:absolute;
+    bottom:0;
+}
+.resources span,
+.player-resources span,
+.resources-for-change span {        /* Resources on main screen and in hidden exchange-field block*/
     display:inline-block;
     width:30px;
     height:30px;
     background: lightpink;
     text-align: center;
 }
-.resources .tree {
+.player-resources span,
+.resources-for-change span {
+    width: 50px;
+    height: 50px;
+    margin-right:30px;
+}
+.player-resources span.active,
+.resources-for-change span.active {
+    width:70px;
+    height:70px;
+    margin-right:10px;
+}
+
+span.tree {
     background: green;
 }
-.resources .wheat {
+span.wheat {
     background: yellow;
 }
-.resources .sheep {
+span.sheep {
     background: lightgray;
 }
-.resources .rock {
+span.rock {
     background: grey;
 }
-.resources .brick {
+span.brick {
     background: brown;
 }
 
@@ -115,7 +218,14 @@
     -webkit-animation: blinking 1s linear infinite;
     animation: blinking 1s linear infinite;
 }
-
+.city-blinking{
+    -webkit-animation: blinking 1s linear infinite;
+    animation: blinking 1s linear infinite;
+    border-radius:0;
+}
+.city {
+    border-radius:0;
+}
 
 @keyframes blinking {
     from {opacity: 1;}

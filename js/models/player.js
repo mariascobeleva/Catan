@@ -6,18 +6,18 @@ define([
     var playerModel = Backbone.Model.extend({
         defaults: {
             startTurn: true,
-            secondTurn:true,
+            secondTurn: true,
             name: "",
             color: "",
             victoryPoints: 0,
             army: 0,
             longestRoad: 0,
 
-            "res_rock": 1,
-            "res_tree": 1,
-            "res_brick": 1,
-            "res_sheep": 1,
-            "res_wheat": 1,
+            "res_rock": 4,
+            "res_tree": 4,
+            "res_brick": 4,
+            "res_sheep": 4,
+            "res_wheat": 4,
             devCards: {
                 "monopoly": 0,
                 "knight": 0,
@@ -37,16 +37,16 @@ define([
 
             settlements: []
         },
-        initialize: function(options){
+        initialize: function(options) {
 
-            if(options.roads){
+            if (options.roads) {
                 this.set('roads', options.roads);
             }
             else {
                 this.set('roads', []);
             }
 
-            if( options.devCards){
+            if (options.devCards) {
                 this.set('devCards', options.devCards);
             }
             else {
@@ -56,11 +56,11 @@ define([
                         "victoryPoint": 0,
                         "roadBonus": 0,
                         "resourcesBonus": 0
-                }
-            );
+                    }
+                );
             }
 
-            if( options.exchangeRate){
+            if (options.exchangeRate) {
                 this.set('exchangeRate', options.exchangeRate);
             }
             else {
@@ -70,28 +70,30 @@ define([
                         "brick": 4,
                         "sheep": 4,
                         "wheat": 4
-                }
-            );
-        }
+                    }
+                );
+            }
 
-            if(options.settlements){
+            if (options.settlements) {
                 this.set('settlements', options.settlements);
             }
             else {
                 this.set('settlements', []);
             }
         },
-        getResources: function(resource){
+        getResources: function(resource) {
             return this.get("res_" + resource);
         },
-        increaseResources: function(resource,number) {
-            var newValue = this.getResources(resource) + number;
-            this.setResources(resource,newValue);
-        },
-        setResources:function(resource,number){
+        setResources: function(resource, number) {
             this.set("res_" + resource, number, {type: resource});
+        },
+        spendResource: function(resources) {
+            var k, newValue;
+            for (k in resources) {
+                newValue = this.getResources(k) + resources[k];
+                this.setResources(k, newValue);
+            }
         }
-
     });
     return playerModel;
 });

@@ -9,7 +9,7 @@ define([], function() {
         HEX_TYPE_BRICK: "brick",
         HEX_TYPE_DESERT: "desert",
         VALUES_OF_DICE: [1, 2, 3, 4, 5, 6],
-        HARBOR_TYPES: ["tree", "wheat", "rock", "brick", "sheep", "general-harbor", "general-harbor", "general-harbor", "general-harbor"],   //Типы портов : 0 - пшеница; 1 - овцы; 2 - деревья; 3- камни; 4 - кирпичи; 5 - 3 к одному.
+        HARBOR_TYPES: ["tree", "wheat", "rock", "brick", "sheep", "general-harbor", "general-harbor", "general-harbor", "general-harbor"],
         neighborCoords: [
             {q: -1, r: 0},
             {q: 0, r: -1},

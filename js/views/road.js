@@ -88,10 +88,8 @@ define([
                     this.countTurn(currentPlayer,"secondTurn");
                 }
                 else {
-                    currentPlayer.increaseResources("brick",-1);
-                    currentPlayer.increaseResources("tree",-1);
-                    this.model.get("game").get("bank").useResource("brick",1);
-                    this.model.get("game").get("bank").useResource("tree",1);
+                    currentPlayer.spendResource({"brick":-1,"tree":-1});
+                    this.model.get("game").get("bank").spendResource({"brick":-1,"tree":-1});
                 }
             }
         },

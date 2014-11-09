@@ -30,9 +30,12 @@
         setResource: function(resource,value){
             this.set("res_" + resource, value);
         },
-        useResource: function(resource, quantity){
-            var newValue = this.getResource(resource) + quantity;
-            this.setResource(resource,newValue);
+        spendResource: function(resources){
+            var k,newValue;
+            for(k in resources){
+                newValue = this.getResource(k) - resources[k];
+                this.setResource(k,newValue);
+            }
         }
     });
     return bankModel;

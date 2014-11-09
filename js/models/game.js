@@ -51,7 +51,11 @@ define([
             var p3 = new Player({name: "everest", color: "green" });
 
             this.set('players', [p1, p2, p3]);
+        },
+        getCurrentPlayer: function() {
+            return this.get("players")[this.get("currentPlayer")];
         }
+
     });
     return Game;
 });
