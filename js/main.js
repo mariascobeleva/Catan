@@ -3,6 +3,7 @@ require.config({
         jquery: 'libs/jquery/jquery',
         underscore: 'libs/underscore/underscore',
         backbone: 'libs/backbone/backbone',
+        backbone_sm: 'libs/backbone.statemachine/backbone.statemachine',
         text: 'libs/require/plugins/text',
         templates: '../templates'
     },
@@ -16,9 +17,11 @@ require.config({
         'backbone': {
             deps: ['underscore', 'jquery'],
             exports: 'Backbone'
+        },
+        'backbone_sm': {
+            deps: ['backbone']
         }
     }
-
 });
 
 
@@ -28,5 +31,5 @@ require(['jquery', 'debug', 'models/game', 'views/game'], function($, Debug, Gam
     gameView.render();
     $(document.body).prepend(gameView.$el);
 
-    Debug.doFirstTurns();
+    //Debug.doFirstTurns();
 });
