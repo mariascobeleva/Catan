@@ -13,10 +13,10 @@ define([
             army: 0,
             longestRoad: 0,
 
-            "res_rock": 4,
+            "res_rock": 1,
             "res_tree": 4,
             "res_brick": 4,
-            "res_sheep": 4,
+            "res_sheep": 0,
             "res_wheat": 4,
             devCards: {
                 "monopoly": 0,

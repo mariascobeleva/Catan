@@ -8,8 +8,8 @@ define([
         className: 'road',
         crossroadViews:[],
         events: {
-            click: "roadClick",
-            "buildRoad": "buildRoad"
+            "buildRoad": "buildRoad",
+            "setRoad": "setRoad"
         },
         initialize: function() {
             var SIZE = 60;
@@ -74,61 +74,29 @@ define([
         },
         addListeners: function(){
             this.model.on("change:road", this.renderBuiltRoad, this);
+            this.model.on("highlight", this.doHighlight, this);
+            this.model.on("removeHighlighting", this.removeHighlight,this);
+        },
+        doHighlight: function(){
+            this.$el.addClass("available");
+        },
+        removeHighlight: function(){
+            this.$el.removeClass("available");
+        },
+        setRoad: function(){
+            var currentPlayer = this.model.get("game").getCurrentPlayer();
+            this.model.set("road", true);
+            this.model.set("player",currentPlayer);
+            currentPlayer.get("roads").push(this.model);
+
         },
         buildRoad: function(){
             if(this.model.get("road") === false){
-                var indexOfCurrentPlayer = this.model.get("game").get("currentPlayer");
-                var currentPlayer = this.model.get("game").get("players")[indexOfCurrentPlayer];
-                this.model.set("road", true);
-                currentPlayer.get("roads").push(this.model);
-                if(currentPlayer.get("startTurn")){
-                    this.countTurn(currentPlayer, "startTurn");
-                }
-                else if(currentPlayer.get("secondTurn")){
-                    this.countTurn(currentPlayer,"secondTurn");
-                }
-                else {
-                    currentPlayer.spendResource({"brick":-1,"tree":-1});
-                    this.model.get("game").get("bank").spendResource({"brick":-1,"tree":-1});
-                }
+                var currentPlayer = this.model.get("game").getCurrentPlayer();
+                this.setRoad();
+                currentPlayer.spendResource({"brick":-1,"tree":-1});
+                this.model.get("game").get("bank").spendResource({"brick":-1,"tree":-1});
             }
-        },
-        countTurn: function(currentPlayer,turn){
-            if(this.model.get("game").get("counter") !== this.model.get("game").get("players").length){
-                if(this.model.get("game").get("counter")=== 0){
-                   this.model.get("game").set("counter",1);
-                }
-                else {
-                    this.model.get("game").set("counter",( this.model.get("game").get("counter")+1));
-                }
-                currentPlayer.set(turn,false);
-            }
-
-        },
-        checkIfSettlementIsBuild: function(currentPlayer, from, to, k) {
-            var q,r;
-            var compare = function(coords_1,coords_2,q,r){
-                if ((coords_1.q.toFixed(2) === q && coords_1.r.toFixed(2) === r) ||
-                    coords_2.q.toFixed(2) === q && coords_2.r.toFixed(2) === r) {
-                    return true;
-                }
-            };
-
-            if(k) {
-                q = currentPlayer.get("settlements")[k].get("coords").q.toFixed(2);
-                r = currentPlayer.get("settlements")[k].get("coords").r.toFixed(2);
-                return compare(from,to,q,r);
-            }
-            else {
-                for (var i = 0; i < currentPlayer.get("settlements").length; i++) {
-                    q = currentPlayer.get("settlements")[i].get("coords").q.toFixed(2);
-                    r = currentPlayer.get("settlements")[i].get("coords").r.toFixed(2);
-                    if(compare(from,to,q,r)){
-                        return true;
-                    }
-                }
-            }
-            return false;
         },
         checkIfRoadIsBuilt: function(currentPlayer, from, to) {
             var compare = function(a, b) {
@@ -194,12 +162,7 @@ define([
             this.$el.css("background", color);
 
         },
-        checkPlayerResources: function(currentPlayer){
-            if(currentPlayer.getResources("tree") >=1 && currentPlayer.getResources("brick") >= 1){
-                return true;
-            }
-            return false;
-        }
+
     });
     return RoadView;
 });

@@ -10,16 +10,30 @@
 .players div.active {
  background: yellow;
 }
+.build {
+    display:none;
+    left:300px;
+    background: green;
+}
+.build.disabled{
+    background: grey;
+}
 .start-game,
 .end-turn,
-.build-settlement,
-.change-with-bank{
+.build,
+.change-with-bank,
+.choose-for-building {
     height:50px;
     width:50px;
     border:solid 1px black;
     margin-bottom:20px;
     position: absolute;
     top: 50%;
+}
+.end-turn.active,
+.change-with-bank.active,
+.choose-for-building.active {
+    background: green;
 }
 .start-game {
     left:100px;
@@ -33,11 +47,13 @@
 .end-turn {
     left:200px;
 }
-.build-settlement:after {
-    content:"Построить";
+.choose-for-building {
+    top:60%;
+    left:100px;
+    display: none;
 }
-.build-settlement {
-    left:300px;
+.build:after {
+    content:"Построить";
 }
 .change-with-bank:after {
     content: "Поменять в банке"
@@ -45,7 +61,10 @@
 .change-with-bank {
     left:400px;
 }
-.exchange-field {
+.choose-for-building:after {
+    content:"Строительство";
+}
+.box {
     display:none;
     position:fixed;
     height:0px;
@@ -65,7 +84,7 @@
     -o-transition: height 1s;
     transition: height 1s ease;
 }
-.exchange-field.active {
+.box.active {
     display:block;
     height:600px;
 }
@@ -116,7 +135,12 @@
     margin: 100px auto;
     height: 400px;
     position:relative;
+    display:none;
 }
+.change-resources.active {
+    display: block;
+}
+
 .player-resources {
     position:absolute;
     top:0;
@@ -168,6 +192,29 @@ span.brick {
     background: brown;
 }
 
+.building-objects {
+    display:none;
+    width: 400px;
+    margin: 100px auto;
+    height: 400px;
+    position:relative;
+}
+
+.building-objects span {
+    background: grey;
+    display:inline-block;
+    width:100px;
+    height:25px;
+    text-align: center;
+    margin-right:15px;
+    padding:5px;
+}
+
+.building-objects span.active {
+    background: yellow;
+    border:solid 1px orange;
+}
+
 .field {
     position:relative;
     width:50%;
@@ -213,6 +260,13 @@ span.brick {
     opacity:1;
 }
 
+.available {
+    background:rgba(255,255,255,0.5);
+    border:solid 2px #fff;
+}
+.disabled {
+    background: #FAEBD7;
+}
 
 .blinking{
     -webkit-animation: blinking 1s linear infinite;

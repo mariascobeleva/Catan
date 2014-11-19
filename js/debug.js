@@ -18,36 +18,30 @@ define([
         },
         doFirstTurns: function() {
             $('.start-game').click();
-            $(".crossroads .crossroad:nth-child(1)").click();
-            $('.build-settlement').click();
-            $(".roads .road:nth-child(2)").click();
-            $('.build-settlement').click();
-            $('.end-of-turn-for-start-turn').click();
-            $(".crossroads .crossroad:nth-child(47)").click();
-            $('.build-settlement').click();
-            $(".roads .road:nth-child(58)").click();
-            $('.build-settlement').click();
-            $('.end-of-turn-for-start-turn').click();
-            $(".crossroads .crossroad:nth-child(7)").click();
-            $('.build-settlement').click();
-            $(".roads .road:nth-child(7)").click();
-            $('.build-settlement').click();
             $(".crossroads .crossroad:nth-child(5)").click();
-            $('.build-settlement').click();
-            $(".roads .road:nth-child(5)").click();
-            $('.build-settlement').click();
-            $('.end-turn').click();
-            $(".crossroads .crossroad:nth-child(43)").click();
-            $('.build-settlement').click();
-            $(".roads .road:nth-child(53)").click();
-            $('.build-settlement').click();
-            $('.end-turn').click();
+            $('.build').click();
+            $(".roads .road:nth-child(6)").click();
+            $('.build').click();
             $(".crossroads .crossroad:nth-child(45)").click();
-            $('.build-settlement').click();
+            $('.build').click();
             $(".roads .road:nth-child(60)").click();
-            $('.build-settlement').click();
-            $('.end-turn').click();
-
+            $('.build').click();
+            $(".crossroads .crossroad:nth-child(10)").click();
+            $('.build').click();
+            $(".roads .road:nth-child(10)").click();
+            $('.build').click();
+            $(".crossroads .crossroad:nth-child(14)").click();
+            $('.build').click();
+            $(".roads .road:nth-child(16)").click();
+            $('.build').click();
+            $(".crossroads .crossroad:nth-child(12)").click();
+            $('.build').click();
+            $(".roads .road:nth-child(14)").click();
+            $('.build').click();
+            $(".crossroads .crossroad:nth-child(15)").click();
+            $('.build').click();
+            $(".roads .road:nth-child(19)").click();
+            $('.build').click();
             return true;
         }
 

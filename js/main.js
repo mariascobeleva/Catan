@@ -31,5 +31,5 @@ require(['jquery', 'debug', 'models/game', 'views/game'], function($, Debug, Gam
     gameView.render();
     $(document.body).prepend(gameView.$el);
 
-    //Debug.doFirstTurns();
+    Debug.doFirstTurns();
 });

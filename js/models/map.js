@@ -196,6 +196,48 @@ define([
                 }
             }
             return array;
+        },
+        findAvailableCrossroads: function(player,needRoad,needHighlight) {
+            for (var i = 0; i < this.get("crossroads").length; i++) {
+                var crossroad = this.get("crossroads")[i];
+                if (crossroad.isAvailable(player,needRoad)) {
+                    if(needHighlight){
+                        crossroad.trigger("highlight");
+                    }
+                    else {
+                        return true;
+                    }
+                }
+            }
+        },
+        disabledCrossroadHighlighting: function(){
+            for(var i=0; i<this.get("crossroads").length; i++){
+                this.get("crossroads")[i].trigger("removeHighlighting");
+            }
+        },
+
+
+        findAvailableRoads: function(player, highlight,view) {
+            var q = view.model.get("coords").q.toFixed(2);
+            var r = view.model.get("coords").r.toFixed(2);
+            for (var i = 0; i < this.get("roads").length; i++) {
+                var road = this.get("roads")[i];
+                var from = road.get("from");
+                var to = road.get("to");
+                if (road.checkIfSettlementIsBuild(player, from, to, q, r)) {
+                    if (highlight) {
+                        road.trigger("highlight");
+                    }
+                    else{
+                        return true;
+                    }
+                }
+            }
+        },
+        disabledRoadHighlighting:function(){
+            for(var i=0; i<this.get("roads").length; i++){
+                this.get("roads")[i].trigger("removeHighlighting");
+            }
         }
     });
     return Map;

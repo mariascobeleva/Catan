@@ -8,19 +8,399 @@ define([
     'views/player',
     "views/map",
     "views/dice",
+    'backbone_sm'
 ], function($, _, Backbone, Debug, Const, GameTemplate, PlayerView, MapView, DiceView) {
-    var GameView = Backbone.View.extend({
+    var GameView = Backbone.StatefulView.extend({
+        states: {
+            init: {},
+            ftSettlement: {enter: ['ftSettlementEnter'], leave: ['ftSettlementLeave']},
+            ftRoad: {enter: ['ftRoadEnter'], leave: ['ftRoadLeave']},
+            stSettlement: {enter: ["stSettlementEnter"], leave: ["stSettlementLeave"]},
+            stRoad: {enter: ["stRoadEnter"], leave: ["stRoadLeave"]},
+            rollDice: {enter: ["rollDiceEnter"], leave: ["rollDiceLeave"]},
+            mainGame: {enter: ["mainGameEnter"], leave: ["mainGameLeave"]},
+//            doRob:{enter:["doRobEnter"], leave:["doRobLeave"]}
+            trading: {enter: ["tradingEnter"], leave: ["tradingLeave"]},
+            building:{enter: ["buildingEnter"], leave: ["buildingLeave"]},
+            roadBuilding:{enter: ["roadBuildingEnter"], leave: ["roadBuildingLeave"]},
+            settlementBuilding:{enter: ["settlementBuildingEnter"], leave: ["settlementBuildingLeave"]},
+            cityBuilding:{enter: ["cityBuildingEnter"], leave: ["cityBuildingLeave"]}
+
+        },
+        transitions: {
+            init: {
+                initialized: 'ftSettlement'
+            },
+            ftSettlement: {
+                ftBuiltSettlement: {
+                    enterState: 'ftRoad'
+                }
+            },
+            ftRoad: {
+                ftBuiltRoadNextPlayer: {
+                    enterState: 'ftSettlement'
+                },
+                ftBuiltRoadAndSecondTurn: {
+                    enterState: "stSettlement"
+                }
+            },
+            stSettlement: {
+                stBuiltSettlement: {
+                    enterState: "ftRoad"
+                },
+                stBuiltSettlementNextPlayer: {
+                    enterState: "stRoad"
+                }
+            },
+            stRoad: {
+                stBuiltRoadNextPlayer: {
+                    enterState: "stSettlement"
+                },
+                startGame: {
+                    enterState: "rollDice"
+                }
+            },
+            rollDice: {
+                rollDiceAndStartGame: {
+                    enterState: "mainGame"
+                },
+                rollDiceAndDoRobbery: {
+                    enterState: "doRob"
+                }
+            },
+            mainGame: {
+                startTurn: {
+                    enterState: "rollDice"
+                },
+                startTrading: {
+                    enterState: "trading"
+                },
+                startBuilding: {
+                    enterState: "building"
+                }
+            },
+            trading: {
+                tradeWithBank: {
+                    enterState: "mainGame"
+                }
+            },
+            building : {
+                buildingObj : {
+                    enterState: "mainGame"
+                },
+                buildRoad : {
+                    enterState: "roadBuilding"
+                },
+                buildSettlement: {
+                    enterState: "settlementBuilding"
+                },
+                buildCity: {
+                    enterState: "cityBuilding"
+                }
+            },
+            roadBuilding:{
+                builtRoad:{
+                    enterState: "mainGame"
+                }
+            },
+            settlementBuilding:{
+                builtSettlement:{
+                    enterState: "mainGame"
+                }
+            },
+            cityBuilding:{
+                builtCity:{
+                    enterState: "mainGame"
+                }
+            }
+        },
+        ftSettlementEnter: function() {
+            var that = this;
+            var currentPlayer = this.model.getCurrentPlayer();
+            this.model.get("map").findAvailableCrossroads(currentPlayer, false, true);
+            this.$(".build").show().addClass("disabled");
+            this.$('.available.crossroad').click(function() {
+                Debug.log('$(".crossroads .crossroad:nth-child(' + ($(this).index() + 1) + ')").click();');
+                var color = currentPlayer.get("color");
+                that.$(".build").removeClass("disabled");
+                that.$(".crossroad.blinking").removeClass("blinking").css("background", "rgba(255,255,255,0.5)");
+                $(this).addClass('blinking').css({"background": color});
+            });
+            this.$(".build").click(function() {
+                if (!$(this).is(".disabled")) {
+                    Debug.log("$('.build').click();");
+                    var view = that.$(".crossroad.blinking").data('view');
+                    view.setSettlement(view.model.q(), view.model.r(), currentPlayer);
+                    that.trigger("ftBuiltSettlement", view);
+                }
+            });
+        },
+        ftSettlementLeave: function() {
+            this.model.get("map").disabledCrossroadHighlighting();
+            this.$(".build").addClass("disabled").hide();
+            this.$(".build").off("click");
+        },
+        ftRoadEnter: function(view) {
+            var that = this;
+            var currentPlayer = this.model.getCurrentPlayer();
+            that.model.get("map").findAvailableRoads(currentPlayer,true,view);
+            that.$(".build").show().addClass("disabled");
+            that.$('.available.road').click(function() {
+                Debug.log('$(".roads .road:nth-child(' + ($(this).index() + 1) + ')").click();');
+                that.$(".build").removeClass("disabled");
+                var color = currentPlayer.get("color");
+                that.$('.blinking.road').removeClass("blinking");
+                $(this).addClass('blinking').css({"background": color});
+            });
+            that.$(".build").click(function() {
+                if (!$(this).is(".disabled")) {
+                    Debug.log("$('.build').click();");
+                    $(".road.blinking").trigger("setRoad");
+                    if (that.model.get("currentPlayer") !== 0) {
+                        that.model.prevPlayer();
+                        that.trigger("ftBuiltRoadNextPlayer");
+                    }
+                    else {
+                        that.trigger("ftBuiltRoadAndSecondTurn");
+                    }
+                }
+            });
+        },
+        ftRoadLeave: function() {
+            this.model.get("map").disabledRoadHighlighting();
+            this.$(".build").addClass("disabled").hide();
+            this.$(".build").off("click");
+        },
+        stSettlementEnter: function() {
+            var that = this;
+            var currentPlayer = that.model.getCurrentPlayer();
+            that.model.get("map").findAvailableCrossroads(currentPlayer, false, true);
+            that.$(".build").show().addClass("disabled");
+            that.$('.available.crossroad').click(function() {
+                Debug.log('$(".crossroads .crossroad:nth-child(' + ($(this).index() + 1) + ')").click();');
+                var color = currentPlayer.get("color");
+                that.$(".build").removeClass("disabled");
+                that.$(".crossroad.blinking").removeClass("blinking");
+                $(this).addClass('blinking').css({"background": color});
+            });
+            this.$(".build").click(function() {
+                if (!$(this).is(".disabled")) {
+                    Debug.log("$('.build').click();");
+                    var view = that.$(".crossroad.blinking").data('view');
+                    view.setSettlement(view.model.q(), view.model.r(), currentPlayer);
+                    that.model.grabResources(view.model);
+                    that.trigger("stBuiltSettlementNextPlayer", view);
+                }
+            });
+        },
+        stSettlementLeave: function() {
+            this.model.get("map").disabledCrossroadHighlighting();
+            this.$(".build").addClass("disabled").hide();
+            this.$(".build").off("click");
+        },
+        stRoadEnter: function(view) {
+            var that = this;
+            var currentPlayer = this.model.getCurrentPlayer();
+            that.model.get("map").findAvailableRoads(currentPlayer,true, view);
+            that.$(".build").show().addClass("disabled");
+            that.$('.available.road').click(function() {
+                Debug.log('$(".roads .road:nth-child(' + ($(this).index() + 1) + ')").click();');
+                that.$(".build").removeClass("disabled");
+                var color = currentPlayer.get("color");
+                that.$('.blinking.road').removeClass("blinking");
+                $(this).addClass('blinking').css({"background": color});
+            });
+            that.$(".build").click(function() {
+                if (!$(this).is(".disabled")) {
+                    Debug.log("$('.build').click();");
+                    $(".road.blinking").trigger("setRoad");
+                    if (that.model.get("currentPlayer") !== 2) {
+                        that.model.nextPlayer();
+                        that.trigger("stBuiltRoadNextPlayer");
+                    }
+                    else {
+                        that.model.nextPlayer();
+                        that.trigger("startGame");
+                    }
+                }
+            });
+        },
+        stRoadLeave: function() {
+            this.model.get("map").disabledRoadHighlighting();
+            this.$(".build").addClass("disabled").hide();
+            this.$(".build").off("click");
+        },
+        rollDiceEnter: function() {
+            alert("Finally the game was started!!!");
+            // Show rolling dice;
+            this.model.get("dice").setDiceValue();
+            var diceAmount = this.model.getDiceAmount();
+            if (diceAmount === 7) {
+                this.trigger("rollDiceAndDoRobbery");
+            }
+            else {
+                this.model.grabResourcesGlobal(diceAmount);
+                this.trigger("rollDiceAndStartGame");
+            }
+        },
+        rollDiceLeave: function() {
+            // Hide dices.
+        },
+        mainGameEnter: function() {
+            var that = this;
+            alert("main game was started");
+            that.$(".end-turn,.change-with-bank").addClass("active");
+            that.$(".choose-for-building").show().addClass("active");
+
+            that.$(".change-with-bank").click(function() {
+                if ($(this).is(".active")) {
+                    that.trigger("startTrading");
+                }
+            });
+
+            that.$(".end-turn").click(function() {
+                if ($(this).is(".active")) {
+                    that.model.nextPlayer();
+                    that.trigger("startTurn");
+                }
+            });
+            that.$(".choose-for-building").click(function(){
+                 that.trigger("startBuilding");
+            });
+        },
+        mainGameLeave: function() {
+            this.$(".end-turn,.change-with-bank").removeClass("active");
+            this.$(".build").removeClass("disabled").hide();
+        },
+        tradingEnter: function() {
+            var that = this;
+            that.$("#overlay, .box,").addClass("active");
+            that.$(".change-for-buildings").show();
+
+            var currentPlayer = this.model.getCurrentPlayer();
+            that.displayPlayerResourcesForChange(currentPlayer);
+            that.displayExchangeRate(currentPlayer);
+
+            that.$(".player-resources span").click(function() {
+                $(".player-resources span").removeClass("active");
+                $(this).addClass("active");
+            });
+            that.$(".resources-for-change span").click(function() {
+                $(".resources-for-change span").removeClass("active");
+                $(this).addClass("active");
+            });
+
+            that.$("#close").click(function() {
+                that.trigger('tradeWithBank');
+            });
+            that.$(".change-resources #confirm").click(function(){
+                that.changeResourceInBank();
+            });
+        },
+        tradingLeave: function() {
+            this.$("#overlay, .box").removeClass("active");
+            this.$(".change-for-buildings").hide();
+        },
+        buildingEnter: function(){
+            var that = this;
+            var currentPlayer  = this.model.getCurrentPlayer();
+            that.$("#overlay,.box").addClass("active");
+
+
+            if(this.model.checkPlayerResourcesForSettlement() && this.model.get("map").findAvailableCrossroads(currentPlayer, true, false)){
+                that.$(".building-objects span.settlement").addClass("active");
+            }
+            if(this.model.checkPlayerResourcesForCity()){
+                that.$(".building-objects span.city").addClass("active");
+            }
+            if(this.model.checkPlayerResourcesForRoad() && this.model.get("map").findAvailableRoads(currentPlayer,false)){
+                that.$(".building-objects span.road").addClass("active");
+            }
+            that.$(".building-objects").show();
+
+            that.$(".building-objects span.settlement.active").click(function(){
+                that.trigger("buildSettlement");
+            });
+
+            that.$(".building-objects span.city.active").click(function(){
+                that.trigger("buildCity");
+            });
+            that.$(".building-objects span.road.active").click(function(){
+                that.trigger("buildRoad");
+            });
+            that.$("#close").click(function() {
+                that.trigger('buildingObj');
+            });
+
+        },
+        buildingLeave: function(){
+            this.$(".building-objects").hide();
+            this.$("#overlay, .box").removeClass("active");
+        },
+        roadBuildingEnter: function(){
+            var that = this;
+            var currentPlayer = this.model.getCurrentPlayer();
+            that.model.get("map").findAvailableRoads(currentPlayer,true);
+            that.$(".build").show().addClass("disabled");
+            that.$('.available.road').click(function() {
+                that.$(".build").removeClass("disabled");
+                var color = currentPlayer.get("color");
+                that.$('.blinking.road').removeClass("blinking");
+                $(this).addClass('blinking').css({"background": color});
+            });
+            that.$(".build").click(function() {
+                if (!$(this).is(".disabled")) {
+                    $(".road.blinking").trigger("setRoad");
+                        that.trigger("buildRoad");
+                    }
+            });
+        },
+        roadBuildingLeave: function(){
+            this.model.get("map").disabledRoadHighlighting();
+            this.$(".build").addClass("disabled").hide();
+            this.$(".build").off("click");
+        },
+        settlementBuildingEnter: function(){
+            var that = this;
+            var currentPlayer = that.model.getCurrentPlayer();
+            that.model.get("map").findAvailableCrossroads(currentPlayer, true, true);
+            that.$(".build").show().addClass("disabled");
+            that.$('.available.crossroad').click(function() {
+                var color = currentPlayer.get("color");
+                that.$(".build").removeClass("disabled");
+                that.$(".crossroad.blinking").removeClass("blinking");
+                $(this).addClass('blinking').css({"background": color});
+            });
+            this.$(".build").click(function() {
+                if (!$(this).is(".disabled")) {
+                    var view = that.$(".crossroad.blinking").data('view');
+                    view.setSettlement(view.model.q(), view.model.r(), currentPlayer);
+                    that.trigger("builtSettlement");
+                }
+            });
+        },
+        settlementBuildingLeave: function(){
+            this.model.get("map").disabledCrossroadHighlighting();
+            this.$(".build").addClass("disabled").hide();
+            this.$(".build").off("click");
+        },
+        cityBuildingEnter: function(){},
+        cityBuildingLeave: function(){},
+
+
+
+
+        startGame: function() {
+            Debug.log("$('.start-game').click();");
+            this.renderCurrentPlayer();
+            this.trigger('initialized');
+        },
+
+
         className: "game",
         playerViews: [],
         events: {
-            "click .start-game": "startGame",
-            "click .end-turn": "endOfTurn",
-            'click .build-settlement': "build",
-            "click .change-with-bank": "clickChangeResources",
-            "click #close": "clickCloseButton",
-            "click .player-resources span": "clickPlayerResourceForChange",
-            "click .resources-for-change span": "clickResourceForChange",
-            "click .change-resources #confirm": "changeResourceInBank"
+            "click .start-game": "startGame"
         },
         initialize: function() {
             this.addListeners();
@@ -35,22 +415,7 @@ define([
             return this;
         },
         addListeners: function() {
-            for (var i = 0; i < this.model.get("players").length; i++) {
-                this.model.get("players")[i].on("change:startTurn", this.endOfTurnForStartTurn, this);
-            }
-            for (var j = 0; j < this.model.get("players").length; j++) {
-                this.model.get("players")[j].on("change:secondTurn", this.endOfTurn, this);
-            }
-
-            this.model.on("change:counter", this.stopListeningStartTurn, this);
-        },
-        stopListeningStartTurn: function() {
-            if (this.model.get("counter") === this.model.get("players").length) {
-                for (var i = 0; i < this.model.get("players").length; i++) {
-                    this.model.get("players")[i].off("change:startTurn");
-                }
-                this.model.set("counter", 0);
-            }
+            this.model.on("change:currentPlayer", this.renderCurrentPlayer, this);
         },
         renderPlayers: function() {
             var players = this.model.get('players');
@@ -70,126 +435,9 @@ define([
             var diceView = new DiceView({model: this.model.get("dice")});
             this.$el.append(diceView.render().el);
         },
-        startGame: function() {
-            Debug.log("$('.start-game').click();");
-            this.assignCurrentPlayerForStartTurn();
-        },
-        assignCurrentPlayer: function() {
-            if (this.model.get("currentPlayer") + 1 === this.model.get("players").length) {
-                this.model.set("currentPlayer", 0);
-            }
-            else {
-                this.model.set("currentPlayer", (this.model.get("currentPlayer") + 1));
-            }
-            this.renderCurrentPlayer();
-        },
-        assignCurrentPlayerForStartTurn: function() {
-            var currentPlayer;
-            if (this.model.get("currentPlayer") === false) {
-                currentPlayer = this.model.get("players")[Math.floor(Math.random() * this.model.get("players").length)];
-                this.model.set("currentPlayer", (this.model.get("players").indexOf(currentPlayer)));
-            }
-            else if (this.model.get("currentPlayer") - 1 < 0) {
-                this.model.set("currentPlayer", 2);
-            }
-            else {
-                this.model.set("currentPlayer", (this.model.get("currentPlayer") - 1));
-            }
-            this.renderCurrentPlayer();
-        },
-        removeBlinkingElements: function() {
-            $(".blinking").removeClass("blinking");
-        },
-        endOfTurnForStartTurn: function() {
-            Debug.log("$('.end-of-turn-for-start-turn').click();");
-            this.model.set("crossroadClicked", false);
-            this.model.set("roadClicked", false);
-            this.removeBlinkingElements();
-            this.assignCurrentPlayerForStartTurn();
-        },
         renderCurrentPlayer: function() {
             this.$(".players div .player").removeClass("active");
             this.$(".players div:nth-child(" + (this.model.get("currentPlayer") + 1) + ") .player").addClass("active");
-        },
-        endOfTurn: function() {
-            Debug.log("$('.end-turn').click();");
-            this.model.set("crossroadClicked", false);
-            this.model.set("roadClicked", false);
-            this.assignCurrentPlayer();
-            if (this.model.getCurrentPlayer().get("startTurn") === false &&
-                this.model.getCurrentPlayer().get("secondTurn") === false) {
-                this.doTurn();
-            }
-        },
-        doTurn: function() {
-            this.model.get("dice").setDiceValue();
-            this.checkResources();
-
-        },
-        build: function() {
-            Debug.log("$('.build-settlement').click();");
-
-            if (this.$('.crossroad.blinking').length) {
-                this.$('.crossroad.blinking').trigger('buildSettlement');
-                this.model.set("crossroadClicked", false);
-                if (this.model.getCurrentPlayer().get("startTurn") === false &&
-                    this.model.getCurrentPlayer().get("secondTurn") === true) {
-                    this.gatherResourcesFirstTime();
-                }
-            }
-            else if (this.$('.crossroad.city-blinking').length) {
-                this.$('.crossroad.city-blinking').trigger('buildSettlement');
-                this.model.set("crossroadClicked", false);
-            }
-            else if (this.$('.road.blinking').length) {
-                this.$('.road.blinking').trigger('buildRoad');
-                this.model.set("roadClicked", false);
-            }
-            else {
-                alert('Something wrong (e.g. is not your turn.)');
-            }
-        },
-        gatherResourcesFirstTime: function() {
-            var currentPlayer = this.model.getCurrentPlayer();
-            var settlement = currentPlayer.get("settlements")[currentPlayer.get("settlements").length - 1];
-
-            for (var k = 0; k < settlement.get("hexes").length; k++) {
-                var hex = settlement.get("hexes")[k];
-                this.gatherResources(settlement, currentPlayer, hex);
-            }
-        },
-        getDiceAmount: function() {
-            return this.model.get("dice").get("value_1") + this.model.get("dice").get("value_2");
-        },
-        checkResources: function() {
-            var diceAmount = this.getDiceAmount();
-            for (var i = 0; i < this.model.get("players").length; i++) {
-                var player = this.model.get("players")[i];
-                for (var j = 0; j < player.get("settlements").length; j++) {
-                    var settlement = player.get("settlements")[j];
-                    for (var k = 0; k < settlement.get("hexes").length; k++) {
-                        var hex = settlement.get("hexes")[k];
-                        if (hex.get("value") === diceAmount) {
-                            this.gatherResources(settlement, player, hex);
-                        }
-                    }
-                }
-            }
-        },
-        gatherResources: function(settlement, currentPlayer, hex) {
-            var resource = hex.get("type");
-            var value = settlement.get("type");
-            var changedResources = {};
-            changedResources[resource] = value;
-            currentPlayer.spendResource(changedResources);
-            this.model.get("bank").spendResource(changedResources);
-        },
-        clickChangeResources: function() {
-            this.$("#overlay, .exchange-field").addClass("active");
-
-            var currentPlayer = this.model.getCurrentPlayer();
-            this.displayPlayerResourcesForChange(currentPlayer);
-            this.displayExchangeRate(currentPlayer);
         },
         displayPlayerResourcesForChange: function(player) {
             var k, value, prefix;
@@ -207,14 +455,6 @@ define([
                 this.$(".resources-for-change ." + j).text("1 : " + player.attributes.exchangeRate[j]);
             }
         },
-        clickPlayerResourceForChange: function(event) {
-            this.$(".player-resources span").removeClass("active");
-            $(event.currentTarget).addClass("active");
-        },
-        clickResourceForChange: function(event) {
-            this.$(".resources-for-change span").removeClass("active");
-            $(event.currentTarget).addClass("active");
-        },
         changeResourceInBank: function() {
             var playerResource, resourceToBuy, currentPlayer, rate;
             playerResource = this.$(".player-resources span.active").attr("name");
@@ -230,11 +470,10 @@ define([
                 this.model.get("bank").spendResource(changedResources);
                 this.displayPlayerResourcesForChange(currentPlayer);
             }
-        },
-        clickCloseButton: function() {
-            this.$("#overlay, .exchange-field, .change-resources span").removeClass("active");
         }
     });
-
-    return GameView;
+        return GameView;
 });
+
+
+
