@@ -20,9 +20,22 @@ define([
             if (options.crossroads) {
                 this.set('crossroads', options.crossroads);
             }
+            else {
+                this.set('crossroads', []);
+            }
             if(options.hexes){
                 this.set('hexes', options.hexes);
             }
+            else {
+                this.set('hexes', []);
+            }
+            if(options.roads){
+                this.set('roads', options.roads);
+            }
+            else {
+                this.set('roads', []);
+            }
+
             if( options.neighbourPoints){
                 this.set('neighbourPoints', options.neighbourPoints);
             }
@@ -48,8 +61,8 @@ define([
         },
         checkIfRoadIsBuilt: function(currentPlayer) {
             for (var i = 0; i < currentPlayer.get("roads").length; i++) {
-                if ((currentPlayer.get("roads")[i].get("from").q.toFixed(2) === this.q() && currentPlayer.get("roads")[i].get("from").r.toFixed(2) === this.r() ) ||
-                    (currentPlayer.get("roads")[i].get("to").q.toFixed(2) === this.q() && currentPlayer.get("roads")[i].get("to").r.toFixed(2) === this.r())) {
+                if ((currentPlayer.get("roads")[i].getRoadCoordsFrom().q.toFixed(2) === this.q() && currentPlayer.get("roads")[i].getRoadCoordsFrom().r.toFixed(2) === this.r() ) ||
+                    (currentPlayer.get("roads")[i].getRoadCoordsTo().q.toFixed(2) === this.q() && currentPlayer.get("roads")[i].getRoadCoordsTo().r.toFixed(2) === this.r())) {
                     return true;
                 }
             }

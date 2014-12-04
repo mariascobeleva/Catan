@@ -7,28 +7,95 @@
 </div>
 <div id="overlay"></div>
 <div class="box">
+
+    <!--Field for changing resources in bank-->
+
     <div class="change-resources">
         <div class="player-resources">
-            <span class="tree" name="tree"></span><!--
-            --><span class="wheat" name="wheat"></span><!--
-            --><span class="sheep" name="sheep"></span><!--
-            --><span class="rock" name="rock"></span><!--
-            --><span class="brick" name="brick"></span>
+            <span class="res-tree" name="tree"></span><!--
+            --><span class="res-wheat" name="wheat"></span><!--
+            --><span class="res-sheep" name="sheep"></span><!--
+            --><span class="res-rock" name="rock"></span><!--
+            --><span class="res-brick" name="brick"></span>
         </div>
 
         <div class="resources-for-change">
-            <span class="tree" name="tree"></span><!--
-            --><span class="wheat" name="wheat"></span><!--
-            --><span class="sheep" name="sheep"></span><!--
-            --><span class="rock" name="rock"></span><!--
-            --><span class="brick" name="brick"></span>
+            <span class="res-tree" name="tree"></span><!--
+            --><span class="res-wheat" name="wheat"></span><!--
+            --><span class="res-sheep" name="sheep"></span><!--
+            --><span class="res-rock" name="rock"></span><!--
+            --><span class="res-brick" name="brick"></span>
         </div>
-        <div id="confirm">ok</div>
+        <div class="confirm">ok</div>
     </div>
+
+    <!--Field for choosing object for building-->
+
     <div class="building-objects">
         <span class="city">Город</span>
         <span class="settlement">Поселение</span>
         <span class="road">Дорога</span>
+    </div>
+
+    <!--Field for choosing player for robber-->
+
+    <div class="choose-player-for-robber">
+        <p>Вы хотите ограбить <span class="victim player1"></span> или <span class="victim player2"></span> ?</p>
+    </div>
+
+    <!--Field for choosing resources during robbery -->
+
+    <div class="choose-res-for-rob">
+        <div class="player-resources">
+            <p><span class="name">Маша</span>, тебя ограбили (: Ты должна отдать <span class="amount">5</span> любых своих ресурсов.</p>
+
+            <div class="tree res" >
+                <span class="res-tree" name="tree">0</span>
+                <div class="controls">
+                    <div class="add ctrl">+</div>
+                    <div class="value">0</div>
+                    <div class="decrease ctrl">-</div>
+                </div>
+            </div>
+            <div class="wheat res" >
+                <span class="res-wheat" name="wheat">0</span>
+                <div class="controls">
+                    <div class="add ctrl">+</div>
+                    <div class="value">0</div>
+                    <div class="decrease ctrl">-</div>
+                </div>
+
+            </div>
+            <div class="sheep res" >
+                <span class="res-sheep" name="sheep">0</span>
+                <div class="controls">
+                    <div class="add ctrl">+</div>
+                    <div class="value">0</div>
+                    <div class="decrease ctrl">-</div>
+                </div>
+
+            </div>
+            <div class="rock res" >
+                <span class="res-rock" name="rock">0</span>
+                <div class="controls">
+                    <div class="add ctrl">+</div>
+                    <div class="value">0</div>
+                    <div class="decrease ctrl">-</div>
+                </div>
+            </div>
+            <div class="brick res" >
+                <span class="res-brick" name="brick">0</span>
+                <div class="controls">
+                    <div class="add ctrl">+</div>
+                    <div class="value">0</div>
+                    <div class="decrease ctrl">-</div>
+                </div>
+            </div>
+        </div>
+        <div class="robber">
+            <p>Robber<p>
+        </div>
+        <div class="confirm">ok</div>
     </div>
     <span id="close"></span>
 </div>

@@ -13,10 +13,10 @@ define([
             army: 0,
             longestRoad: 0,
 
-            "res_rock": 1,
+            "res_rock": 4,
             "res_tree": 4,
             "res_brick": 4,
-            "res_sheep": 0,
+            "res_sheep": 4,
             "res_wheat": 4,
             devCards: {
                 "monopoly": 0,
@@ -28,10 +28,10 @@ define([
 
             exchangeRate: {
                 "tree": 4,
-                "rock": 4,
-                "brick": 4,
-                "sheep": 4,
-                "wheat": 4
+                "rock": 5,
+                "brick": 0,
+                "sheep": 0,
+                "wheat": 0
             },
             roads: [],
 

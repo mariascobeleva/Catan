@@ -44,6 +44,13 @@ define([
                 this.$(".field .hexes").append(hexView.render().el);
             }
         },
+        renderThief: function(){
+            var left = parseFloat(this.$(".hex.desert").css("left"));
+            var top = parseFloat(this.$(".hex.desert").css("top"));
+            var hexSize = 60;
+            var thiefSize = 30;
+            this.$(".thief").css({'left':(left + hexSize/2 + thiefSize/2),'top':(top + hexSize/2)});
+        },
         renderCrossroads: function() {
             for (var i = 0; i < this.model.get('hexes').length; i++) {
                 for (var j = 0; j < this.model.get("hexes")[i].get("crossroads").length; j++) {
@@ -76,8 +83,8 @@ define([
         renderRoads: function() {
             for (var i = 0; i < this.model.get('hexes').length; i++) {
                 for (var k = 0; k < this.model.get("hexes")[i].get("roads").length; k++) {
-                    var road_from = this.model.get("hexes")[i].get("roads")[k].get("from");
-                    var road_to = this.model.get("hexes")[i].get("roads")[k].get("to");
+                    var road_from = this.model.get("hexes")[i].get("roads")[k].get("from").get("coords");
+                    var road_to = this.model.get("hexes")[i].get("roads")[k].get("to").get("coords");
 
                     var roadView = this.getRoadView(road_from, road_to);
                     if (!roadView) {
@@ -96,6 +103,7 @@ define([
             this.renderHexes();
             this.renderCrossroads();
             this.renderRoads();
+            this.renderThief();
             return this;
         }
     });

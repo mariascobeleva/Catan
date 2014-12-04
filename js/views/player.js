@@ -30,7 +30,7 @@ define([
         },
         updatePlayerResources: function(model, value, options) {
             var attr = options.type;
-            this.$(".resources ." + attr).text(value);
+            this.$(".resources .res-" + attr).text(value);
         }
     });
     return PlayerView;

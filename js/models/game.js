@@ -13,7 +13,8 @@ define([
             "map": null,
             "bank": null,
             "currentPlayer": 2,
-            "dice": null
+            "dice": null,
+            "robedHex":null
         },
         initialize: function(options) {
             if (options.players) {
@@ -28,6 +29,10 @@ define([
             if (options.dice) {
                 this.set('dice', options.dice);
             }
+            if (options.robedHex) {
+                this.set('dice', options.robedHex);
+            }
+
 
 
             var newMap = new Map({
@@ -49,6 +54,14 @@ define([
             // TODO: Shuffle players;
 
             this.set('players', [p1, p2, p3]);
+
+//            // To get first robed hex (desert).
+//            for(var i=0; i<this.get("map").get("hexes").length; i++){
+//                var hex = this.get("map").get("hexes")[i];
+//                if(hex.get("thief")){
+//                    this.set("robedHex", hex);
+//                }
+//            }
         },
         getCurrentPlayer: function() {
             return this.get("players")[this.get("currentPlayer")];
@@ -105,8 +118,7 @@ define([
         getDiceAmount: function() {
             return this.get("dice").get("value_1") + this.get("dice").get("value_2");
         },
-        checkPlayerResourcesForSettlement: function() {
-            var player = this.getCurrentPlayer();
+        checkPlayerResourcesForSettlement: function(player) {
             if (player.getResources("tree") >= 1 &&
                 player.getResources("brick") >= 1 &&
                 player.getResources("sheep") >= 1 &&
@@ -115,16 +127,14 @@ define([
             }
             return false;
         },
-        checkPlayerResourcesForCity: function(){
-            var player = this.getCurrentPlayer();
+        checkPlayerResourcesForCity: function(player){
             if(player.getResources("wheat") >=2 &&
                 player.getResources("rock") >=3){
                 return true;
             }
             return false;
         },
-        checkPlayerResourcesForRoad: function(){
-            var player = this.getCurrentPlayer();
+        checkPlayerResourcesForRoad: function(player){
             if(player.getResources("tree") >=1 && player.getResources("brick") >= 1){
                 return true;
             }

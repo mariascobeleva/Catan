@@ -87,6 +87,9 @@
 .box.active {
     display:block;
     height:600px;
+    padding: 20px 80px;
+    box-sizing: border-box;
+    text-align: center;
 }
 #overlay {
     display:none;
@@ -109,9 +112,9 @@
     display:block;
     opacity:1;
 }
-#confirm {
+.confirm {
     position:absolute;
-    right:-40px;
+    right:40px;
     top:calc(50% - 20px);
     width:20px;
     height:20px;
@@ -147,8 +150,7 @@
 }
 .player-resources,
 .resources-for-change {
-    width:100%;
-    height:50px;
+    height:200px;
 }
 .resources-for-change {
     position:absolute;
@@ -156,7 +158,7 @@
 }
 .resources span,
 .player-resources span,
-.resources-for-change span {        /* Resources on main screen and in hidden exchange-field block*/
+.resources-for-change span{        /* Resources on main screen and in hidden exchange-field block*/
     display:inline-block;
     width:30px;
     height:30px;
@@ -176,19 +178,19 @@
     margin-right:10px;
 }
 
-span.tree {
+span.res-tree {
     background: green;
 }
-span.wheat {
+span.res-wheat {
     background: yellow;
 }
-span.sheep {
+span.res-sheep {
     background: lightgray;
 }
-span.rock {
+span.res-rock {
     background: grey;
 }
-span.brick {
+span.res-brick {
     background: brown;
 }
 
@@ -213,6 +215,47 @@ span.brick {
 .building-objects span.active {
     background: yellow;
     border:solid 1px orange;
+}
+
+.choose-res-for-rob {
+    display:none;
+}
+.player-resources .res{
+    display:inline-block;
+    margin-right: 25px;
+}
+.player-resources .res span {
+    margin-right:0;
+}
+.res .controls {
+    margin:10px 0 ;
+}
+.res .controls div {
+    display:inline-block;
+}
+
+.res .ctrl {
+    width:10px;
+    height:10px;
+    padding:5px;
+    background:lightgrey;
+    border:solid 1px grey;
+    border-radius:4px;
+    cursor:pointer;
+}
+.player-resources p span {
+    background: none;
+    width:auto;
+    height:auto;
+    margin-right:0;
+}
+.player-resources p,
+.robber p {
+    text-align:center;
+}
+.robber {
+    position:absolute;
+    bottom:0;
 }
 
 .field {
@@ -277,9 +320,15 @@ span.brick {
     animation: blinking 1s linear infinite;
     border-radius:0;
 }
+.available-for-city {
+    border:solid 2px #fff;
+    border-radius:0;
+}
+
 .city {
     border-radius:0;
 }
+
 
 @keyframes blinking {
     from {opacity: 1;}
@@ -335,6 +384,32 @@ span.brick {
     border:solid 1px black;
     background: orange;
     text-align: center;
+}
+
+.thief {
+    width:30px;
+    height:30px;
+    border-radius: 50%;
+    background: black;
+    position: absolute;
+    z-index:1000;
+}
+.thief.active {
+    border:solid 2px white;
+}
+.choose-player-for-robber {
+    display:none;
+}
+.choose-player-for-robber p {
+    margin: 20px 100px;
+    font-size: 22px;
+    line-height: 517px;
+    display: block;
+}
+span.victim {
+    color: blue;
+    text-decoration: underline;
+    cursor:pointer;
 }
 
 
