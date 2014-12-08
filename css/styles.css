@@ -10,16 +10,32 @@
 .players div.active {
  background: yellow;
 }
+.build {
+    display:none;
+    left:300px;
+    background: green;
+}
+.build.disabled{
+    background: grey;
+}
 .start-game,
 .end-turn,
-.build-settlement,
-.change-with-bank{
+.build,
+.change-with-bank,
+.choose-for-building,
+.do-rob {
     height:50px;
     width:50px;
     border:solid 1px black;
     margin-bottom:20px;
     position: absolute;
     top: 50%;
+}
+
+.end-turn.active,
+.change-with-bank.active,
+.choose-for-building.active {
+    background: green;
 }
 .start-game {
     left:100px;
@@ -33,11 +49,19 @@
 .end-turn {
     left:200px;
 }
-.build-settlement:after {
-    content:"Построить";
+.choose-for-building {
+    top:60%;
+    left:100px;
+    display: none;
 }
-.build-settlement {
-    left:300px;
+.do-rob {
+    display:none;
+    top:60%;
+    left:200px;
+    background: green;
+}
+.build:after {
+    content:"Построить";
 }
 .change-with-bank:after {
     content: "Поменять в банке"
@@ -45,7 +69,21 @@
 .change-with-bank {
     left:400px;
 }
-.exchange-field {
+.choose-for-building:after {
+    content:"Строительство";
+}
+.refuse-building {
+    background: red;
+    width:20px;
+    height:20px;
+    border-radius: 50%;
+    position:absolute;
+    top:60%;
+    left:300px;
+    display:none;
+}
+
+.box {
     display:none;
     position:fixed;
     height:0px;
@@ -65,9 +103,12 @@
     -o-transition: height 1s;
     transition: height 1s ease;
 }
-.exchange-field.active {
+.box.active {
     display:block;
     height:600px;
+    padding: 20px 80px;
+    box-sizing: border-box;
+    text-align: center;
 }
 #overlay {
     display:none;
@@ -90,9 +131,9 @@
     display:block;
     opacity:1;
 }
-#confirm {
+.confirm {
     position:absolute;
-    right:-40px;
+    right:40px;
     top:calc(50% - 20px);
     width:20px;
     height:20px;
@@ -112,19 +153,23 @@
 }
 
 .change-resources {
-    width: 400px;
-    margin: 100px auto;
-    height: 400px;
+    width: 500px;
+    margin: auto;
+    height: 100%;
     position:relative;
+    display:none;
 }
+.change-resources.active {
+    display: block;
+}
+
 .player-resources {
     position:absolute;
     top:0;
 }
 .player-resources,
 .resources-for-change {
-    width:100%;
-    height:50px;
+    height:150px;
 }
 .resources-for-change {
     position:absolute;
@@ -132,7 +177,7 @@
 }
 .resources span,
 .player-resources span,
-.resources-for-change span {        /* Resources on main screen and in hidden exchange-field block*/
+.resources-for-change span{        /* Resources on main screen and in hidden exchange-field block*/
     display:inline-block;
     width:30px;
     height:30px;
@@ -143,7 +188,6 @@
 .resources-for-change span {
     width: 50px;
     height: 50px;
-    margin-right:30px;
 }
 .player-resources span.active,
 .resources-for-change span.active {
@@ -152,20 +196,85 @@
     margin-right:10px;
 }
 
-span.tree {
+span.res-tree {
     background: green;
 }
-span.wheat {
+span.res-wheat {
     background: yellow;
 }
-span.sheep {
+span.res-sheep {
     background: lightgray;
 }
-span.rock {
+span.res-rock {
     background: grey;
 }
-span.brick {
+span.res-brick {
     background: brown;
+}
+
+.building-objects {
+    display:none;
+    width: 400px;
+    margin: 100px auto;
+    height: 400px;
+    position:relative;
+}
+
+.building-objects span {
+    background: grey;
+    display:inline-block;
+    width:100px;
+    height:25px;
+    text-align: center;
+    margin-right:15px;
+    padding:5px;
+}
+
+.building-objects span.active {
+    background: yellow;
+    border:solid 1px orange;
+}
+
+.choose-res-for-rob {
+    display:none;
+}
+.player-resources .res,
+.resources-for-change .res{
+    display:inline-block;
+    margin-right: 25px;
+}
+.player-resources .res span {
+    margin-right:0;
+}
+.res .controls {
+    margin:10px 0 ;
+}
+.res .controls div {
+    display:inline-block;
+}
+
+.res .ctrl {
+    width:10px;
+    height:10px;
+    padding:5px;
+    background:lightgrey;
+    border:solid 1px grey;
+    border-radius:4px;
+    cursor:pointer;
+}
+.player-resources p span {
+    background: none;
+    width:auto;
+    height:auto;
+    margin-right:0;
+}
+.player-resources p,
+.robber p {
+    text-align:center;
+}
+.robber {
+    position:absolute;
+    bottom:0;
 }
 
 .field {
@@ -213,6 +322,13 @@ span.brick {
     opacity:1;
 }
 
+.available {
+    background:rgba(255,255,255,0.5);
+    border:solid 2px #fff;
+}
+.disabled {
+    background: #FAEBD7;
+}
 
 .blinking{
     -webkit-animation: blinking 1s linear infinite;
@@ -223,9 +339,15 @@ span.brick {
     animation: blinking 1s linear infinite;
     border-radius:0;
 }
+.available-for-city {
+    border:solid 2px #fff;
+    border-radius:0;
+}
+
 .city {
     border-radius:0;
 }
+
 
 @keyframes blinking {
     from {opacity: 1;}
@@ -281,6 +403,43 @@ span.brick {
     border:solid 1px black;
     background: orange;
     text-align: center;
+}
+
+.thief {
+    width:30px;
+    height:30px;
+    border-radius: 50%;
+    background: black;
+    position: absolute;
+    z-index:99;
+}
+.thief.active {
+    border:solid 2px white;
+}
+.choose-player-for-robber {
+    display:none;
+}
+.choose-player-for-robber p {
+    /*margin: 20px 100px;*/
+    font-size: 22px;
+    line-height: 517px;
+    display: block;
+}
+span.victim {
+    color: blue;
+    text-decoration: underline;
+    cursor:pointer;
+}
+
+.end-of-game {
+    display:none;
+}
+.play-one-more-time{
+    width:100px;
+    height:50px;
+    margin:10px;
+    text-align: center;
+    background: yellow;
 }
 
 

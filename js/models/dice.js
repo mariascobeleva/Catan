@@ -18,15 +18,17 @@ define([
             }
 
         },
-        rollTheDice: function() {
+        getDiceValue: function() {
             var dice_value = Const.VALUES_OF_DICE[Math.floor(Math.random() * Const.VALUES_OF_DICE.length)];
             return dice_value;
         },
         setDiceValue: function() {
-            this.set("value_1",this.rollTheDice());
-            this.set("value_2",this.rollTheDice());
+            this.set("value_1",this.getDiceValue());
+            this.set("value_2",this.getDiceValue());
+        },
+        getDiceAmount: function() {
+            return this.get("value_1") + this.get("value_2");
         }
-
     });
     return diceModel;
 });

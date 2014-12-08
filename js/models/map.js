@@ -10,7 +10,7 @@ define([
 ], function($, _, Backbone, Const, Hex, Crossroad, Road) {
     var Map = Backbone.Model.extend({
         defaults: {
-            "game":{},
+            "game": {},
             "hexes": [],
             "crossroads": [],
             "roads": []
@@ -19,19 +19,17 @@ define([
             if (options.crossroads) {
                 this.set('crossroads', options.crossroads);
             }
-            if(options.roads){
+            if (options.roads) {
                 this.set('roads', options.roads);
             }
-            if(options.game){
+            if (options.game) {
                 this.set("game", options.game);
             }
-
-
             this.createHexes();
             this.createCrossroads();
             this.createRoads();
         },
-        createHexes: function(){
+        createHexes: function() {
             var resources = [];
             var numbersValue = this.fillNumbersValue();
             for (i = 0; i < Const.HEX_COUNT; i++) {
@@ -66,16 +64,15 @@ define([
                 }));
             }
         },
-        getHex: function(q,r){
-            for(var i=0;i<this.get("hexes").length;i++){
+        getHex: function(q, r) {
+            for (var i = 0; i < this.get("hexes").length; i++) {
                 var hex = this.get("hexes")[i];
-                if(hex.get("coords").q === q && hex.get("coords").r === r){
+                if (hex.get("coords").q === q && hex.get("coords").r === r) {
                     return hex;
                 }
             }
         },
-        createCrossroads: function(){
-
+        createCrossroads: function() {
             for (var i = 0; i < this.get("hexes").length; i++) {
                 var hex = this.get("hexes")[i];
                 for (var j = 0; j < Const.crossroadsCoords.length; j++) {
@@ -103,17 +100,28 @@ define([
             var createPort = function(coords) {
 
                 var harbor_type = that.randomChoice(Const.HARBOR_TYPES);
-                var hex = that.getHex(coords.q,coords.r);
+                var hex = that.getHex(coords.q, coords.r);
                 var crossroad_1 = hex.get("crossroads")[coords.indexOfCrossroad];
                 var crossroad_2 = hex.get("crossroads")[coords.indexOfCrossroad < 5 ? (coords.indexOfCrossroad + 1) : 0];
                 crossroad_1.set("harborType", harbor_type);
                 crossroad_2.set("harborType", harbor_type);
             };
-            for(var l=0; l< Const.coordsOfHarbor.length; l++){
+            for (var l = 0; l < Const.coordsOfHarbor.length; l++) {
                 createPort(Const.coordsOfHarbor[l]);
             }
         },
-        createRoads: function(){
+        createRoads: function() {
+            var isRoadPushed = function(crossroad,road){
+                var roadIsNotThere = true;
+                for(var z = 0;z<crossroad.get("roads").length;z++){
+                    if(crossroad.get("roads")[z] === road){
+                        roadIsNotThere = false;
+                        break;
+                    }
+                }
+                return roadIsNotThere;
+            };
+
             for (var i = 0; i < this.get("hexes").length; i++) {
                 var hex = this.get("hexes")[i];
                 var CrossroadsQuantity = hex.get("crossroads").length;
@@ -121,33 +129,37 @@ define([
                 for (var j = 0; j < CrossroadsQuantity; j++) {
                     var crossroad_from = hex.get('crossroads')[j];
                     var crossroad_from_coords = hex.get('crossroads')[j].get("coords");
-                    var crossroad_to,crossroad_to_coords;
+                    var crossroad_to, crossroad_to_coords;
                     if (j === 0) {
                         crossroad_to = hex.get('crossroads')[CrossroadsQuantity - 1];
-                        crossroad_to_coords = crossroad_to.get("coords");
                     }
                     else {
                         crossroad_to = hex.get('crossroads')[j - 1];
-                        crossroad_to_coords = crossroad_to.get("coords");
                     }
+                    crossroad_to_coords = crossroad_to.get("coords");
                     var crossroad_q = hex.get('crossroads')[j].get("coords").q;
                     var crossroad_r = hex.get('crossroads')[j].get("coords").r;
                     road = this.getRoad(crossroad_from_coords, crossroad_to_coords);
                     if (!road) {
                         road = new Road({
-                            "game":this.get("game"),
-                            "road":false,
-                            "from": crossroad_from_coords,
-                            "to": crossroad_to_coords,
+                            "game": this.get("game"),
+                            "road": false,
+                            "from": crossroad_from,
+                            "to": crossroad_to,
                             "coords": {q: crossroad_q, r: crossroad_r}
                         });
                         this.get("roads").push(road);
                     }
                     hex.get("roads").push(road);
-                    crossroad_to.get("roads").push(road);
-                    crossroad_from.get("roads").push(road);
+                    if(isRoadPushed(crossroad_from,road)){
+                        crossroad_from.get("roads").push(road);
+                    }
+                    if(isRoadPushed(crossroad_to, road)){
+                        crossroad_to.get("roads").push(road);
+                    }
                 }
             }
+            console.log(this.get("roads").length);
         },
         getCrossroad: function(q, r) {
             for (var t = 0; t < this.get("crossroads").length; t++) {
@@ -165,9 +177,8 @@ define([
             };
 
             for (var i = 0; i < this.get("roads").length; i++) {
-                var from_c = this.get("roads")[i].get("from");
-                var to_c = this.get("roads")[i].get("to");
-
+                var from_c = this.get("roads")[i].getRoadCoordsFrom();
+                var to_c = this.get("roads")[i].getRoadCoordsTo();
                 if ((compare(from, from_c) && compare(to, to_c)) || (compare(from, to_c) && compare(to, from_c))) {
                     return this.get("roads")[i];
                 }
@@ -196,7 +207,126 @@ define([
                 }
             }
             return array;
+        },
+        findAvailableCrossroads: function(player, needRoad) {
+            var availableCrossroads = [];
+            for (var i = 0; i < this.get("crossroads").length; i++) {
+                var crossroad = this.get("crossroads")[i];
+                if (crossroad.isAvailable(player, needRoad)) {
+                    availableCrossroads.push(crossroad);
+                }
+            }
+            return availableCrossroads;
+        },
+        highlightAvailableCrossroads: function(availableCrossroads){
+            for(var i=0;i<availableCrossroads.length;i++){
+               availableCrossroads[i].trigger("highlight");
+            }
+        },
+        disabledCrossroadHighlighting: function() {
+            for (var i = 0; i < this.get("crossroads").length; i++) {
+                this.get("crossroads")[i].trigger("removeHighlighting");
+            }
+        },
+
+
+
+        findAvailableRoadsByCrossroad: function(player, crossroadView) {
+            var availableRoads = [];
+            var visitedRoads = [];
+            var crossroad = crossroadView.model;
+            this.visitCrossroad(crossroad, player, availableRoads, visitedRoads);
+            return availableRoads;
+
+        },
+
+        findAvailableRoads: function(player) {
+            var availableRoads = [];
+            var visitedRoads = [];
+            for (var i = 0; i < player.get("settlements").length; i++) {
+                var settlement = player.get("settlements")[i];
+                this.visitCrossroad(settlement, player, availableRoads, visitedRoads);
+            }
+            return availableRoads;
+        },
+        visitCrossroad: function(crossroad, player, availableRoads, visitedRoads) {
+
+            if ((crossroad.get("type") === 1 && crossroad.get("type") === 2) &&
+                (crossroad.get("player") !== player)) {
+                return;
+            }
+            outer:
+            for (var i = 0; i < crossroad.get("roads").length; i++) {
+                var road = crossroad.get("roads")[i];
+                for (var j = 0; j < visitedRoads.length; j++) {
+                    if (road === visitedRoads[j]) {
+                        continue outer;
+                    }
+                }
+                for (var k = 0; k < availableRoads.length; k++) {
+                    if (road === availableRoads[k]) {
+                        continue outer;
+                    }
+                }
+                if (road.get("player") && road.get("player") !== player) {
+                    continue outer;
+                }
+                else if (road.get("player") === player) {
+                    visitedRoads.push(road);
+
+                    var newCrossroad;
+                    if (crossroad.get("coords").q === road.getRoadCoordsFrom().q && crossroad.get("coords").r === road.getRoadCoordsFrom().r) {
+                        newCrossroad = road.get("to");
+                    }
+                    else {
+                        newCrossroad = road.get("from");
+                    }
+                    this.visitCrossroad(newCrossroad, player, availableRoads, visitedRoads);
+                }
+                else {
+                    availableRoads.push(road);
+                }
+            }
+        },
+
+        highlightRoads: function(availableRoads) {
+            for (var i = 0; i < availableRoads.length; i++) {
+                availableRoads[i].trigger("highlight");
+            }
+        },
+        disabledRoadHighlighting: function() {
+            for (var i = 0; i < this.get("roads").length; i++) {
+                this.get("roads")[i].trigger("removeHighlighting");
+            }
+        },
+        findAvailableCrossroadsForCity: function(player){
+            var availableCrossroadsForCity = [];
+            for (var i=0;i<player.get("settlements").length;i++){
+                if(player.get("settlements")[i].get("type") === 1){
+                    availableCrossroadsForCity.push(player.get("settlements")[i]);
+                }
+            }
+            return availableCrossroadsForCity;
+        },
+        highlightSettlementsForCityBuilding:function(settlements){
+            for(var i=0;i<settlements.length;i++){
+                settlements[i].trigger("highlightAsCity");
+            }
+        },
+        disabledCrossroadForCityHighlighting : function(){
+            for (var i = 0; i < this.get("crossroads").length; i++) {
+                this.get("crossroads")[i].trigger("removeHighlightingAsCity");
+            }
+        },
+        getHexByCoords: function(coords) {
+            for (var i = 0; i < this.get("hexes").length; i++) {
+                var hex = this.get("hexes")[i];
+                if (hex.get("coords").q === coords.q && hex.get("coords").r === coords.r) {
+                    return hex;
+                }
+            }
         }
+
     });
     return Map;
 })

@@ -1,8 +1,9 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
-], function($, _, Backbone) {
+    'backbone',
+    'models/const'
+], function($, _, Backbone,Const) {
     var playerModel = Backbone.Model.extend({
         defaults: {
             startTurn: true,
@@ -25,7 +26,6 @@ define([
                 "roadBonus": 0,
                 "resourcesBonus": 0
             },
-
             exchangeRate: {
                 "tree": 4,
                 "rock": 4,
@@ -34,7 +34,6 @@ define([
                 "wheat": 4
             },
             roads: [],
-
             settlements: []
         },
         initialize: function(options) {
@@ -93,6 +92,52 @@ define([
                 newValue = this.getResources(k) + resources[k];
                 this.setResources(k, newValue);
             }
+        },
+        getTotalAmountOfPlayerRes: function() {
+            var resourcesAmount = 0;
+            for (var i = 0; i < Const.resourcesTypes.length; i++) {
+                resourcesAmount = resourcesAmount + this.getResources(Const.resourcesTypes[i]);
+            }
+            return resourcesAmount;
+        },
+        getExchangeRate: function(resource){
+            return this.get("exchangeRate")[resource];
+
+        },
+        checkIfPlayerHaveResources: function(){
+            var playerHaveRes = false;
+            for (var i=0; i<Const.resourcesTypes.length; i++){
+                if(this.getResources(Const.resourcesTypes[i]) !== 0){
+                    playerHaveRes = true;
+                    break;
+                }
+            }
+            return playerHaveRes;
+        },
+        stealResource: function(robedPlayer) {
+            var stolenResources = {};
+            var resourcesForRobber = {};
+            var stolenResource = Const.resourcesTypes[Math.floor(Math.random() * Const.resourcesTypes.length)];
+            if (robedPlayer.getResources(stolenResource) > 0) {
+                stolenResources[stolenResource] = -1;
+                resourcesForRobber[stolenResource] = 1;
+                robedPlayer.spendResource(stolenResources);
+                this.spendResource(resourcesForRobber);
+            }
+            else {
+                this.stealResource(robedPlayer);
+            }
+        },
+        getVictoryPoints: function(){
+            return this.get("victoryPoints");
+        },
+        setVictoryPoints: function(value){
+            this.set("victoryPoints",value);
+        },
+        updateVictoryPoints: function(value){
+            var currentVal = this.getVictoryPoints();
+            var newVal = currentVal + value;
+            this.setVictoryPoints(newVal);
         }
     });
     return playerModel;

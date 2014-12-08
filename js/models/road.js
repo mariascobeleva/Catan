@@ -1,14 +1,24 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
+    'backbone',
 ], function($, _, Backbone) {
     var roadModel = Backbone.Model.extend({
-        "game":{},
-        "road":false,
-        "from":null,
-        "to":null,
-        "coords":{}
+        defaults: {
+            "game":{},
+            "road":false,
+            "from":null,
+            "to":null,
+            "coords":{},
+            "player":null,
+            crossroads: {}
+        },
+        getRoadCoordsFrom: function(){
+            return this.get("from").get("coords");
+        },
+        getRoadCoordsTo: function(){
+            return this.get("to").get("coords");
+        }
     });
     return roadModel;
 });
