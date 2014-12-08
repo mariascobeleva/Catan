@@ -318,6 +318,15 @@ define([
                 this.get("crossroads")[i].trigger("removeHighlightingAsCity");
             }
         },
+        getHexByCoords: function(coords) {
+            for (var i = 0; i < this.get("hexes").length; i++) {
+                var hex = this.get("hexes")[i];
+                if (hex.get("coords").q === coords.q && hex.get("coords").r === coords.r) {
+                    return hex;
+                }
+            }
+        }
+
     });
     return Map;
 })

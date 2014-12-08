@@ -25,8 +25,10 @@ define([
         setDiceValue: function() {
             this.set("value_1",this.getDiceValue());
             this.set("value_2",this.getDiceValue());
+        },
+        getDiceAmount: function() {
+            return this.get("value_1") + this.get("value_2");
         }
-
     });
     return diceModel;
 });

@@ -6,7 +6,8 @@ define([
     "models/map",
     "models/bank",
     "models/dice",
-], function($, _, Backbone, Player, Map, Bank, Dice) {
+    "models/const"
+], function($, _, Backbone, Player, Map, Bank, Dice, Const) {
     var Game = Backbone.Model.extend({
         defaults: {
             "players": [],
@@ -14,7 +15,7 @@ define([
             "bank": null,
             "currentPlayer": 2,
             "dice": null,
-            "robedHex":null
+            "robedHex": null,
         },
         initialize: function(options) {
             if (options.players) {
@@ -32,7 +33,6 @@ define([
             if (options.robedHex) {
                 this.set('dice', options.robedHex);
             }
-
 
 
             var newMap = new Map({
@@ -55,33 +55,26 @@ define([
 
             this.set('players', [p1, p2, p3]);
 
-//            // To get first robed hex (desert).
-//            for(var i=0; i<this.get("map").get("hexes").length; i++){
-//                var hex = this.get("map").get("hexes")[i];
-//                if(hex.get("thief")){
-//                    this.set("robedHex", hex);
-//                }
-//            }
         },
         getCurrentPlayer: function() {
             return this.get("players")[this.get("currentPlayer")];
         },
-        nextPlayer: function(){
+        nextPlayer: function() {
             var currentPlayer = this.get("currentPlayer");
-            if(currentPlayer === (this.get("players").length - 1)){
-               this.set("currentPlayer",0);
+            if (currentPlayer === (this.get("players").length - 1)) {
+                this.set("currentPlayer", 0);
             }
             else {
-                this.set("currentPlayer",(currentPlayer+1));
+                this.set("currentPlayer", (currentPlayer + 1));
             }
         },
-        prevPlayer: function(){
+        prevPlayer: function() {
             var currentPlayer = this.get("currentPlayer");
-            if(currentPlayer === 0){
-                this.set("currentPlayer",(this.get("players").length - 1));
+            if (currentPlayer === 0) {
+                this.set("currentPlayer", (this.get("players").length - 1));
             }
             else {
-                this.set("currentPlayer",(currentPlayer-1));
+                this.set("currentPlayer", (currentPlayer - 1));
             }
         },
 
@@ -115,9 +108,6 @@ define([
                 }
             }
         },
-        getDiceAmount: function() {
-            return this.get("dice").get("value_1") + this.get("dice").get("value_2");
-        },
         checkPlayerResourcesForSettlement: function(player) {
             if (player.getResources("tree") >= 1 &&
                 player.getResources("brick") >= 1 &&
@@ -127,23 +117,52 @@ define([
             }
             return false;
         },
-        checkPlayerResourcesForCity: function(player){
-            if(player.getResources("wheat") >=2 &&
-                player.getResources("rock") >=3){
+        checkPlayerResourcesForCity: function(player) {
+            if (player.getResources("wheat") >= 2 &&
+                player.getResources("rock") >= 3) {
                 return true;
             }
             return false;
         },
-        checkPlayerResourcesForRoad: function(player){
-            if(player.getResources("tree") >=1 && player.getResources("brick") >= 1){
+        checkPlayerResourcesForRoad: function(player) {
+            if (player.getResources("tree") >= 1 && player.getResources("brick") >= 1) {
                 return true;
             }
             return false;
+        },
+        getThiefCoords: function($thief) {
+            var top = $thief.offset().top - $thief.parents('.field').offset().top;
+            var left = $thief.offset().left - $thief.parents('.field').offset().left;
+            var THIEF_HEIGHT = 30;
+            left = left - Const.FIELD_WIDTH;
+            top = top - Const.FIELD_HEIGHT;
+            left = left + (THIEF_HEIGHT / 2);
+            top = top + (THIEF_HEIGHT / 2);
+            var q = 2 / 3 * left / Const.HEX_EDGE_SIZE;
+            var r = (-1 / 3 * left + 1 / 3 * Math.sqrt(3) * top) / Const.HEX_EDGE_SIZE;
+            q = Math.round(q);
+            r = Math.round(r);
+            var thiefCoords = {"q": q, "r": r};
+            return thiefCoords;
+        },
+        setRobedHex: function(hex) {
+            if (this.get("robedHex")) {
+                this.get("robedHex").set("thief", false);
+            }
+            hex.set("thief", true);
+            this.set("robedHex", hex);
+        },
+        getPlayersWithMoreThanSevenResources: function() {
+            var richPlayers = [];
+            var players = this.get("players");
+            for (var i = 0; i < players.length; i++) {
+                var player = this.get("players")[i];
+                if (player.getTotalAmountOfPlayerRes() > 7) {
+                    richPlayers.push(player);
+                }
+            }
+            return richPlayers;
         }
-
-
-
-
     });
     return Game;
 })
