@@ -6,7 +6,7 @@ define([
             var building = {
                 states: {
                     building: {enter: ["buildingEnter"], leave: ["buildingLeave"]},
-                    roadBuilding: {enter: ["roadBuildingEnter"], leave: ["roadBuildingLeave"]},
+                    highwayBuilding: {enter: ["highwayBuildingEnter"], leave: ["highwayBuildingLeave"]},
                     settlementBuilding: {enter: ["settlementBuildingEnter"], leave: ["settlementBuildingLeave"]},
                     cityBuilding: {enter: ["cityBuildingEnter"], leave: ["cityBuildingLeave"]}
                 },
@@ -15,8 +15,8 @@ define([
                         buildingObj: {
                             enterState: "mainGame"
                         },
-                        buildRoad: {
-                            enterState: "roadBuilding"
+                        buildHighway: {
+                            enterState: "highwayBuilding"
                         },
                         buildSettlement: {
                             enterState: "settlementBuilding"
@@ -25,8 +25,8 @@ define([
                             enterState: "cityBuilding"
                         }
                     },
-                    roadBuilding: {
-                        builtRoad: {
+                    highwayBuilding: {
+                        builtHighway: {
                             enterState: "mainGame"
                         }
                     },
@@ -60,8 +60,8 @@ define([
                     if (this.model.checkPlayerResourcesForCity(currentPlayer)) {
                         that.$(".building-objects span.city").addClass("active");
                     }
-                    if (this.model.checkPlayerResourcesForRoad(currentPlayer) && this.model.get("map").findAvailableRoads(currentPlayer).length !== 0) {
-                        that.$(".building-objects span.road").addClass("active");
+                    if (this.model.checkPlayerResourcesForHighway(currentPlayer) && this.model.get("map").findAvailableRoads(currentPlayer).length !== 0) {
+                        that.$(".building-objects span.highway").addClass("active");
                     }
                     that.$(".building-objects").show();
 
@@ -73,9 +73,9 @@ define([
                     that.$(".building-objects span.city.active").on('click.building', null, function() {
                         that.trigger("buildCity");
                     });
-                    that.$(".building-objects span.road.active").on('click.building', null, function() {
+                    that.$(".building-objects span.highway.active").on('click.building', null, function() {
                         var availableRoads = that.model.get("map").findAvailableRoads(currentPlayer);
-                        that.trigger("buildRoad", availableRoads);
+                        that.trigger("buildHighway", availableRoads);
 
                     });
                     that.$("#close").on('click.building', null, function() {
@@ -85,42 +85,43 @@ define([
                 },
                 buildingLeave: function() {
                     this.$(".building-objects span.settlement").off("click.building");
-                    this.$(".building-objects span.road").off("click.building");
+                    this.$(".building-objects span.highway").off("click.building");
                     this.$(".building-objects span.city").off("click.building");
                     this.$("#close").off("click.building");
                     this.$(".building-objects").hide();
                     this.$("#overlay, .box").removeClass("active");
                     this.$(".building-objects span").removeClass("active");
                 },
-                roadBuildingEnter: function(roads) {
+                highwayBuildingEnter: function(roads) {
                     var that = this;
                     var currentPlayer = this.model.getCurrentPlayer();
+                    var color = currentPlayer.get("color");
+
                     this.model.get("map").highlightRoads(roads);
                     that.$(".build").show().addClass("disabled");
                     that.$(".refuse-building").show();
-                    that.$('.road.available').on('click.roadBuilding', null, function() {
+                    that.$('.road.available').on('click.highwayBuilding', null, function() {
                         that.$(".build").removeClass("disabled");
-                        var color = currentPlayer.get("color");
-                        that.$('.blinking.road').removeClass("blinking").css("background","#FAEBD7");
-                        $(this).addClass('blinking').css({"background": color});
+                        that.$('.blinking.' + color + '.road').removeClass("blinking").removeClass(color);
+                        $(this).addClass('blinking').addClass(color);
                     });
-                    that.$(".build").on('click.roadBuilding', null, function() {
+                    that.$(".build").on('click.highwayBuilding', null, function() {
                         if (!$(this).is(".disabled")) {
-                            $(".road.blinking").trigger("buildRoad");
-                            that.trigger("builtRoad");
+                            $(".road." + color + ".blinking").trigger("buildHighway");
+                            that.trigger("builtHighway");
                         }
                     });
-                    that.$(".refuse-building").on('click.roadBuilding', null, function() {
-                        that.trigger("builtRoad");
+                    that.$(".refuse-building").on('click.highwayBuilding', null, function() {
+                        that.trigger("builtHighway");
                     });
                 },
-                roadBuildingLeave: function() {
+                highwayBuildingLeave: function() {
                     var that = this;
-                    that.$('.road').off("click.roadBuilding");
-                    that.$(".build").off("click.roadBuilding");
-                    that.$(".refuse-building").off("click.roadBuilding");
+                    that.$('.road').off("click.highwayBuilding");
+                    that.$(".build").off("click.highwayBuilding");
+                    that.$(".refuse-building").off("click.highwayBuilding");
                     that.$(".refuse-building").hide();
-                    that.model.get("map").disabledRoadHighlighting();
+                    that.model.get("map").disableRoadHighlighting();
                     that.$(".build").addClass("disabled").hide();
                     if(that.$(".blinking").length){
                         that.$(".blinking").each(function(){
@@ -131,14 +132,14 @@ define([
                 settlementBuildingEnter: function(crossroads) {
                     var that = this;
                     var currentPlayer = that.model.getCurrentPlayer();
+                    var color = currentPlayer.get("color");
                     that.model.get("map").highlightAvailableCrossroads(crossroads);
                     that.$(".build").show().addClass("disabled");
                     that.$(".refuse-building").show();
                     that.$('.crossroad.available').on('click.settlementBuilding', null, function() {
-                        var color = currentPlayer.get("color");
                         that.$(".build").removeClass("disabled");
-                        that.$(".crossroad.blinking").removeClass("blinking").css("background","#FAEBD7");
-                        $(this).addClass('blinking').css({"background": color});
+                        that.$(".crossroad.blinking").removeClass("blinking").removeClass(color);
+                        $(this).addClass('blinking').addClass(color);
                     });
                     that.$(".build").on('click.settlementBuilding', null, function() {
                         if (!$(this).is(".disabled")) {
@@ -176,15 +177,15 @@ define([
                 cityBuildingEnter: function() {
                     var that = this;
                     var currentPlayer = that.model.getCurrentPlayer();
+                    var color = currentPlayer.get("color");
                     var availableCities = that.model.get("map").findAvailableCrossroadsForCity(currentPlayer);
                     that.model.get("map").highlightSettlementsForCityBuilding(availableCities);
                     that.$(".build").show().addClass("disabled");
                     that.$(".refuse-building").show();
                     that.$(".crossroad.available-for-city").on('click.cityBuilding', null, function() {
-                        var color = currentPlayer.get("color");
                         that.$(".build").removeClass("disabled");
-                        that.$(".crossroad.available-for-city").removeClass("blinking").css("background", color);
-                        $(this).addClass('blinking');
+                        that.$(".crossroad.available-for-city").removeClass("blinking city");
+                        $(this).addClass('blinking city');
                     });
                     that.$(".build").on('click.cityBuilding', null, function() {
                         if (!$(this).is(".disabled")) {
@@ -204,6 +205,9 @@ define([
                 },
                 cityBuildingLeave: function() {
                     var that = this;
+                    var currentPlayer = that.model.getCurrentPlayer();
+                    var color = currentPlayer.get("color");
+
                     that.$(".build").off("click.cityBuilding");
                     that.$(".build").addClass("disabled").hide();
 
@@ -218,18 +222,6 @@ define([
                             $(this).removeClass("blinking");
                         });
                     }
-                },
-                crossroadClickFT: function(){
-
-                },
-                crossroadClickST: function(){
-
-                },
-                crossroadClickForSettlement: function(){
-
-                },
-                crossroadClickForCity: function(){
-
                 }
             };
             $.extend(true, GameView.prototype, building);

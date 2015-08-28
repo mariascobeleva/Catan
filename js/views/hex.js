@@ -15,9 +15,9 @@ define([
             this.y = Const.HEX_EDGE_SIZE * Math.sqrt(3) * (this.model.get('coords').r + this.model.get('coords').q / 2);
 
             // Adjust for field centering.
-            this.x = this.x + (Const.FIELD_WIDTH);
-            this.y = this.y + (Const.FIELD_HEIGHT);
-
+            this.x = this.x + (Const.FIELD_WIDTH/2);
+            this.y = this.y + (Const.FIELD_HEIGHT/2);
+//
             // Adjust for hex centering.
             this.x = this.x - (Const.HEX_WIDTH / 2);
             this.y = this.y - (Const.HEX_HEIGHT / 2);

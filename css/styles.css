@@ -279,84 +279,217 @@ span.res-brick {
 
 .field {
     position:relative;
-    width:50%;
-    height:1000px;
+    width:680px; /*hex edge size*8*/
+    height:735px; /*hex edge size*8.5*/
     margin:auto;
     background: dodgerblue;
 }
 
 .hex {
     position:absolute;
-    width:150px;
-    height:150px;
+    width:170px;
+    height:147px;
     text-align: center;
     font-size: 70px;
     font-weight: bold;
 }
 .hex.wheat {
-    background:url("../img/wheat_hex.png") no-repeat 0 0;
+    background:url("../img/hex_grain.png") no-repeat 0 0;
 }
 .hex.rock {
-    background:url("../img/stone_hex.png") no-repeat 0 0;
+    background:url("../img/hex_stone.png") no-repeat 0 0;
 }
 .hex.tree {
-    background:url("../img/tree_hex.png") no-repeat 0 0;
+    background:url("../img/hex_wood.png") no-repeat 0 0;
 }
 .hex.sheep {
-    background:url("../img/sheep_hex.png") no-repeat 0 0;
+    background:url("../img/hex_sheep.png") no-repeat 0 0;
 }
 .hex.brick {
-    background:url("../img/brick_hex.png") no-repeat 0 0;
+    background:url("../img/hex_brick.png") no-repeat 0 0;
 }
 .hex.desert {
-    background:url("../img/desert_hex.png") no-repeat 0 0;
+    background:url("../img/hex_desert.png") no-repeat 0 0;
 }
 
 .crossroad {
-    position:absolute;
-    width:20px;
-    height:20px;
-    border-radius:50%;
-    background: #FAEBD7;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    opacity: 1;
     z-index:2;
-    opacity:1;
 }
 
-.available {
-    background:rgba(255,255,255,0.5);
-    border:solid 2px #fff;
+.crossroad.available {
+    border: solid 2px silver;
+    box-shadow: none;
+    border-radius: 50%;
+    -webkit-animation: blinking-border 1s linear infinite;
+    animation: blinking-border 1s linear infinite;
 }
-.disabled {
-    background: #FAEBD7;
+.crossroad.available.blinking {
+    border: solid 2px red;
+}
+
+.crossroad.available:after {
+    content:" ";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    background: white no-repeat 0 0;
+    background-size: 40px 40px;
+    z-index: 2;
+    -webkit-animation: blinking-bg 1s linear infinite;
+    animation: blinking-bg 1s linear infinite;
+
+}
+.crossroad.available.blinking:after {
+    background: white url("../img/cross_settlement.png") no-repeat 0 0;
+    background-size: 40px 40px;
+    -webkit-animation: none;
+    animation: none;
+}
+
+.crossroad.settlement {
+    border: solid 2px red;
+    box-shadow: 0 0 10px red;
+    border-radius: 50%;
+}
+.crossroad.settlement:after {
+    content:" ";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    background: white url("../img/cross_settlement.png") no-repeat 0 0;
+    background-size: 40px 40px;
+    z-index: 2;
+}
+
+/*.disabled {*/
+    /*background: #FAEBD7;*/
+/*}*/
+
+.crossroad.available-for-city {
+    background: white;
+    border: solid 2px red;
+    box-shadow: none;
+    border-radius: 0;
+    -webkit-animation: blinking-border 1s linear infinite;
+    animation: blinking-border 1s linear infinite;
+
+}
+.crossroad.available-for-city:before {
+    content: " ";
+    position: absolute;
+    transform: rotate(45deg);
+    background: white;
+    box-shadow: none;
+    width: 40px;
+    height: 40px;
+    border: solid 2px red;
+    left: -2px;
+    top: -2px;
+    -webkit-animation: blinking-border 1s linear infinite;
+    animation: blinking-border 1s linear infinite;
+
+}
+.crossroad.available-for-city:after {
+    border: solid 2px red;
+    left: -2px;
+    top: -2px;
+}
+
+.crossroad.city {
+    background: white;
+    background-size: 40px 40px;
+    border-radius: 0;
+}
+.crossroad.city:before {
+    content: " ";
+    position: absolute;
+    transform: rotate(45deg);
+    background: white;
+    width: 40px;
+    height: 40px;
+    border: solid 2px red;
+    left: -2px;
+    top: -2px;
+    -webkit-animation: none;
+    animation: none;
+    -webkit-filter: grayscale(0);
+
+}
+.crossroad.city:after {
+    content: " ";
+    position: absolute;
+    background: white url("../img/cross_city.png") no-repeat 0 0;
+    background-size: 40px 40px;
+    width: 40px;
+    height: 40px;
+    -webkit-animation: none;
+    animation: none;
+    -webkit-filter: grayscale(0);
+    transform: rotate(0);
+    border: none;
+    border-radius: 0;
+    left: 0;
+    top: 0;
 }
 
 .blinking{
-    -webkit-animation: blinking 1s linear infinite;
-    animation: blinking 1s linear infinite;
-}
-.city-blinking{
-    -webkit-animation: blinking 1s linear infinite;
-    animation: blinking 1s linear infinite;
-    border-radius:0;
-}
-.available-for-city {
-    border:solid 2px #fff;
-    border-radius:0;
-}
-
-.city {
-    border-radius:0;
+    -webkit-animation: blinking 1s linear infinite !important;
+    animation: blinking 1s linear infinite !important;
 }
 
 
 @keyframes blinking {
-    from {opacity: 1;}
-    to {opacity: 0;}
+    0% {opacity: 1;}
+    50% {opacity: 0.3;}
+    100% {opacity: 1;}
 }
 /* Chrome, Safari, Opera */
 @-webkit-keyframes blinking {
-    from {opacity: 1;}
-    to {opacity: 0.3;}
+    0% {opacity: 1;}
+    50% {opacity: 0.3;}
+    100% {opacity: 1;}
+}
+
+@keyframes blinking-border {
+    0% {border: solid 2px rgba(255,0,0,1);}
+    50% {border: solid 2px rgba(255,0,0,0.5);}
+    100% {border: solid 2px rgba(255,0,0,1);}
+}
+/* Chrome, Safari, Opera */
+@-webkit-keyframes blinking-border {
+    0% {border: solid 2px rgba(255,0,0,1);  }
+    50% {border: solid 2px rgba(255,0,0,0.5);  }
+    100% {border: solid 2px rgba(255,0,0,1); }
+}
+@keyframes blinking-bg {
+    0% {background: rgba(255,255,255,1); }
+    50% {background: rgba(255,255,255,0.85); }
+    100% { background: rgba(255,255,255,1);}
+}
+/* Chrome, Safari, Opera */
+@-webkit-keyframes blinking-bg {
+    0% { background: rgba(255,255,255,1); }
+    50% { background: rgba(255,255,255,0.85); }
+    100% { background: rgba(255,255,255,1);}
+}
+@keyframes blinking-opacity {
+    0% {opacity: 0.5;}
+    50% {opacity: 0.3;}
+    100% {opacity: 0.5;}
+}
+/* Chrome, Safari, Opera */
+@-webkit-keyframes blinking-opacity {
+    0% {opacity: 0.5;}
+    50% {opacity: 0.3;}
+    100% {opacity: 0.5;}
 }
 
 .crossroad.harbor {
@@ -380,12 +513,61 @@ span.res-brick {
 .crossroad.general-harbor {
     background: coral  ;
 }
+
+
+
 .road {
-    position:absolute;
-    width:64px;
-    height:10px;
-    background: #FAEBD7;
-    transform-origin:0 50% 0;
+    position: absolute;
+    width: 85px;
+    height: 9px;
+    transform-origin: 0 50% 0;
+}
+.road:after {
+    content: " ";
+    position: absolute;
+    width: 85px;
+    height: 9px;
+    background: url("/img/road_1.png")no-repeat 0 0;
+}
+
+.road.available {
+    background: url("/img/road_1.png")no-repeat 0 0;
+}
+
+.road.available:after {
+    content: " ";
+    position: absolute;
+    width: 85px;
+    height: 9px;
+    background: url("/img/road-red_1.png")no-repeat 0 0;
+    -webkit-filter: grayscale(1);
+    -webkit-animation: blinking-opacity 1s linear infinite !important;
+    animation: blinking-opacity 1s linear infinite !important;
+}
+.road.blinking:after {
+    -webkit-animation: blinking 1s linear infinite !important;
+    animation: blinking 1s linear infinite !important;
+}
+
+.road.highway:after {
+    background: url("/img/road-red_1.png")no-repeat 0 0;
+}
+
+.crossroad.red, .crossroad.blue, .crossroad.green,
+.crossroad:before.red, .crossroad:before.blue, .crossroad:before.green
+.crossroad:after.red, .crossroad:after.blue, .crossroad:after.green
+.road.red, .road.blue, .road.green
+{
+    -webkit-filter: grayscale(0);
+}
+.crossroad.red, .road.red:after {
+    -webkit-filter: hue-rotate(0);
+}
+.crossroad.blue, .road.blue:after {
+    -webkit-filter: hue-rotate(600deg);
+}
+.crossroad.green, .road.green:after {
+    -webkit-filter: hue-rotate(445deg);
 }
 
 .dice {

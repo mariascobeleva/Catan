@@ -10,6 +10,7 @@ define([
         className: 'crossroad',
         hexViews: [],
         events: {
+            'removeHighlighting': "removeHighlighting"
         },
 
         initialize: function() {
@@ -18,8 +19,8 @@ define([
             this.y = Const.HEX_EDGE_SIZE * Math.sqrt(3) * (this.model.get('coords').r + this.model.get('coords').q / 2);
 
             // Adjust for field centering.
-            this.x = this.x + (Const.FIELD_WIDTH);
-            this.y = this.y + (Const.FIELD_HEIGHT);
+            this.x = this.x + (Const.FIELD_WIDTH/2);
+            this.y = this.y + (Const.FIELD_HEIGHT/2);
 
             this.x = this.x - (Const.CROSSROAD_HEIGHT / 2);
             this.y = this.y - (Const.CROSSROAD_HEIGHT / 2);
@@ -54,24 +55,17 @@ define([
             this.$el.removeClass("available-for-city");
         },
         renderCrossroadWithSettlement: function() {
-            if (this.model.get("type") === 3) {
-                this.$el.css("display", "none");
-            }
-            else if (this.model.get("type") === 1) {
+            var color = this.model.get("game").getCurrentPlayer().get("color");
 
-                var index = this.model.get("game").get("currentPlayer");
-                var currentPlayer = this.model.get("game").get("players")[index];
-                var color = currentPlayer.get("color");
-                this.$el.removeClass("blinking").css("background", color);
+            if (this.model.get("type") === 1) {
+                this.$el.removeClass("available blinking").addClass("settlement").addClass(color);
             }
             else if(this.model.get("type") === 2){
-                this.$el.removeClass("blinking").addClass("city");
+                this.$el.removeClass("available-for-city blinking").addClass("city").addClass(color);
             }
             else if (this.model.get("type") === 0) {
                 this.$el.css({"display": "block"});
             }
-
-
         }
     });
     return CrossroadView;

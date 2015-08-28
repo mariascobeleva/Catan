@@ -124,7 +124,7 @@ define([
             }
             return false;
         },
-        checkPlayerResourcesForRoad: function(player) {
+        checkPlayerResourcesForHighway: function(player) {
             if (player.getResources("tree") >= 1 && player.getResources("brick") >= 1) {
                 return true;
             }

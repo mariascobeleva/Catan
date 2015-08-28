@@ -31,15 +31,15 @@ define([
                 stSettlementEnter: function() {
                     var that = this;
                     var currentPlayer = that.model.getCurrentPlayer();
+                    var color = currentPlayer.get("color");
                     var availableCrossroads = this.model.get("map").findAvailableCrossroads(currentPlayer);
                     this.model.get("map").highlightAvailableCrossroads(availableCrossroads);
                     that.$(".build").show().addClass("disabled");
                     that.$('.available.crossroad').on('click.stSettlement', function() {
                         Debug.log('$(".crossroads .crossroad:nth-child(' + ($(this).index() + 1) + ')").click();');
-                        var color = currentPlayer.get("color");
                         that.$(".build").removeClass("disabled");
-                        that.$(".crossroad.blinking").removeClass("blinking");
-                        $(this).addClass('blinking').css({"background": color});
+                        that.$(".crossroad.blinking").removeClass("blinking").removeClass(color);
+                        $(this).addClass('blinking').addClass(color);
                     });
                     that.$(".build").on('click.stSettlement', function() {
                         if (!$(this).is(".disabled")) {
@@ -54,21 +54,22 @@ define([
                 stSettlementLeave: function() {
                     this.$(".build").off("click.stSettlement");
                     this.$('.crossroad').off("click.stSettlement");
-                    this.model.get("map").disabledCrossroadHighlighting();
+                    this.$('.crossroad.available').trigger("removeHighlighting");
                     this.$(".build").addClass("disabled").hide();
                 },
-            stRoadEnter: function(view) {
+                stRoadEnter: function(view) {
                     var that = this;
                     var currentPlayer = this.model.getCurrentPlayer();
+                    var color = currentPlayer.get("color");
+
                     var availableRoads = that.model.get("map").findAvailableRoadsByCrossroad(currentPlayer, view);
                     this.model.get("map").highlightRoads(availableRoads);
                     that.$(".build").show().addClass("disabled");
                     that.$('.available.road').on('click.stRoad', function() {
                         Debug.log('$(".roads .road:nth-child(' + ($(this).index() + 1) + ')").click();');
                         that.$(".build").removeClass("disabled");
-                        var color = currentPlayer.get("color");
-                        that.$('.blinking.road').removeClass("blinking");
-                        $(this).addClass('blinking').css({"background": color});
+                        that.$('.blinking.' + color + '.road').removeClass("blinking").removeClass(color);
+                        $(this).addClass('blinking').addClass(color);
                     });
                     that.$(".build").on('click.stRoad', function() {
                         if (!$(this).is(".disabled")) {
@@ -88,7 +89,7 @@ define([
                 stRoadLeave: function() {
                     this.$(".build").off("click.stRoad");
                     this.$('.road').off("click.stRoad");
-                    this.model.get("map").disabledRoadHighlighting();
+                    this.model.get("map").disableRoadHighlighting();
                     this.$(".build").addClass("disabled").hide();
                 }
             };
