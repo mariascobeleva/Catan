@@ -6,7 +6,7 @@ define([
     var roadModel = Backbone.Model.extend({
         defaults: {
             "game":{},
-            "road":false,
+            "highway":false,
             "from":null,
             "to":null,
             "coords":{},

@@ -27,13 +27,10 @@ define([
                         window.location = "";
                     });
                 },
-                endOfGameLeave: function(){
+                endOfGameLeave: function() {
                     this.$(".end-of-game span.name").text();
-                    that.$(".play-one-more-time.endOfGame").off("click.endOfGame")
-
-
-
-                    }
+                    this.$(".play-one-more-time.endOfGame").off("click.endOfGame");
+                }
             };
             $.extend(true, GameView.prototype, endOfGame);
         };

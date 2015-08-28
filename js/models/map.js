@@ -98,7 +98,6 @@ define([
 
             var that = this;
             var createPort = function(coords) {
-
                 var harbor_type = that.randomChoice(Const.HARBOR_TYPES);
                 var hex = that.getHex(coords.q, coords.r);
                 var crossroad_1 = hex.get("crossroads")[coords.indexOfCrossroad];
@@ -113,7 +112,7 @@ define([
         createRoads: function() {
             var isRoadPushed = function(crossroad,road){
                 var roadIsNotThere = true;
-                for(var z = 0;z<crossroad.get("roads").length;z++){
+                for(var z = 0; z < crossroad.get("roads").length;z++){
                     if(crossroad.get("roads")[z] === road){
                         roadIsNotThere = false;
                         break;
@@ -143,7 +142,7 @@ define([
                     if (!road) {
                         road = new Road({
                             "game": this.get("game"),
-                            "road": false,
+                            "highway": false,
                             "from": crossroad_from,
                             "to": crossroad_to,
                             "coords": {q: crossroad_q, r: crossroad_r}
@@ -294,7 +293,7 @@ define([
                 availableRoads[i].trigger("highlight");
             }
         },
-        disabledRoadHighlighting: function() {
+        disableRoadHighlighting: function() {
             for (var i = 0; i < this.get("roads").length; i++) {
                 this.get("roads")[i].trigger("removeHighlighting");
             }

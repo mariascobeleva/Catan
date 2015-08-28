@@ -9,7 +9,7 @@ define([
         className: 'road',
         crossroadViews:[],
         events: {
-            "buildRoad": "buildRoad",
+            "buildHighway": "buildHighway",
             "setRoad": "setRoad"
         },
         initialize: function() {
@@ -19,8 +19,8 @@ define([
             this.y = Const.HEX_EDGE_SIZE * Math.sqrt(3) * (this.model.getRoadCoordsFrom().r + this.model.getRoadCoordsFrom().q / 2);
 
             // Adjust for field centering.
-            this.x = this.x + (Const.FIELD_WIDTH);
-            this.y = this.y + (Const.FIELD_HEIGHT);
+            this.x = this.x + (Const.FIELD_WIDTH/2);
+            this.y = this.y + (Const.FIELD_HEIGHT/2);
 
             this.x = Math.round(this.x);
             this.y = Math.round(this.y);
@@ -32,8 +32,8 @@ define([
             var y_to = Const.HEX_EDGE_SIZE * Math.sqrt(3) * (to_coords_r + to_coords_q / 2);
 
             // Make values similar to each other for comparing.
-            x_to = x_to + (Const.FIELD_WIDTH);
-            y_to = y_to + (Const.FIELD_HEIGHT);
+            x_to = x_to + (Const.FIELD_WIDTH/2);
+            y_to = y_to + (Const.FIELD_HEIGHT/2);
 
             x_to = Math.round(x_to);
             y_to = Math.round(y_to);
@@ -68,7 +68,7 @@ define([
             return this;
         },
         addListeners: function(){
-            this.model.on("change:road", this.renderBuiltRoad, this);
+            this.model.on("change:highway", this.renderBuiltRoad, this);
             this.model.on("highlight", this.doHighlight, this);
             this.model.on("removeHighlighting", this.removeHighlight,this);
         },
@@ -80,19 +80,41 @@ define([
         },
         setRoad: function(){
             var currentPlayer = this.model.get("game").getCurrentPlayer();
-            this.model.set("road", true);
+            this.model.set("highway", true);
             this.model.set("player",currentPlayer);
             currentPlayer.get("roads").push(this.model);
 
         },
-        buildRoad: function(){
-            if(this.model.get("road") === false){
+        buildHighway: function(){
+            if(this.model.get("highway") === false){
                 var currentPlayer = this.model.get("game").getCurrentPlayer();
                 this.setRoad();
                 currentPlayer.spendResource({"brick":-1,"tree":-1});
                 this.model.get("game").get("bank").spendResource({"brick":-1,"tree":-1});
+                //this.checkIfTheLongestRoad();
             }
         },
+        //checkIfTheLongestRoad: function(){
+        //    var currentRoadFrom = this.model.getRoadCoordsFrom();
+        //    var currentRoadTo = this.model.getRoadCoordsTo();
+        //    var counter = 0;
+        //    var roads = this.model.get('player').get('roads');
+        //    for (var i=0; i<roads.length; i++){
+        //        var road = roads[i];
+        //        var from = road.getRoadCoordsFrom();
+        //        var to = road.getRoadCoordsFrom();
+        //
+        //        var compare = function(road){
+        //            var curRoad = road;
+        //            if(from === currentRoadTo || to === currentRoadFrom || from === currentRoadFrom || to === currentRoadTo){
+        //                currentRoadTo = from;
+        //                currentRoadFrom = to;
+        //                counter ++;
+        //
+        //            }
+        //        }
+        //    }
+        //},
         checkIfRoadIsBuilt: function(currentPlayer, from, to) {
             var compare = function(a, b) {
                 return a.q.toFixed(2) === b.q.toFixed(2) && a.r.toFixed(2) === b.r.toFixed(2);
@@ -111,17 +133,9 @@ define([
             return false;
         },
         renderBuiltRoad: function(){
-
-            this.$el.removeClass("blinking");
-
-            var index = this.model.get("game").get("currentPlayer");
-            var currentPlayer = this.model.get("game").get("players")[index];
-            var color = currentPlayer.get("color");
-
-            this.$el.css("background", color);
-
+            var color = this.model.get("game").getCurrentPlayer().get("color");
+            this.$el.removeClass("available blinking").addClass("highway").addClass(color);
         }
-
     });
     return RoadView;
 });

@@ -1,11 +1,11 @@
 define([], function() {
     var Const = {
         HEX_COUNT: 19,
-        HEX_EDGE_SIZE:60,
+        HEX_EDGE_SIZE:85,
         HEX_EDGE_COLS:5,
         CROSSROAD_COUNT: 53,
-        CROSSROAD_HEIGHT:20,
-        ROAD_HEIGHT:10,
+        CROSSROAD_HEIGHT:40,
+        ROAD_HEIGHT:7,
         VICTORY_POINTS_FOR_WIN:5,
         HEX_TYPE_WHEAT: "wheat",
         HEX_TYPE_SHEEP: "sheep",

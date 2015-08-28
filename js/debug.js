@@ -17,8 +17,6 @@ define([
             this.$el.val(this.$el.val() + "\n" + value);
         },
         doFirstTurns: function() {
-
-
             $('.start-game').click();
             $(".crossroads .crossroad:nth-child(48)").click();
             $('.build').click();
@@ -46,8 +44,6 @@ define([
             $('.build').click();
             return true;
         }
-
-
     };
     Debug.init();
     return Debug;
