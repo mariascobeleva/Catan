@@ -29,7 +29,7 @@ define([
         render: function() {
             var value = this.model.get("value");
             this.$el.css({'left': this.x, 'top': this.y});
-            this.$el.addClass(this.model.get("type")).text(value);
+            this.$el.addClass(this.model.get("type")).append('<div class="number">' + value + '</div>');
             return this;
         }
     });

@@ -65,6 +65,9 @@ define([
         },
         render: function(){
             this.$el.css({'left': this.x, 'top': this.y, "transform": "rotate("+ this.corner + "deg)"});
+            if(this.model.get('from').get('harborType') !== "" && this.model.get('to').get('harborType') !== ""){
+                this.$el.addClass('harbor-road');
+            }
             return this;
         },
         addListeners: function(){
@@ -93,6 +96,37 @@ define([
                 this.model.get("game").get("bank").spendResource({"brick":-1,"tree":-1});
                 //this.checkIfTheLongestRoad();
             }
+        },
+        checkIfTheLongestRoad: function(road) {
+            var currentPlayer = this.model.get("game").getCurrentPlayer();
+            var crossroads = road.get('crossroads');
+            var visitedRoads = [], visitedCrossroads = [];
+            var counter = 0;
+            var r = function(crossroads, counter) {
+                outerForCrossroads:
+                for (var i = 0; i < crossroads.length; i++) {
+                    for (var z = 0; z <= visitedCrossroads.length; z++) {
+                        if (crossroads[i] === visitedCrossroads[z]) {
+                            continue outerForCrossroads;
+                        }
+                    }
+                    var roads = crossroads[i].get('roads');
+                    visitedCrossroads.push(crossroads[i]);
+                    outerForRoads:
+                    for (var j = 0; j < roads.length; j++) {
+                        for (var k = 0; k <= visitedRoads.length; k++) {
+                            if (crossroads[i] === visitedRoads[k]) {
+                                continue outerForRoads;
+                            }
+                        }
+                        visitedRoads.push(roads[j]);
+                        if (roads[j].get('highway') === true && roads[j].get('player') === currentPlayer) {
+                            counter ++;
+                            r(road[j].get('crossroads'));
+                        }
+                    }
+                }
+            };
         },
         //checkIfTheLongestRoad: function(){
         //    var currentRoadFrom = this.model.getRoadCoordsFrom();

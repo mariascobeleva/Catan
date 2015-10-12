@@ -49,7 +49,7 @@ define([
 
             var p1 = new Player({name: "Masha", color: "red" });
             var p2 = new Player({name: "Sasha", color: "blue" });
-            var p3 = new Player({name: "Everest", color: "green" });
+            var p3 = new Player({name: "Everest", color: "violet" });
 
             // TODO: Shuffle players;
 
