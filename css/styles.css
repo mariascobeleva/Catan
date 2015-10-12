@@ -1,632 +1,583 @@
-
-
-
-.players {
-    display:inline-block;
-}
-.players div{
-    margin-bottom:10px;
-}
-.players div.active {
- background: yellow;
-}
-.build {
-    display:none;
-    left:300px;
-    background: green;
-}
-.build.disabled{
-    background: grey;
-}
-.start-game,
-.end-turn,
-.build,
-.change-with-bank,
-.choose-for-building,
-.do-rob {
-    height:50px;
-    width:50px;
-    border:solid 1px black;
-    margin-bottom:20px;
-    position: absolute;
-    top: 50%;
-}
-
-.end-turn.active,
-.change-with-bank.active,
-.choose-for-building.active {
-    background: green;
-}
-.start-game {
-    left:100px;
-}
-.start-game:after {
-    content:"Начать игру!";
-}
-.end-turn:after {
-    content:"Зкончить ход!";
-}
-.end-turn {
-    left:200px;
-}
-.choose-for-building {
-    top:60%;
-    left:100px;
-    display: none;
-}
-.do-rob {
-    display:none;
-    top:60%;
-    left:200px;
-    background: green;
-}
-.build:after {
-    content:"Построить";
-}
-.change-with-bank:after {
-    content: "Поменять в банке"
-}
-.change-with-bank {
-    left:400px;
-}
-.choose-for-building:after {
-    content:"Строительство";
-}
-.refuse-building {
-    background: red;
-    width:20px;
-    height:20px;
-    border-radius: 50%;
-    position:absolute;
-    top:60%;
-    left:300px;
-    display:none;
-}
-
-.box {
-    display:none;
-    position:fixed;
-    height:0px;
-    width:600px;
-    top: 50%;
-    left: 50%;
-    margin-top: -300px;
-    margin-left: -300px;
-    background:#fff;
-    text-align:left; /*resets text alignment from body tag */
-    border:1px solid #ccc;
-    border-top:none;
-    z-index:101;
-    -webkit-transition: height 1s ease;
-    -moz-transition: height 1s ease;
-    -ms-transition: height 1s ease;
-    -o-transition: height 1s;
-    transition: height 1s ease;
-}
-.box.active {
-    display:block;
-    height:600px;
-    padding: 20px 80px;
-    box-sizing: border-box;
-    text-align: center;
-}
-#overlay {
-    display:none;
-    position:fixed; /* keeps the lightbox window in the current viewport */
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.6);
-    text-align:center;
-    z-index:100;
-    opacity:0;
-    -webkit-transition: opacity 3s ;
-    -moz-transition: opacity 3s ;
-    -ms-transition: opacity 3s;
-    -o-transition: opacity 3s;
-    transition: opacity 3s;
-}
-#overlay.active {
-    display:block;
-    opacity:1;
-}
-.confirm {
-    position:absolute;
-    right:40px;
-    top:calc(50% - 20px);
-    width:20px;
-    height:20px;
-    padding:10px;
-    background:lawngreen;
-    border-radius:50%;
-    cursor:pointer;
-}
-#close {
-    position:absolute;
-    top:0;
-    right:0;
-    width:20px;
-    height:20px;
-    background: url("../img/close.png") no-repeat 0 0;
-    cursor:pointer;
-}
-
-.change-resources {
-    width: 500px;
-    margin: auto;
-    height: 100%;
-    position:relative;
-    display:none;
-}
-.change-resources.active {
-    display: block;
-}
-
-.player-resources {
-    position:absolute;
-    top:0;
-}
-.player-resources,
-.resources-for-change {
-    height:150px;
-}
-.resources-for-change {
-    position:absolute;
-    bottom:0;
-}
-.resources span,
-.player-resources span,
-.resources-for-change span{        /* Resources on main screen and in hidden exchange-field block*/
-    display:inline-block;
-    width:30px;
-    height:30px;
-    background: lightpink;
-    text-align: center;
-}
-.player-resources span,
-.resources-for-change span {
-    width: 50px;
-    height: 50px;
-}
-.player-resources span.active,
-.resources-for-change span.active {
-    width:70px;
-    height:70px;
-    margin-right:10px;
-}
-
-span.res-tree {
-    background: green;
-}
-span.res-wheat {
-    background: yellow;
-}
-span.res-sheep {
-    background: lightgray;
-}
-span.res-rock {
-    background: grey;
-}
-span.res-brick {
-    background: brown;
-}
-
-.building-objects {
-    display:none;
-    width: 400px;
-    margin: 100px auto;
-    height: 400px;
-    position:relative;
-}
-
-.building-objects span {
-    background: grey;
-    display:inline-block;
-    width:100px;
-    height:25px;
-    text-align: center;
-    margin-right:15px;
-    padding:5px;
-}
-
-.building-objects span.active {
-    background: yellow;
-    border:solid 1px orange;
-}
-
-.choose-res-for-rob {
-    display:none;
-}
-.player-resources .res,
-.resources-for-change .res{
-    display:inline-block;
-    margin-right: 25px;
-}
-.player-resources .res span {
-    margin-right:0;
-}
-.res .controls {
-    margin:10px 0 ;
-}
-.res .controls div {
-    display:inline-block;
-}
-
-.res .ctrl {
-    width:10px;
-    height:10px;
-    padding:5px;
-    background:lightgrey;
-    border:solid 1px grey;
-    border-radius:4px;
-    cursor:pointer;
-}
-.player-resources p span {
-    background: none;
-    width:auto;
-    height:auto;
-    margin-right:0;
-}
-.player-resources p,
-.robber p {
-    text-align:center;
-}
-.robber {
-    position:absolute;
-    bottom:0;
-}
-
 .field {
-    position:relative;
-    width:680px; /*hex edge size*8*/
-    height:735px; /*hex edge size*8.5*/
-    margin:auto;
-    background: dodgerblue;
-}
+  position: relative;
+  width: 680px;
+  /*hex edge size*8*/
+  height: 735px;
+  /*hex edge size*8.5*/
+  margin: auto;
+  font-family: Georgia; }
+
+.map {
+  background: url("../img/hex_water.png") repeat 0 0; }
 
 .hex {
-    position:absolute;
-    width:170px;
-    height:147px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 170px;
+  height: 147px;
+  text-align: center;
+  font-size: 70px;
+  font-weight: bold; }
+  .hex.wheat {
+    background: url("../img/hex_grain.png") no-repeat 0 0; }
+  .hex.rock {
+    background: url("../img/hex_stone.png") no-repeat 0 0; }
+  .hex.tree {
+    background: url("../img/hex_wood.png") no-repeat 0 0; }
+  .hex.sheep {
+    background: url("../img/hex_sheep.png") no-repeat 0 0; }
+  .hex.brick {
+    background: url("../img/hex_brick.png") no-repeat 0 0; }
+  .hex.desert {
+    background: url("../img/hex_desert.png") no-repeat 0 0; }
+    .hex.desert .number {
+      display: none; }
+  .hex .number {
+    position: relative;
+    width: 47px;
     text-align: center;
-    font-size: 70px;
+    background: rgba(250, 250, 250, 0.7);
     font-weight: bold;
-}
-.hex.wheat {
-    background:url("../img/hex_grain.png") no-repeat 0 0;
-}
-.hex.rock {
-    background:url("../img/hex_stone.png") no-repeat 0 0;
-}
-.hex.tree {
-    background:url("../img/hex_wood.png") no-repeat 0 0;
-}
-.hex.sheep {
-    background:url("../img/hex_sheep.png") no-repeat 0 0;
-}
-.hex.brick {
-    background:url("../img/hex_brick.png") no-repeat 0 0;
-}
-.hex.desert {
-    background:url("../img/hex_desert.png") no-repeat 0 0;
-}
+    border-radius: 50%;
+    padding: 10px 0px 6px 0;
+    font-family: Arial, sans-serif;
+    font-size: 26px;
+    text-shadow: 0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white;
+    border: solid 1px rgba(255, 255, 255, 0.5); }
 
 .crossroad {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    opacity: 1;
-    z-index:2;
-}
-
-.crossroad.available {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  opacity: 1;
+  z-index: 2; }
+  .crossroad.harbor {
+    z-index: 3; }
+  .crossroad.wheat {
+    background: yellow; }
+  .crossroad.sheep {
+    background: lightgray; }
+  .crossroad.tree {
+    background: green; }
+  .crossroad.brick {
+    background: brown; }
+  .crossroad.rock {
+    background: grey; }
+  .crossroad.general-harbor {
+    background: coral; }
+  .crossroad.available {
     border: solid 2px silver;
     box-shadow: none;
     border-radius: 50%;
     -webkit-animation: blinking-border 1s linear infinite;
-    animation: blinking-border 1s linear infinite;
-}
-.crossroad.available.blinking {
-    border: solid 2px red;
-}
-
-.crossroad.available:after {
-    content:" ";
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-
-    background: white no-repeat 0 0;
-    background-size: 40px 40px;
-    z-index: 2;
-    -webkit-animation: blinking-bg 1s linear infinite;
-    animation: blinking-bg 1s linear infinite;
-
-}
-.crossroad.available.blinking:after {
-    background: white url("../img/cross_settlement.png") no-repeat 0 0;
-    background-size: 40px 40px;
-    -webkit-animation: none;
-    animation: none;
-}
-
-.crossroad.settlement {
+    animation: blinking-border 1s linear infinite; }
+    .crossroad.available.blinking {
+      border: solid 2px red; }
+      .crossroad.available.blinking:after {
+        background: white url("../img/cross_settlement.png") no-repeat 0 0;
+        background-size: 40px 40px;
+        -webkit-animation: none;
+        animation: none; }
+    .crossroad.available:after {
+      content: " ";
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white no-repeat 0 0;
+      background-size: 40px 40px;
+      z-index: 2;
+      -webkit-animation: blinking-bg 1s linear infinite;
+      animation: blinking-bg 1s linear infinite; }
+  .crossroad.settlement {
     border: solid 2px red;
     box-shadow: 0 0 10px red;
-    border-radius: 50%;
-}
-.crossroad.settlement:after {
-    content:" ";
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-
-    background: white url("../img/cross_settlement.png") no-repeat 0 0;
-    background-size: 40px 40px;
-    z-index: 2;
-}
-
-/*.disabled {*/
-    /*background: #FAEBD7;*/
-/*}*/
-
-.crossroad.available-for-city {
+    border-radius: 50%; }
+    .crossroad.settlement:after {
+      content: " ";
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white url("../img/cross_settlement.png") no-repeat 0 0;
+      background-size: 40px 40px;
+      z-index: 2; }
+  .crossroad.available-for-city {
     background: white;
     border: solid 2px red;
     box-shadow: none;
     border-radius: 0;
     -webkit-animation: blinking-border 1s linear infinite;
-    animation: blinking-border 1s linear infinite;
-
-}
-.crossroad.available-for-city:before {
-    content: " ";
-    position: absolute;
-    transform: rotate(45deg);
-    background: white;
-    box-shadow: none;
-    width: 40px;
-    height: 40px;
-    border: solid 2px red;
-    left: -2px;
-    top: -2px;
-    -webkit-animation: blinking-border 1s linear infinite;
-    animation: blinking-border 1s linear infinite;
-
-}
-.crossroad.available-for-city:after {
-    border: solid 2px red;
-    left: -2px;
-    top: -2px;
-}
-
-.crossroad.city {
+    animation: blinking-border 1s linear infinite; }
+    .crossroad.available-for-city:before {
+      content: " ";
+      position: absolute;
+      transform: rotate(45deg);
+      background: white;
+      box-shadow: none;
+      width: 40px;
+      height: 40px;
+      border: solid 2px red;
+      left: -2px;
+      top: -2px;
+      -webkit-animation: blinking-border 1s linear infinite;
+      animation: blinking-border 1s linear infinite; }
+    .crossroad.available-for-city.blinking:after {
+      left: 0;
+      top: 0;
+      border: none; }
+  .crossroad.city {
     background: white;
     background-size: 40px 40px;
-    border-radius: 0;
-}
-.crossroad.city:before {
-    content: " ";
-    position: absolute;
-    transform: rotate(45deg);
-    background: white;
-    width: 40px;
-    height: 40px;
-    border: solid 2px red;
-    left: -2px;
-    top: -2px;
-    -webkit-animation: none;
-    animation: none;
-    -webkit-filter: grayscale(0);
-
-}
-.crossroad.city:after {
-    content: " ";
-    position: absolute;
-    background: white url("../img/cross_city.png") no-repeat 0 0;
-    background-size: 40px 40px;
-    width: 40px;
-    height: 40px;
-    -webkit-animation: none;
-    animation: none;
-    -webkit-filter: grayscale(0);
-    transform: rotate(0);
-    border: none;
-    border-radius: 0;
-    left: 0;
-    top: 0;
-}
-
-.blinking{
-    -webkit-animation: blinking 1s linear infinite !important;
-    animation: blinking 1s linear infinite !important;
-}
-
-
-@keyframes blinking {
-    0% {opacity: 1;}
-    50% {opacity: 0.3;}
-    100% {opacity: 1;}
-}
-/* Chrome, Safari, Opera */
-@-webkit-keyframes blinking {
-    0% {opacity: 1;}
-    50% {opacity: 0.3;}
-    100% {opacity: 1;}
-}
-
-@keyframes blinking-border {
-    0% {border: solid 2px rgba(255,0,0,1);}
-    50% {border: solid 2px rgba(255,0,0,0.5);}
-    100% {border: solid 2px rgba(255,0,0,1);}
-}
-/* Chrome, Safari, Opera */
-@-webkit-keyframes blinking-border {
-    0% {border: solid 2px rgba(255,0,0,1);  }
-    50% {border: solid 2px rgba(255,0,0,0.5);  }
-    100% {border: solid 2px rgba(255,0,0,1); }
-}
-@keyframes blinking-bg {
-    0% {background: rgba(255,255,255,1); }
-    50% {background: rgba(255,255,255,0.85); }
-    100% { background: rgba(255,255,255,1);}
-}
-/* Chrome, Safari, Opera */
-@-webkit-keyframes blinking-bg {
-    0% { background: rgba(255,255,255,1); }
-    50% { background: rgba(255,255,255,0.85); }
-    100% { background: rgba(255,255,255,1);}
-}
-@keyframes blinking-opacity {
-    0% {opacity: 0.5;}
-    50% {opacity: 0.3;}
-    100% {opacity: 0.5;}
-}
-/* Chrome, Safari, Opera */
-@-webkit-keyframes blinking-opacity {
-    0% {opacity: 0.5;}
-    50% {opacity: 0.3;}
-    100% {opacity: 0.5;}
-}
-
-.crossroad.harbor {
-    z-index:3;
-}
-.crossroad.wheat {
-    background: yellow;
-}
-.crossroad.sheep {
-    background: lightgray;
-}
-.crossroad.tree {
-    background: green;
-}
-.crossroad.brick {
-    background: brown;
-}
-.crossroad.rock {
-    background: grey;
-}
-.crossroad.general-harbor {
-    background: coral  ;
-}
-
-
+    border-radius: 0; }
+    .crossroad.city:before {
+      content: " ";
+      position: absolute;
+      transform: rotate(45deg);
+      background: white;
+      width: 40px;
+      height: 40px;
+      border: solid 2px red;
+      left: -2px;
+      top: -2px;
+      -webkit-animation: none;
+      animation: none;
+      -webkit-filter: grayscale(0);
+      filter: grayscale(0); }
+    .crossroad.city:after {
+      content: " ";
+      position: absolute;
+      background: white url("../img/cross_city.png") no-repeat 0 0;
+      background-size: 40px 40px;
+      width: 40px;
+      height: 40px;
+      -webkit-animation: none;
+      animation: none;
+      -webkit-filter: grayscale(0);
+      filter: grayscale(0);
+      transform: rotate(0);
+      border: none;
+      border-radius: 0;
+      left: 0;
+      top: 0; }
 
 .road {
-    position: absolute;
-    width: 85px;
-    height: 9px;
-    transform-origin: 0 50% 0;
-}
-.road:after {
+  position: absolute;
+  width: 85px;
+  height: 9px;
+  transform-origin: 0 50% 0; }
+  .road:after {
     content: " ";
     position: absolute;
     width: 85px;
     height: 9px;
-    background: url("/img/road_1.png")no-repeat 0 0;
-}
-
-.road.available {
-    background: url("/img/road_1.png")no-repeat 0 0;
-}
-
-.road.available:after {
-    content: " ";
-    position: absolute;
-    width: 85px;
-    height: 9px;
-    background: url("/img/road-red_1.png")no-repeat 0 0;
-    -webkit-filter: grayscale(1);
-    -webkit-animation: blinking-opacity 1s linear infinite !important;
-    animation: blinking-opacity 1s linear infinite !important;
-}
-.road.blinking:after {
+    background: url("/img/road-red_1.png") no-repeat 0 0;
+    -webkit-filter: hue-rotate(90deg);
+    filter: hue-rotate(445deg); }
+  .road.available {
+    background: url("/img/road_1.png") no-repeat 0 0; }
+    .road.available:after {
+      content: " ";
+      position: absolute;
+      width: 85px;
+      height: 9px;
+      background: url("/img/road-red_1.png") no-repeat 0 0;
+      -webkit-filter: grayscale(1);
+      filter: grayscale(1);
+      -webkit-animation: blinking-opacity 1s linear infinite !important;
+      animation: blinking-opacity 1s linear infinite !important; }
+  .road.blinking:after {
     -webkit-animation: blinking 1s linear infinite !important;
-    animation: blinking 1s linear infinite !important;
-}
+    animation: blinking 1s linear infinite !important; }
+  .road.highway:after {
+    background: url("/img/road-red_1.png") no-repeat 0 0; }
+  .road.harbor-road:before {
+    position: absolute; }
 
-.road.highway:after {
-    background: url("/img/road-red_1.png")no-repeat 0 0;
-}
-
-.crossroad.red, .crossroad.blue, .crossroad.green,
+.crossroad.red, .crossroad.blue, .crossroad.violet,
 .crossroad:before.red, .crossroad:before.blue, .crossroad:before.green
 .crossroad:after.red, .crossroad:after.blue, .crossroad:after.green
-.road.red, .road.blue, .road.green
-{
-    -webkit-filter: grayscale(0);
-}
-.crossroad.red, .road.red:after {
-    -webkit-filter: hue-rotate(0);
-}
-.crossroad.blue, .road.blue:after {
-    -webkit-filter: hue-rotate(600deg);
-}
-.crossroad.green, .road.green:after {
-    -webkit-filter: hue-rotate(445deg);
-}
+.road.red, .road.blue, .road.violet {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0); }
 
-.dice {
+.crossroad.red, .road.red:after {
+  -webkit-filter: hue-rotate(0);
+  filter: hue-rotate(0deg); }
+
+.crossroad.blue, .road.blue:after {
+  -webkit-filter: hue-rotate(600deg);
+  filter: hue-rotate(600deg); }
+
+.crossroad.violet, .road.violet:after {
+  -webkit-filter: hue-rotate(288deg);
+  filter: hue-rotate(288deg); }
+
+.players {
+  display: inline-block; }
+  .players > div {
+    margin-bottom: 10px; }
+  .players .player.active {
+    background: yellow; }
+
+.build {
+  display: none;
+  left: 300px;
+  background: green; }
+  .build.disabled {
+    background: grey; }
+
+.control-element, .start-game, .end-turn, .choose-for-building, .do-rob, .build, .change-with-bank {
+  height: 50px;
+  width: 50px;
+  border: solid 1px black;
+  margin-bottom: 20px;
+  position: absolute;
+  top: 50%; }
+
+.start-game {
+  left: 100px; }
+  .start-game:after {
+    content: "Start game!"; }
+
+.end-turn {
+  left: 200px; }
+  .end-turn:after {
+    content: "Finish your turn!"; }
+
+.choose-for-building {
+  top: 60%;
+  left: 100px;
+  display: none; }
+  .choose-for-building:after {
+    content: "Building"; }
+
+.do-rob {
+  display: none;
+  top: 60%;
+  left: 200px;
+  background: green; }
+
+.build:after {
+  content: "Build"; }
+
+.change-with-bank {
+  left: 400px; }
+  .change-with-bank:after {
+    content: "Exchange in bank"; }
+
+.end-turn.active,
+.change-with-bank.active,
+.choose-for-building.active {
+  background: green; }
+
+.refuse-building {
+  background: red;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: absolute;
+  top: 60%;
+  left: 300px;
+  display: none; }
+
+.box {
+  display: none;
+  position: fixed;
+  height: 0px;
+  width: 600px;
+  top: 50%;
+  left: 50%;
+  margin-top: -300px;
+  margin-left: -300px;
+  background: #fff;
+  text-align: left;
+  /*resets text alignment from body tag */
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 101;
+  -webkit-transition: height 1s ease;
+  -moz-transition: height 1s ease;
+  -ms-transition: height 1s ease;
+  -o-transition: height 1s;
+  transition: height 1s ease; }
+  .box.active {
+    display: block;
+    height: 600px;
+    padding: 20px 80px;
+    box-sizing: border-box;
+    text-align: center; }
+
+#overlay {
+  display: none;
+  position: fixed;
+  /* keeps the lightbox window in the current viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  z-index: 100;
+  opacity: 0;
+  -webkit-transition: opacity 3s;
+  -moz-transition: opacity 3s;
+  -ms-transition: opacity 3s;
+  -o-transition: opacity 3s;
+  transition: opacity 3s; }
+  #overlay.active {
+    display: block;
+    opacity: 1; }
+
+.confirm {
+  position: absolute;
+  right: 40px;
+  top: calc(50% - 20px);
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  background: lawngreen;
+  border-radius: 50%;
+  cursor: pointer; }
+
+#close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background: url("../img/close.png") no-repeat 0 0;
+  cursor: pointer; }
+
+.change-resources {
+  width: 500px;
+  margin: auto;
+  height: 100%;
+  position: relative;
+  display: none; }
+  .change-resources:active {
+    display: block; }
+
+.player-resources {
+  position: absolute;
+  top: 0; }
+
+.resources-for-change {
+  position: absolute;
+  bottom: 0; }
+
+.player-resources,
+.resources-for-change {
+  height: 150px; }
+
+/* Resources on main screen and in hidden exchange-field block*/
+.resource, .resources span, .player-resources span,
+.resources-for-change span {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background: lightpink;
+  text-align: center; }
+
+.player-resources span,
+.resources-for-change span {
+  width: 50px;
+  height: 50px; }
+  .player-resources span.active,
+  .resources-for-change span.active {
+    width: 70px;
+    height: 70px;
+    margin-right: 10px; }
+.player-resources .res,
+.resources-for-change .res {
+  display: inline-block;
+  margin-right: 25px; }
+  .player-resources .res .controls,
+  .resources-for-change .res .controls {
+    margin: 10px 0; }
+    .player-resources .res .controls div,
+    .resources-for-change .res .controls div {
+      display: inline-block; }
+  .player-resources .res .ctrl,
+  .resources-for-change .res .ctrl {
+    width: 10px;
+    height: 10px;
+    padding: 5px;
+    background: lightgrey;
+    border: solid 1px grey;
+    border-radius: 4px;
+    cursor: pointer; }
+
+.player-resources .res span {
+  margin-right: 0; }
+.player-resources p span {
+  background: none;
+  width: auto;
+  height: auto;
+  margin-right: 0; }
+
+.player-resources p,
+.robber p {
+  text-align: center; }
+
+.robber {
+  position: absolute;
+  bottom: 0; }
+
+span.res-tree {
+  background: green; }
+span.res-wheat {
+  background: yellow; }
+span.res-sheep {
+  background: lightgray; }
+span.res-sheep {
+  background: lightgray; }
+span.res-rock {
+  background: grey; }
+span.res-brick {
+  background: brown; }
+
+.building-objects {
+  display: none;
+  width: 400px;
+  margin: 100px auto;
+  height: 400px;
+  position: relative; }
+  .building-objects span {
+    background: grey;
     display: inline-block;
-    position:absolute;
-    top:70%;
-    left:100px;
-}
+    width: 100px;
+    height: 25px;
+    text-align: center;
+    margin-right: 15px;
+    padding: 5px; }
+    .building-objects span.active {
+      background: yellow;
+      border: solid 1px orange; }
+
+.choose-res-for-rob {
+  display: none; }
+
+.border-red, .crossroad.available-for-city:after {
+  border: solid 2px red;
+  left: -2px;
+  top: -2px; }
+
+.blinking {
+  -webkit-animation: blinking 1s linear infinite !important;
+  animation: blinking 1s linear infinite !important; }
+
+@keyframes blinking {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.3; }
+  100% {
+    opacity: 1; } }
+/* Chrome, Safari, Opera */
+@-webkit-keyframes blinking {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.3; }
+  100% {
+    opacity: 1; } }
+@keyframes blinking-border {
+  0% {
+    border: solid 2px red; }
+  50% {
+    border: solid 2px rgba(255, 0, 0, 0.5); }
+  100% {
+    border: solid 2px red; } }
+/* Chrome, Safari, Opera */
+@-webkit-keyframes blinking-border {
+  0% {
+    border: solid 2px red; }
+  50% {
+    border: solid 2px rgba(255, 0, 0, 0.5); }
+  100% {
+    border: solid 2px red; } }
+@keyframes blinking-bg {
+  0% {
+    background: white; }
+  50% {
+    background: rgba(255, 255, 255, 0.85); }
+  100% {
+    background: white; } }
+/* Chrome, Safari, Opera */
+@-webkit-keyframes blinking-bg {
+  0% {
+    background: white; }
+  50% {
+    background: rgba(255, 255, 255, 0.85); }
+  100% {
+    background: white; } }
+@keyframes blinking-opacity {
+  0% {
+    opacity: 0.5; }
+  50% {
+    opacity: 0.3; }
+  100% {
+    opacity: 0.5; } }
+/* Chrome, Safari, Opera */
+@-webkit-keyframes blinking-opacity {
+  0% {
+    opacity: 0.5; }
+  50% {
+    opacity: 0.3; }
+  100% {
+    opacity: 0.5; } }
+.dice {
+  display: inline-block;
+  position: absolute;
+  top: 70%;
+  left: 100px; }
 
 .value-1,
 .value-2 {
-    display: inline-block;
-    width:50px;
-    height:50px;
-    border:solid 1px black;
-    background: orange;
-    text-align: center;
-}
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: solid 1px black;
+  background: orange;
+  text-align: center; }
 
 .thief {
-    width:30px;
-    height:30px;
-    border-radius: 50%;
-    background: black;
-    position: absolute;
-    z-index:99;
-}
-.thief.active {
-    border:solid 2px white;
-}
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: black;
+  position: absolute;
+  z-index: 99; }
+  .thief.active {
+    border: solid 2px white; }
+
 .choose-player-for-robber {
-    display:none;
-}
-.choose-player-for-robber p {
-    /*margin: 20px 100px;*/
+  display: none; }
+  .choose-player-for-robber p {
     font-size: 22px;
     line-height: 517px;
-    display: block;
-}
+    display: block; }
+
 span.victim {
-    color: blue;
-    text-decoration: underline;
-    cursor:pointer;
-}
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer; }
 
 .end-of-game {
-    display:none;
-}
-.play-one-more-time{
-    width:100px;
-    height:50px;
-    margin:10px;
-    text-align: center;
-    background: yellow;
-}
+  display: none; }
 
-
+.play-one-more-time {
+  width: 100px;
+  height: 50px;
+  margin: 10px;
+  text-align: center;
+  background: yellow; }
 
 #debug {
-    width: 100%;
-    height: 300px;
-}
+  width: 100%;
+  height: 300px; }
+
+/*# sourceMappingURL=styles.css.map */
