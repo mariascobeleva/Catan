@@ -1,13 +1,50 @@
+body {
+    margin:0;
+    padding:0;
+}
+
+.clearfix:after {
+    display: block;
+    content: '' !important;
+    clear: both;
+}
+
+.resource {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+
+.number {
+    font-family: Arial, sans-serif;
+    font-size: 26px;
+    font-weight:bold;
+    text-shadow: 0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white;
+}
+
+
+.game {
+    position: absolute;
+    top:0;
+    bottom:0;
+    right:0;
+    left:0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('../img/hex_water.png') repeat 0 0;
+}
+
 .field {
+    @extend .clearfix;
     position:relative;
     width:680px; /*hex edge size*8*/
-    height:735px; /*hex edge size*8.5*/
+    height:800px; /*hex edge size*8.5*/
     margin:auto;
     font-family:Georgia;
 }
-.map {
-    background: url('../img/hex_water.png') repeat 0 0;
-}
+
 .hex {
     position:absolute;
     display: flex;
@@ -18,56 +55,81 @@
     text-align: center;
     font-size: 70px;
     font-weight: bold;
+    background-size: 100%;
 
-    &.wheat {
-        background:url("../img/hex_grain.png") no-repeat 0 0;
-    }
-    &.rock {
-        background:url("../img/hex_stone.png") no-repeat 0 0;
-    }
-    &.tree {
-        background:url("../img/hex_wood.png") no-repeat 0 0;
-    }
-    &.sheep {
-        background:url("../img/hex_sheep.png") no-repeat 0 0;
-    }
-    &.brick {
-        background:url("../img/hex_brick.png") no-repeat 0 0;
-    }
+    &.wheat {background-image:url("../img/hex_grain.png");}
+    &.rock { background-image:url("../img/hex_stone.png");}
+    &.tree { background-image:url("../img/hex_wood.png");}
+    &.sheep {background-image:url("../img/hex_sheep.png");}
+    &.brick {background-image:url("../img/hex_brick.png");}
     &.desert {
-        background:url("../img/hex_desert.png") no-repeat 0 0;
+        background-image:url("../img/hex_desert.png");
         .number {
             display: none;
         }
     }
+    &.seaHex {
+        &:after {
+            content:"";
+            width:45px;
+            height:45px;
+            background-size: 100%;
+        }
+    }
+    &.harbor-general-harbor {
+        &:after {
+            background-image: url('../img/general-harbor.png');
+        }
+    }
+    &.harbor-wheat {
+        &:after {
+            background-image: url('../img/res_grain_color.png');
+        }
+    }
+    &.harbor-brick {
+        &:after {
+            background-image: url('../img/res_brick_color.png');
+        }
+    }
+    &.harbor-sheep {
+        &:after {
+            background-image: url('../img/res_sheep_color.png');
+        }
+    }
+    &.harbor-rock {
+        &:after {
+            background-image: url('../img/res_stone_color.png');
+        }
+    }
+    &.harbor-tree {
+        &:after {
+            background-image: url('../img/res_wood_color.png');
+        }
+    }
+
+
     .number {
+        @extend .number;
         position: relative;
         width: 47px;
         text-align: center;
         background: rgba(250, 250, 250, 0.7);
-        font-weight: bold;
         border-radius: 50%;
         padding: 10px 0px 6px 0;
-        font-family: Arial, sans-serif;
-        font-size: 26px;
-        text-shadow: 0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white;
         border: solid 1px rgba(255,255,255,0.5);
+        &.popular {
+            background:rgba(160, 73, 47, 0.5);
+            border: solid 1px rgba(160, 73, 47, 0.5);
+
+        }
     }
 }
 .crossroad {
-//    @extend .border-red;
     position: absolute;
     width: 40px;
     height: 40px;
     opacity: 1;
     z-index: 2;
-    &.harbor { z-index:3;}
-    &.wheat {background: yellow;}
-    &.sheep {background: lightgray;}
-    &.tree {background: green;}
-    &.brick {background: brown;}
-    &.rock {background: grey;}
-    &.general-harbor { background: coral; }
     &.available {
         border: solid 2px silver;
         box-shadow: none;
@@ -189,11 +251,16 @@
     &:after {
         content: " ";
         position: absolute;
+        top:0;
         width: 85px;
         height: 9px;
-        background: url("/img/road-red_1.png")no-repeat 0 0;
-        -webkit-filter: hue-rotate(90deg);
-        filter: hue-rotate(445deg);
+        background: url("/img/road.png")no-repeat 0 0;
+    }
+    &.seaRoad {
+        display: none;
+        &:after {
+            display: none;
+        }
     }
     &.available {
         background: url("/img/road_1.png")no-repeat 0 0;
@@ -218,8 +285,30 @@
     }
     &.harbor-road {
         &:before {
-            position:absolute;
+            content: "";
+            position: absolute;
+            width: 107px;
+            height: 134px;
+            background: url("../img/port.png") no-repeat 0 0;
+            z-index: 2;
+            right: -30px;
+            top: -60px;
+            transform: rotate(-120deg);
         }
+    }
+    span {
+        width:42px;
+        height:42px;
+        display: block;
+        margin:60px auto 0;
+        background-size:100%;
+        background-repeat: no-repeat;
+        &.tree {background-image: url('../img/res_wood.png');}
+        &.wheat {background-image: url('../img/res_grain.png');}
+        &.sheep {background-image: url('../img/res_sheep.png');}
+        &.brick {background-image: url('../img/res_brick.png');}
+        &.rock {background-image: url('../img/res_stone.png');}
+        &.general-harbor {background: url('../img/general-harbor.png');}
     }
 }
 
@@ -244,13 +333,79 @@
 }
 
 .players {
-    display:inline-block;
+    display: inline-block;
     & > div {
+        position: absolute;
+        &:first-child {
+            top: 0;
+            left: 0;
+        }
+        &:nth-child(2) {
+            top: 0;
+            right: 0;
+        }
+        &:last-child {
+            bottom: 0;
+            left: 0;
+        }
+
+        margin-bottom: 10px;
+    }
+}
+
+.player {
+    padding:10px;
+    background: url('../img/dialog-inner.jpg') no-repeat 0 0;
+    -webkit-border-image: url('../img/dialog-border.jpg') 30 ; /* Safari 3.1-5 */
+    -o-border-image: url('../img/dialog-border.jpg') 30 ; /* Opera 11-12.1 */
+    border-image: url('../img/dialog-border.jpg') 30 ;
+    &.active {
+//        display: block;
+    }
+    .name {
+        margin-bottom: 10px;
+        color:#e9bf71;
+        font-size:30px;
+        text-align: center;
+        text-shadow:1px 1px 2px #000;
+        -webkit-border-image: url('../img/dialog-border.jpg') 30 ; /* Safari 3.1-5 */
+        -o-border-image: url('../img/dialog-border.jpg') 30 ; /* Opera 11-12.1 */
+        border-image: url('../img/dialog-border.jpg') 30 ;
+    }
+    .score {
+        font-size:20px;
+        color:#e9bf71;
         margin-bottom:10px;
     }
-    .player {
-        &.active {
-            background: yellow;
+    .resources {
+        .res {
+            @extend .resource;
+            position: relative;
+            width: 42px;
+            height: 42px;
+            background-repeat: no-repeat;
+            background-size: 100%;
+            &.brick {
+                background-image: url('../img/res_brick_color.png');
+            }
+            &.wheat {
+                background-image: url('../img/res_grain_color.png');
+            }
+            &.rock {
+                background-image: url('../img/res_stone_color.png');
+            }
+            &.tree {
+                background-image: url('../img/res_wood_color.png');
+            }
+            &.sheep {
+                background-image: url('../img/res_sheep_color.png');
+            }
+        }
+        .quantity {
+            @extend .number;
+            position: absolute;
+            bottom: -5px;
+            right: 0;
         }
     }
 }
@@ -426,19 +581,7 @@
 
 /* Resources on main screen and in hidden exchange-field block*/
 
-.resource {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    background: lightpink;
-    text-align: center;
 
-}
-.resources{
-    span {@extend .resource;}
-}
-
-.player-resources,
 .resources-for-change {
     span {
         @extend .resource;
@@ -486,27 +629,6 @@
 .robber {
     position:absolute;
     bottom:0;
-}
-
-span {
-    &.res-tree {
-        background: green;
-    }
-    &.res-wheat {
-        background: yellow;
-    }
-    &.res-sheep {
-        background: lightgray;
-    }
-    &.res-sheep {
-        background: lightgray;
-    }
-    &.res-rock {
-        background: grey;
-    }
-    &.res-brick {
-        background: brown;
-    }
 }
 
 .building-objects {
@@ -646,4 +768,5 @@ span.victim {
 #debug {
     width: 100%;
     height: 300px;
+    display:none;
 }

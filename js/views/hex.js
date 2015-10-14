@@ -29,7 +29,31 @@ define([
         render: function() {
             var value = this.model.get("value");
             this.$el.css({'left': this.x, 'top': this.y});
-            this.$el.addClass(this.model.get("type")).append('<div class="number">' + value + '</div>');
+            this.$el.addClass(this.model.get("type"));
+            if(value !== 0){
+                this.$el.append('<div class="number">' + value + '</div>');
+                if(value === 6 || value === 8){
+                    this.$el.children('.number').addClass('popular');
+                }
+            }
+            else {
+                var harbor = "";
+                var counter = 0;
+                debugger;
+                for (var i=0; i < this.model.get('crossroads').length ;i++){
+                    var harborType = this.model.get('crossroads')[i].get('harborType');
+                    if(harbor === "" && harborType!== "") {
+                        harbor = harborType;
+                        counter = i;
+                    }
+                    else if (harbor !== "" && harborType!== "" && (i === (counter + 1) || ( i === 0 && counter === this.model.get('crossroads').length - 1) || (i === this.model.get('crossroads').length - 1) && counter === 0)){
+                        if(harbor === harborType){
+                            this.$el.addClass("harbor-" + harborType);
+                            break;
+                        }
+                    }
+                }
+            }
             return this;
         }
     });

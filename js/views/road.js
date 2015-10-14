@@ -68,6 +68,9 @@ define([
             if(this.model.get('from').get('harborType') !== "" && this.model.get('to').get('harborType') !== ""){
                 this.$el.addClass('harbor-road');
             }
+            if(this.model.get('seaRoad')){
+                this.$el.addClass('seaRoad');
+            }
             return this;
         },
         addListeners: function(){

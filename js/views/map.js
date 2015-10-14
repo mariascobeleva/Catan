@@ -10,6 +10,7 @@ define([
 ], function($, _, Backbone, HexView, CrossroadView,RoadView, MapTemplate) {
     var MapView = Backbone.View.extend({
         className: "map",
+        seaHexView:[],
         hexViews:[],
         crossroadsViews:[],
         roadsViews:[],
