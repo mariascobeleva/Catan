@@ -31,7 +31,7 @@ define([
         },
         updatePlayerResources: function(model, value, options) {
             var attr = options.type;
-            this.$(".resources .res-" + attr).text(value);
+            this.$(".resources .res." + attr + " .quantity").text(value);
         },
         renderVictoryPoints: function(){
             this.$(".vp").text(this.model.getVictoryPoints());

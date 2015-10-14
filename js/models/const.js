@@ -1,6 +1,7 @@
 define([], function() {
     var Const = {
         HEX_COUNT: 19,
+        HEX_SEA_COUNT: 18,
         HEX_EDGE_SIZE:85,
         HEX_EDGE_COLS:5,
         CROSSROAD_COUNT: 53,
@@ -13,6 +14,7 @@ define([], function() {
         HEX_TYPE_ROCK: "rock",
         HEX_TYPE_BRICK: "brick",
         HEX_TYPE_DESERT: "desert",
+        HEX_TYPE_SEA: "sea",
         resourcesTypes:["wheat","sheep","tree","rock","brick"],
         VALUES_OF_DICE: [1, 2, 3, 4, 5, 6],
         HARBOR_TYPES: ["tree", "wheat", "rock", "brick", "sheep", "general-harbor", "general-harbor", "general-harbor", "general-harbor"],
@@ -53,6 +55,26 @@ define([], function() {
             {q: -1, r: 1},
             {q: -1, r: 0},
             {q: 0, r: 0}
+        ],
+        coordsForSeaHexes: [
+            {q: 0, r: -3},
+            {q: 1, r: -3},
+            {q: 2, r: -3},
+            {q: 3, r: -3},
+            {q: 3, r: -2},
+            {q: 3, r: -1},
+            {q: 3, r: 0},
+            {q: 2, r: 1},
+            {q: 1, r: 2},
+            {q: 0, r: 3},
+            {q: -1, r: 3},
+            {q: -2, r: 3},
+            {q: -3, r: 3},
+            {q: -3, r: 2},
+            {q: -3, r: 1},
+            {q: -3, r: 0},
+            {q: -2, r: -1},
+            {q: -1, r: -2}
         ],
         coordsOfHarbor: [
             {q: 0, r: -2, indexOfCrossroad: 0},

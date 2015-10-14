@@ -1,14 +1,43 @@
+body {
+  margin: 0;
+  padding: 0; }
+
+.clearfix:after, .field:after {
+  display: block;
+  content: '' !important;
+  clear: both; }
+
+.resource, .player .resources .res, .resources-for-change span {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  text-align: center; }
+
+.number, .hex .number, .player .resources .quantity {
+  font-family: Arial, sans-serif;
+  font-size: 26px;
+  font-weight: bold;
+  text-shadow: 0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white; }
+
+.game {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("../img/hex_water.png") repeat 0 0; }
+
 .field {
   position: relative;
   width: 680px;
   /*hex edge size*8*/
-  height: 735px;
+  height: 800px;
   /*hex edge size*8.5*/
   margin: auto;
   font-family: Georgia; }
-
-.map {
-  background: url("../img/hex_water.png") repeat 0 0; }
 
 .hex {
   position: absolute;
@@ -19,33 +48,50 @@
   height: 147px;
   text-align: center;
   font-size: 70px;
-  font-weight: bold; }
+  font-weight: bold;
+  background-size: 100%; }
   .hex.wheat {
-    background: url("../img/hex_grain.png") no-repeat 0 0; }
+    background-image: url("../img/hex_grain.png"); }
   .hex.rock {
-    background: url("../img/hex_stone.png") no-repeat 0 0; }
+    background-image: url("../img/hex_stone.png"); }
   .hex.tree {
-    background: url("../img/hex_wood.png") no-repeat 0 0; }
+    background-image: url("../img/hex_wood.png"); }
   .hex.sheep {
-    background: url("../img/hex_sheep.png") no-repeat 0 0; }
+    background-image: url("../img/hex_sheep.png"); }
   .hex.brick {
-    background: url("../img/hex_brick.png") no-repeat 0 0; }
+    background-image: url("../img/hex_brick.png"); }
   .hex.desert {
-    background: url("../img/hex_desert.png") no-repeat 0 0; }
-    .hex.desert .number {
+    background-image: url("../img/hex_desert.png"); }
+    .hex.desert .number, .hex.desert .player .resources .quantity, .player .resources .hex.desert .quantity {
       display: none; }
-  .hex .number {
+  .hex.seaHex:after {
+    content: "";
+    width: 45px;
+    height: 45px;
+    background-size: 100%; }
+  .hex.harbor-general-harbor:after {
+    background-image: url("../img/general-harbor.png"); }
+  .hex.harbor-wheat:after {
+    background-image: url("../img/res_grain_color.png"); }
+  .hex.harbor-brick:after {
+    background-image: url("../img/res_brick_color.png"); }
+  .hex.harbor-sheep:after {
+    background-image: url("../img/res_sheep_color.png"); }
+  .hex.harbor-rock:after {
+    background-image: url("../img/res_stone_color.png"); }
+  .hex.harbor-tree:after {
+    background-image: url("../img/res_wood_color.png"); }
+  .hex .number, .hex .player .resources .quantity, .player .resources .hex .quantity {
     position: relative;
     width: 47px;
     text-align: center;
     background: rgba(250, 250, 250, 0.7);
-    font-weight: bold;
     border-radius: 50%;
     padding: 10px 0px 6px 0;
-    font-family: Arial, sans-serif;
-    font-size: 26px;
-    text-shadow: 0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white;
     border: solid 1px rgba(255, 255, 255, 0.5); }
+    .hex .popular.number, .hex .player .resources .popular.quantity, .player .resources .hex .popular.quantity {
+      background: rgba(160, 73, 47, 0.5);
+      border: solid 1px rgba(160, 73, 47, 0.5); }
 
 .crossroad {
   position: absolute;
@@ -53,20 +99,6 @@
   height: 40px;
   opacity: 1;
   z-index: 2; }
-  .crossroad.harbor {
-    z-index: 3; }
-  .crossroad.wheat {
-    background: yellow; }
-  .crossroad.sheep {
-    background: lightgray; }
-  .crossroad.tree {
-    background: green; }
-  .crossroad.brick {
-    background: brown; }
-  .crossroad.rock {
-    background: grey; }
-  .crossroad.general-harbor {
-    background: coral; }
   .crossroad.available {
     border: solid 2px silver;
     box-shadow: none;
@@ -171,11 +203,14 @@
   .road:after {
     content: " ";
     position: absolute;
+    top: 0;
     width: 85px;
     height: 9px;
-    background: url("/img/road-red_1.png") no-repeat 0 0;
-    -webkit-filter: hue-rotate(90deg);
-    filter: hue-rotate(445deg); }
+    background: url("/img/road.png") no-repeat 0 0; }
+  .road.seaRoad {
+    display: none; }
+    .road.seaRoad:after {
+      display: none; }
   .road.available {
     background: url("/img/road_1.png") no-repeat 0 0; }
     .road.available:after {
@@ -194,7 +229,34 @@
   .road.highway:after {
     background: url("/img/road-red_1.png") no-repeat 0 0; }
   .road.harbor-road:before {
-    position: absolute; }
+    content: "";
+    position: absolute;
+    width: 107px;
+    height: 134px;
+    background: url("../img/port.png") no-repeat 0 0;
+    z-index: 2;
+    right: -30px;
+    top: -60px;
+    transform: rotate(-120deg); }
+  .road span {
+    width: 42px;
+    height: 42px;
+    display: block;
+    margin: 60px auto 0;
+    background-size: 100%;
+    background-repeat: no-repeat; }
+    .road span.tree {
+      background-image: url("../img/res_wood.png"); }
+    .road span.wheat {
+      background-image: url("../img/res_grain.png"); }
+    .road span.sheep {
+      background-image: url("../img/res_sheep.png"); }
+    .road span.brick {
+      background-image: url("../img/res_brick.png"); }
+    .road span.rock {
+      background-image: url("../img/res_stone.png"); }
+    .road span.general-harbor {
+      background: url("../img/general-harbor.png"); }
 
 .crossroad.red, .crossroad.blue, .crossroad.violet,
 .crossroad:before.red, .crossroad:before.blue, .crossroad:before.green
@@ -218,9 +280,61 @@
 .players {
   display: inline-block; }
   .players > div {
+    position: absolute;
     margin-bottom: 10px; }
-  .players .player.active {
-    background: yellow; }
+    .players > div:first-child {
+      top: 0;
+      left: 0; }
+    .players > div:nth-child(2) {
+      top: 0;
+      right: 0; }
+    .players > div:last-child {
+      bottom: 0;
+      left: 0; }
+
+.player {
+  padding: 10px;
+  background: url("../img/dialog-inner.jpg") no-repeat 0 0;
+  -webkit-border-image: url("../img/dialog-border.jpg") 30;
+  /* Safari 3.1-5 */
+  -o-border-image: url("../img/dialog-border.jpg") 30;
+  /* Opera 11-12.1 */
+  border-image: url("../img/dialog-border.jpg") 30; }
+  .player .name {
+    margin-bottom: 10px;
+    color: #e9bf71;
+    font-size: 30px;
+    text-align: center;
+    text-shadow: 1px 1px 2px #000;
+    -webkit-border-image: url("../img/dialog-border.jpg") 30;
+    /* Safari 3.1-5 */
+    -o-border-image: url("../img/dialog-border.jpg") 30;
+    /* Opera 11-12.1 */
+    border-image: url("../img/dialog-border.jpg") 30; }
+  .player .score {
+    font-size: 20px;
+    color: #e9bf71;
+    margin-bottom: 10px; }
+  .player .resources .res {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    background-repeat: no-repeat;
+    background-size: 100%; }
+    .player .resources .res.brick {
+      background-image: url("../img/res_brick_color.png"); }
+    .player .resources .res.wheat {
+      background-image: url("../img/res_grain_color.png"); }
+    .player .resources .res.rock {
+      background-image: url("../img/res_stone_color.png"); }
+    .player .resources .res.tree {
+      background-image: url("../img/res_wood_color.png"); }
+    .player .resources .res.sheep {
+      background-image: url("../img/res_sheep_color.png"); }
+  .player .resources .quantity {
+    position: absolute;
+    bottom: -5px;
+    right: 0; }
 
 .build {
   display: none;
@@ -373,34 +487,20 @@
   height: 150px; }
 
 /* Resources on main screen and in hidden exchange-field block*/
-.resource, .resources span, .player-resources span,
-.resources-for-change span {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  background: lightpink;
-  text-align: center; }
-
-.player-resources span,
 .resources-for-change span {
   width: 50px;
   height: 50px; }
-  .player-resources span.active,
   .resources-for-change span.active {
     width: 70px;
     height: 70px;
     margin-right: 10px; }
-.player-resources .res,
 .resources-for-change .res {
   display: inline-block;
   margin-right: 25px; }
-  .player-resources .res .controls,
   .resources-for-change .res .controls {
     margin: 10px 0; }
-    .player-resources .res .controls div,
     .resources-for-change .res .controls div {
       display: inline-block; }
-  .player-resources .res .ctrl,
   .resources-for-change .res .ctrl {
     width: 10px;
     height: 10px;
@@ -425,19 +525,6 @@
 .robber {
   position: absolute;
   bottom: 0; }
-
-span.res-tree {
-  background: green; }
-span.res-wheat {
-  background: yellow; }
-span.res-sheep {
-  background: lightgray; }
-span.res-sheep {
-  background: lightgray; }
-span.res-rock {
-  background: grey; }
-span.res-brick {
-  background: brown; }
 
 .building-objects {
   display: none;
@@ -578,6 +665,7 @@ span.victim {
 
 #debug {
   width: 100%;
-  height: 300px; }
+  height: 300px;
+  display: none; }
 
 /*# sourceMappingURL=styles.css.map */

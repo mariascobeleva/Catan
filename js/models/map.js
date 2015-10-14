@@ -12,6 +12,7 @@ define([
         defaults: {
             "game": {},
             "hexes": [],
+            "seaHexes":[],
             "crossroads": [],
             "roads": []
         },
@@ -26,6 +27,7 @@ define([
                 this.set("game", options.game);
             }
             this.createHexes();
+            this.createSeaHexes();
             this.createCrossroads();
             this.createRoads();
         },
@@ -48,6 +50,9 @@ define([
                 else if (i >= 15 && i < 18) {
                     resources.push(Const.HEX_TYPE_BRICK);
                 }
+                //else if(i >= 18 && i <36){
+                //    resources.push(Const.HEX_TYPE_SEA);
+                //}
                 else {
                     resources.push(Const.HEX_TYPE_DESERT);
                 }
@@ -61,6 +66,15 @@ define([
                     thief: hexType === Const.HEX_TYPE_DESERT,
                     value: hexType === Const.HEX_TYPE_DESERT ? "" : value,
                     coords: Const.staticCoords[i]
+                }));
+            }
+        },
+        createSeaHexes: function() {
+            for (var i=0; i<= Const.HEX_SEA_COUNT; i++){
+                this.get('hexes').push(new Hex({
+                    type: "seaHex",
+                    thief: false,
+                    coords: Const.coordsForSeaHexes[i]
                 }));
             }
         },
@@ -145,7 +159,8 @@ define([
                             "highway": false,
                             "from": crossroad_from,
                             "to": crossroad_to,
-                            "coords": {q: crossroad_q, r: crossroad_r}
+                            "coords": {q: crossroad_q, r: crossroad_r},
+                            "seaRoad": hex.get('type') === "seaHex"
                         });
                         this.get("roads").push(road);
                     }
@@ -158,7 +173,6 @@ define([
                     }
                 }
             }
-            console.log(this.get("roads").length);
         },
         getCrossroad: function(q, r) {
             for (var t = 0; t < this.get("crossroads").length; t++) {
