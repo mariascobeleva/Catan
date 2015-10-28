@@ -12,7 +12,7 @@ define([
             this.model.on("change:res_brick", this.updatePlayerResources, this);
             this.model.on("change:res_sheep", this.updatePlayerResources, this);
             this.model.on("change:res_rock", this.updatePlayerResources, this);
-            this.model.on("change:victoryPoints", this.renderVictoryPoints, this)
+            this.model.on("change:victoryPoints", this.renderVictoryPoints, this);
         },
         render: function() {
             var htmlTemplate = _.template(PlayerTemplate);

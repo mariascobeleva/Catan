@@ -21,8 +21,10 @@ define([
                 },
                 mainGameEnter: function() {
                     var that = this;
+                    var curPlayer = that.model.getCurrentPlayer();
+                    that.renderCurrentPlayerResources(curPlayer);
                     that.$(".end-turn,.change-with-bank").addClass("active");
-                    that.$(".choose-for-building").show().addClass("active");
+                    that.$(".choose-for-building").addClass("active");
 
                     that.$(".change-with-bank").on("click.mainGame",null, function(){
                         if ($(this).is(".active")) {
