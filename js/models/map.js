@@ -202,7 +202,7 @@ define([
             array.splice(array.indexOf(result), 1);
             return result;
         },
-        fillNumbersValue: function() {
+         fillNumbersValue: function() {
             var array = [];
             var value = 2;
             for (var i = 0; i < Const.HEX_COUNT; i++) {

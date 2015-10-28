@@ -20,9 +20,43 @@ body {
     font-family: Arial, sans-serif;
     font-size: 26px;
     font-weight:bold;
-    text-shadow: 0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white;
+//    text-shadow: 0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white,0 0 5px white;
 }
 
+.title-general {
+    color:#e9bf71;
+    font-size:30px;
+    text-align: center;
+    text-shadow:1px 1px 2px #000;
+}
+.btn {
+    padding:10px;
+    border:solid 1px rgba(81,64,46,0.7);
+    text-decoration:none;
+    font-size:30px;
+    margin-right:20px;
+    cursor:pointer;
+    box-shadow: 1px 1px 5px #000;
+}
+.btn-green {
+    background: rgba(37,38,15,0.5);
+    color:#93e971;
+}
+.btn-red {
+    background: rgba(47,21,18,0.5);
+    color:#ac2424;
+}
+
+@mixin bordered-image($size) {
+    -webkit-border-image: url('../img/dialog-border.jpg') $size;
+    -moz-border-image: url('../img/dialog-border.jpg') $size;
+    -ms-border-image: url('../img/dialog-border.jpg') $size;
+    border-image: url('../img/dialog-border.jpg') $size;
+}
+
+@mixin text-shadow ($color) {
+    text-shadow: 0 0 5px $color,0 0 5px $color,0 0 5px $color,0 0 5px $color,0 0 5px $color,0 0 5px $color,0 0 5px $color,0 0 5px $color,0 0 5px $color,0 0 5px $color;
+}
 
 .game {
     position: absolute;
@@ -30,6 +64,7 @@ body {
     bottom:0;
     right:0;
     left:0;
+    min-height:1026px; //TODO:fix for tablet;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -74,6 +109,7 @@ body {
             width:45px;
             height:45px;
             background-size: 100%;
+            background-repeat: no-repeat;
         }
     }
     &.harbor-general-harbor {
@@ -117,6 +153,7 @@ body {
         border-radius: 50%;
         padding: 10px 0px 6px 0;
         border: solid 1px rgba(255,255,255,0.5);
+        @include text-shadow(#fff);
         &.popular {
             background:rgba(160, 73, 47, 0.5);
             border: solid 1px rgba(160, 73, 47, 0.5);
@@ -348,65 +385,87 @@ body {
             bottom: 0;
             left: 0;
         }
-
-        margin-bottom: 10px;
     }
 }
 
 .player {
     padding:10px;
     background: url('../img/dialog-inner.jpg') no-repeat 0 0;
-    -webkit-border-image: url('../img/dialog-border.jpg') 30 ; /* Safari 3.1-5 */
-    -o-border-image: url('../img/dialog-border.jpg') 30 ; /* Opera 11-12.1 */
-    border-image: url('../img/dialog-border.jpg') 30 ;
-    &.active {
-//        display: block;
-    }
+    @include bordered-image(5);
     .name {
+        @extend .title-general;
         margin-bottom: 10px;
-        color:#e9bf71;
-        font-size:30px;
-        text-align: center;
-        text-shadow:1px 1px 2px #000;
-        -webkit-border-image: url('../img/dialog-border.jpg') 30 ; /* Safari 3.1-5 */
-        -o-border-image: url('../img/dialog-border.jpg') 30 ; /* Opera 11-12.1 */
-        border-image: url('../img/dialog-border.jpg') 30 ;
+        @include bordered-image(5px);
     }
     .score {
         font-size:20px;
         color:#e9bf71;
         margin-bottom:10px;
     }
-    .resources {
-        .res {
-            @extend .resource;
-            position: relative;
-            width: 42px;
-            height: 42px;
-            background-repeat: no-repeat;
-            background-size: 100%;
-            &.brick {
-                background-image: url('../img/res_brick_color.png');
-            }
-            &.wheat {
-                background-image: url('../img/res_grain_color.png');
-            }
-            &.rock {
-                background-image: url('../img/res_stone_color.png');
-            }
-            &.tree {
-                background-image: url('../img/res_wood_color.png');
-            }
-            &.sheep {
-                background-image: url('../img/res_sheep_color.png');
-            }
+}
+
+.menu {
+    position:absolute;
+    right: 0;
+    top:50%;
+    transform: translateY(-50%);
+    & > div {
+        &.disabled,
+        &:not(.active){
+            display: none;
         }
-        .quantity {
-            @extend .number;
-            position: absolute;
-            bottom: -5px;
-            right: 0;
+    }
+}
+
+.active-player-menu {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 689px;
+    height:77px;
+    padding:10px;
+    transform: translateX(-50%);
+    background: url('../img/dialog-inner.jpg') repeat ;
+    @include bordered-image(5);
+    .name {
+        @extend .title-general;
+        margin-bottom:10px;
+    }
+}
+.resources,
+.player-resources{
+    text-align: center;
+    .res {
+        @extend .resource;
+        position: relative;
+        width: 42px;
+        height: 42px;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        margin-right:10px;
+        &:last-child{margin-right:0}
+        &.brick {
+            background-image: url('../img/res_brick_color.png');
         }
+        &.wheat {
+            background-image: url('../img/res_grain_color.png');
+        }
+        &.rock {
+            background-image: url('../img/res_stone_color.png');
+        }
+        &.tree {
+            background-image: url('../img/res_wood_color.png');
+        }
+        &.sheep {
+            background-image: url('../img/res_sheep_color.png');
+        }
+    }
+    .quantity {
+        @extend .number;
+        position: absolute;
+        bottom: -5px;
+        right: 0;
+        @include text-shadow(#fff);
     }
 }
 
@@ -423,9 +482,8 @@ body {
     width:50px;
     border:solid 1px black;
     margin-bottom:20px;
-    position: absolute;
-    top: 50%;
 }
+
 .start-game {
     @extend .control-element;
     left:100px;
@@ -444,7 +502,6 @@ body {
     @extend .control-element;
     top:60%;
     left:100px;
-    display: none;
     &:after {
         content:"Building";
     }
@@ -481,37 +538,96 @@ body {
     height:20px;
     border-radius: 50%;
     position:absolute;
-    top:60%;
-    left:300px;
     display:none;
 }
 
 .box {
     display:none;
     position:fixed;
-    height:0px;
-    width:600px;
+    width:500px;
+    height:500px;
     top: 50%;
     left: 50%;
     margin-top: -300px;
     margin-left: -300px;
     background:#fff;
-    text-align:left; /*resets text alignment from body tag */
-    border:1px solid #ccc;
-    border-top:none;
+    background:url('../img/dialog-inner.jpg') repeat 0 0;
     z-index:101;
-    -webkit-transition: height 1s ease;
-    -moz-transition: height 1s ease;
-    -ms-transition: height 1s ease;
-    -o-transition: height 1s;
-    transition: height 1s ease;
+    box-sizing: border-box;
+    text-align: center;
+    @include bordered-image(10);
     &.active {
         display:block;
-        height:600px;
-        padding: 20px 80px;
-        box-sizing: border-box;
-        text-align: center;
     }
+    .title-main {
+        @extend .title-general;
+        width:100%;
+        padding: 15px 0;
+        margin:0;
+        border-bottom:solid 2px #201612;
+    }
+    .title {
+        @extend .title-general;
+        display: inline-block;
+        margin:0;
+        font-size:18px;
+        text-align: right;
+        vertical-align: middle;
+    }
+    .resources {
+        display: inline-block;
+        margin:0 20px 20px 0;
+        vertical-align: middle;
+    }
+}
+
+.change-resources {
+    width: 500px;
+    margin: 55px auto 35px;
+    position:relative;
+    display:none;
+    &.active {display: block;}
+}
+
+.resources-to-bank,
+.player-resources,
+.resources-from-bank {
+    text-align: left;
+    margin:0 50px;
+}
+
+.resources-to-bank,
+.resources-from-bank {
+    .res {
+        &.empty {
+//            width:25px;
+//            height:25px;
+            background: none;
+            border-radius:50%;
+            -webkit-box-shadow: inset 3px 3px 4px #000;
+            -moz-box-shadow: inset 3px 3px 4px #000;
+            box-shadow: inset 3px 3px 4px #000;
+        }
+    }
+}
+
+.resources-to-bank {
+    .quantity {
+        @include text-shadow(#fd9494);
+    }
+}
+.resources-from-bank {
+    .quantity {
+        @include text-shadow(#affd94);
+    }
+}
+
+.resources-for-change {
+    display: inline-block;
+}
+.control-btns {
+    margin-top:55px;
+    text-align: center;
 }
 #overlay {
     display:none;
@@ -535,49 +651,6 @@ body {
     }
 }
 
-.confirm {
-    position:absolute;
-    right:40px;
-    top:calc(50% - 20px);
-    width:20px;
-    height:20px;
-    padding:10px;
-    background:lawngreen;
-    border-radius:50%;
-    cursor:pointer;
-}
-
-#close {
-    position:absolute;
-    top:0;
-    right:0;
-    width:20px;
-    height:20px;
-    background: url("../img/close.png") no-repeat 0 0;
-    cursor:pointer;
-}
-
-.change-resources {
-    width: 500px;
-    margin: auto;
-    height: 100%;
-    position:relative;
-    display:none;
-    &:active {display: block;}
-}
-
-.player-resources {
-    position:absolute;
-    top:0;
-}
-.resources-for-change {
-    position:absolute;
-    bottom:0;
-}
-.player-resources,
-.resources-for-change {
-    height:150px;
-}
 
 /* Resources on main screen and in hidden exchange-field block*/
 

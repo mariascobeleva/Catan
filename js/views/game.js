@@ -72,8 +72,18 @@ define([
             this.$el.append(diceView.render().el);
         },
         renderCurrentPlayer: function() {
-            this.$(".players div .player").removeClass("active");
-            this.$(".players div:nth-child(" + (this.model.get("currentPlayer") + 1) + ") .player").addClass("active");
+            //this.$(".players div .player").removeClass("active");
+            //this.$(".players div:nth-child(" + (this.model.get("currentPlayer") + 1) + ") .player").addClass("active");
+            var currentPlayer = this.model.getCurrentPlayer();
+            $('.active-player-menu .name').text(currentPlayer.get('name'));
+            this.renderCurrentPlayerResources(currentPlayer);
+
+        },
+        renderCurrentPlayerResources: function(currentPlayer) {
+            $('.active-player-menu .res').each(function(){
+                var res_quantity = currentPlayer.getResources($(this).data('name'));
+                $(this).children('.quantity').text(res_quantity);
+            });
         },
         displayPlayerResourcesForChange: function(player) {
             var k, value, prefix;
@@ -81,7 +91,7 @@ define([
                 value = player.attributes[k];
                 prefix = k.substring(0, 3);
                 if (prefix === "res") {
-                    this.$(".player-resources .res-" + k.substring(4)).text(value);
+                    this.$(".player-resources .res-" + k.substring(4) + " .quantity").text(value);
                 }
             }
         },
