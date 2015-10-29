@@ -128,139 +128,64 @@ body {
 
 .crossroad {
   position: absolute;
-  width: 40px;
-  height: 40px;
   opacity: 1;
-  z-index: 2; }
-  .crossroad.available {
-    border: solid 2px silver;
-    box-shadow: none;
-    border-radius: 50%;
-    -webkit-animation: blinking-border 1s linear infinite;
-    animation: blinking-border 1s linear infinite; }
-    .crossroad.available.blinking {
-      border: solid 2px red; }
-      .crossroad.available.blinking:after {
-        background: white url("../img/cross_settlement.png") no-repeat 0 0;
-        background-size: 40px 40px;
-        -webkit-animation: none;
-        animation: none; }
-    .crossroad.available:after {
-      content: " ";
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: white no-repeat 0 0;
-      background-size: 40px 40px;
-      z-index: 2;
-      -webkit-animation: blinking-bg 1s linear infinite;
-      animation: blinking-bg 1s linear infinite; }
+  background-size: 100%;
+  background-repeat: no-repeat;
+  z-index: 4; }
   .crossroad.settlement {
-    border: solid 2px red;
-    box-shadow: 0 0 10px red;
-    border-radius: 50%; }
-    .crossroad.settlement:after {
-      content: " ";
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: white url("../img/cross_settlement.png") no-repeat 0 0;
-      background-size: 40px 40px;
-      z-index: 2; }
+    width: 50px;
+    height: 50px; }
+  .crossroad.violet, .crossroad.violet.blinking {
+    background-image: url("../img/settlement-violet.png"); }
+  .crossroad.red, .crossroad.red.blinking {
+    background-image: url("../img/settlement-red.png"); }
+  .crossroad.blue, .crossroad.blue.blinking {
+    background-image: url("../img/settlement-blue.png"); }
+  .crossroad.available {
+    width: 50px;
+    height: 50px;
+    background-image: url("../img/settlement-white.png");
+    background-size: 100%; }
   .crossroad.available-for-city {
-    background: white;
-    border: solid 2px red;
-    box-shadow: none;
-    border-radius: 0;
-    -webkit-animation: blinking-border 1s linear infinite;
-    animation: blinking-border 1s linear infinite; }
-    .crossroad.available-for-city:before {
-      content: " ";
-      position: absolute;
-      transform: rotate(45deg);
-      background: white;
-      box-shadow: none;
-      width: 40px;
-      height: 40px;
-      border: solid 2px red;
-      left: -2px;
-      top: -2px;
-      -webkit-animation: blinking-border 1s linear infinite;
-      animation: blinking-border 1s linear infinite; }
-    .crossroad.available-for-city.blinking:after {
-      left: 0;
-      top: 0;
-      border: none; }
+    background-image: url("../img/town-white.png") !important; }
   .crossroad.city {
-    background: white;
-    background-size: 40px 40px;
-    border-radius: 0; }
-    .crossroad.city:before {
-      content: " ";
-      position: absolute;
-      transform: rotate(45deg);
-      background: white;
-      width: 40px;
-      height: 40px;
-      border: solid 2px red;
-      left: -2px;
-      top: -2px;
-      -webkit-animation: none;
-      animation: none;
-      -webkit-filter: grayscale(0);
-      filter: grayscale(0); }
-    .crossroad.city:after {
-      content: " ";
-      position: absolute;
-      background: white url("../img/cross_city.png") no-repeat 0 0;
-      background-size: 40px 40px;
-      width: 40px;
-      height: 40px;
-      -webkit-animation: none;
-      animation: none;
-      -webkit-filter: grayscale(0);
-      filter: grayscale(0);
-      transform: rotate(0);
-      border: none;
-      border-radius: 0;
-      left: 0;
-      top: 0; }
+    width: 55px;
+    height: 55px; }
+    .crossroad.city.red {
+      background-image: url("../img/town-red.png") !important; }
+    .crossroad.city.blue {
+      background-image: url("../img/town-blue.png") !important; }
+    .crossroad.city.violet {
+      background-image: url("../img/town-violet.png") !important; }
 
 .road {
   position: absolute;
   width: 85px;
   height: 9px;
-  transform-origin: 0 50% 0; }
-  .road:after {
-    content: " ";
-    position: absolute;
-    top: 0;
-    width: 85px;
-    height: 9px;
-    background: url("/img/road.png") no-repeat 0 0; }
+  transform-origin: 0 50% 0;
+  background: url("/img/road.png") no-repeat 0 0;
+  z-index: 3; }
+  .road.red {
+    -webkit-filter: hue-rotate(260deg);
+    filter: hue-rotate(260deg); }
+  .road.blue {
+    -webkit-filter: hue-rotate(120deg);
+    filter: hue-rotate(120deg); }
+  .road.violet {
+    -webkit-filter: hue-rotate(192deg);
+    filter: hue-rotate(192deg); }
   .road.seaRoad {
     display: none; }
     .road.seaRoad:after {
       display: none; }
   .road.available {
-    background: url("/img/road_1.png") no-repeat 0 0; }
-    .road.available:after {
-      content: " ";
-      position: absolute;
-      width: 85px;
-      height: 9px;
-      background: url("/img/road-red_1.png") no-repeat 0 0;
-      -webkit-filter: grayscale(1);
-      filter: grayscale(1);
-      -webkit-animation: blinking-opacity 1s linear infinite !important;
-      animation: blinking-opacity 1s linear infinite !important; }
-  .road.blinking:after {
+    background: url("/img/road_1.png") no-repeat 0 0 !important;
+    -webkit-animation: blinking-opacity 1s linear infinite !important;
+    animation: blinking-opacity 1s linear infinite !important; }
+  .road.blinking {
+    background: url("/img/road.png") no-repeat 0 0 !important;
     -webkit-animation: blinking 1s linear infinite !important;
     animation: blinking 1s linear infinite !important; }
-  .road.highway:after {
-    background: url("/img/road-red_1.png") no-repeat 0 0; }
   .road.harbor-road:before {
     content: "";
     position: absolute;
@@ -290,25 +215,6 @@ body {
       background-image: url("../img/res_stone.png"); }
     .road span.general-harbor {
       background: url("../img/general-harbor.png"); }
-
-.crossroad.red, .crossroad.blue, .crossroad.violet,
-.crossroad:before.red, .crossroad:before.blue, .crossroad:before.green
-.crossroad:after.red, .crossroad:after.blue, .crossroad:after.green
-.road.red, .road.blue, .road.violet {
-  -webkit-filter: grayscale(0);
-  filter: grayscale(0); }
-
-.crossroad.red, .road.red:after {
-  -webkit-filter: hue-rotate(0);
-  filter: hue-rotate(0deg); }
-
-.crossroad.blue, .road.blue:after {
-  -webkit-filter: hue-rotate(600deg);
-  filter: hue-rotate(600deg); }
-
-.crossroad.violet, .road.violet:after {
-  -webkit-filter: hue-rotate(288deg);
-  filter: hue-rotate(288deg); }
 
 .players {
   display: inline-block; }
@@ -346,7 +252,10 @@ body {
   position: absolute;
   right: 0;
   top: 50%;
-  transform: translateY(-50%); }
+  transform: translateY(-50%);
+  padding: 15px;
+  border-radius: 20px;
+  background: url("/img/dialog-inner.jpg"); }
   .menu > div.disabled, .menu > div:not(.active) {
     display: none; }
 
@@ -355,7 +264,7 @@ body {
   bottom: 0;
   left: 50%;
   width: 689px;
-  height: px;
+  height: 77px;
   padding: 10px;
   transform: translateX(-50%);
   background: url("../img/dialog-inner.jpg") repeat;
@@ -402,61 +311,46 @@ body {
     right: 0;
     text-shadow: 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff; }
 
+.control-element, .build, .refuse-building, .start-game, .end-turn, .choose-for-building, .do-rob, .change-with-bank {
+  display: block;
+  height: 60px;
+  width: 60px;
+  margin: 0 auto 20px;
+  cursor: pointer; }
+
 .build {
   display: none;
   left: 300px;
-  background: green; }
+  background: url("/img/galochka.png") no-repeat 0 0;
+  background-size: 100%; }
   .build.disabled {
-    background: grey; }
+    display: none; }
 
-.control-element, .start-game, .end-turn, .choose-for-building, .do-rob, .build, .change-with-bank {
-  height: 50px;
-  width: 50px;
-  border: solid 1px black;
-  margin-bottom: 20px; }
+.refuse-building {
+  width: 40px;
+  height: 40px;
+  background: url("/img/cross.png") no-repeat 0 0;
+  background-size: 100%;
+  display: none; }
 
-.start-game {
-  left: 100px; }
-  .start-game:after {
-    content: "Start game!"; }
+.start-game:after {
+  content: "Start game!"; }
 
 .end-turn {
-  left: 200px; }
-  .end-turn:after {
-    content: "Finish your turn!"; }
+  background: url("/img/turn-icon.png") no-repeat 0 0;
+  background-size: 100%; }
 
 .choose-for-building {
-  top: 60%;
-  left: 100px; }
-  .choose-for-building:after {
-    content: "Building"; }
+  background: url("/img/build-icon.png") no-repeat 0 0;
+  background-size: 100%; }
 
 .do-rob {
   display: none;
-  top: 60%;
-  left: 200px;
   background: green; }
-
-.build:after {
-  content: "Build"; }
 
 .change-with-bank {
-  left: 400px; }
-  .change-with-bank:after {
-    content: "Exchange in bank"; }
-
-.end-turn.active,
-.change-with-bank.active,
-.choose-for-building.active {
-  background: green; }
-
-.refuse-building {
-  background: red;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  position: absolute;
-  display: none; }
+  background: url("/img/trade-icon.png") no-repeat 0 0;
+  background-size: 100%; }
 
 .box {
   display: none;
@@ -591,27 +485,34 @@ body {
   bottom: 0; }
 
 .building-objects {
+  position: relative;
   display: none;
   width: 400px;
-  margin: 100px auto;
-  height: 400px;
-  position: relative; }
-  .building-objects span {
-    background: grey;
+  margin: 55px auto 35px; }
+  .building-objects .object {
     display: inline-block;
-    width: 100px;
-    height: 25px;
-    text-align: center;
-    margin-right: 15px;
-    padding: 5px; }
-    .building-objects span.active {
-      background: yellow;
-      border: solid 1px orange; }
+    width: calc(100%/3 - 10px);
+    vertical-align: top;
+    cursor: pointer; }
+    .building-objects .object img {
+      width: 100%;
+      height: auto;
+      opacity: 0.3; }
+    .building-objects .object .resources {
+      margin: 0; }
+    .building-objects .object .res {
+      width: 20px;
+      height: 20px;
+      margin-right: 0; }
+    .building-objects .object .quantity {
+      font-size: 12px; }
+    .building-objects .object.active img {
+      opacity: 1; }
 
 .choose-res-for-rob {
   display: none; }
 
-.border-red, .crossroad.available-for-city:after {
+.border-red {
   border: solid 2px red;
   left: -2px;
   top: -2px; }
@@ -696,10 +597,10 @@ body {
   text-align: center; }
 
 .thief {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: black;
+  width: 65px;
+  height: 90px;
+  background: url("../img/troll.png") no-repeat 0 0;
+  background-size: 100%;
   position: absolute;
   z-index: 99; }
   .thief.active {

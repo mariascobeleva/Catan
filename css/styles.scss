@@ -163,121 +163,33 @@ body {
 }
 .crossroad {
     position: absolute;
-    width: 40px;
-    height: 40px;
     opacity: 1;
-    z-index: 2;
-    &.available {
-        border: solid 2px silver;
-        box-shadow: none;
-        border-radius: 50%;
-        -webkit-animation: blinking-border 1s linear infinite;
-        animation: blinking-border 1s linear infinite;
-        &.blinking {
-            border: solid 2px red;
-            &:after {
-                background: white url("../img/cross_settlement.png") no-repeat 0 0;
-                background-size: 40px 40px;
-                -webkit-animation: none;
-                animation: none;
-            }
-        }
-        &:after {
-            content: " ";
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: white no-repeat 0 0;
-            background-size: 40px 40px;
-            z-index: 2;
-            -webkit-animation: blinking-bg 1s linear infinite;
-            animation: blinking-bg 1s linear infinite;
-        }
-    }
+    background-size: 100%;
+    background-repeat: no-repeat;
+    z-index:4;
     &.settlement {
-        border: solid 2px red;
-        box-shadow: 0 0 10px red;
-        border-radius: 50%;
-        &:after {
-            content: " ";
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: white url("../img/cross_settlement.png") no-repeat 0 0;
-            background-size: 40px 40px;
-            z-index: 2;
-        }
+        width: 50px;
+        height: 50px;
+    }
+    &.violet,&.violet.blinking {background-image: url('../img/settlement-violet.png');}
+    &.red, &.red.blinking {background-image: url('../img/settlement-red.png');}
+    &.blue, &.blue.blinking {background-image: url('../img/settlement-blue.png');}
+
+    &.available {
+        width: 50px;
+        height: 50px;
+        background-image: url('../img/settlement-white.png');
+        background-size:100%;
     }
     &.available-for-city {
-        background: white;
-        border: solid 2px red;
-        box-shadow: none;
-        border-radius: 0;
-        -webkit-animation: blinking-border 1s linear infinite;
-        animation: blinking-border 1s linear infinite;
-        &:before {
-            content: " ";
-            position: absolute;
-            transform: rotate(45deg);
-            background: white;
-            box-shadow: none;
-            width: 40px;
-            height: 40px;
-            border: solid 2px red;
-            left: -2px;
-            top: -2px;
-            -webkit-animation: blinking-border 1s linear infinite;
-            animation: blinking-border 1s linear infinite;
-        }
-        &:after {
-            @extend .border-red;
-        }
-        &.blinking {
-            &:after {
-                left:0;
-                top:0;
-                border: none;
-            }
-        }
+        background-image:url('../img/town-white.png') !important;
     }
     &.city {
-        background: white;
-        background-size: 40px 40px;
-        border-radius: 0;
-        &:before {
-            content: " ";
-            position: absolute;
-            transform: rotate(45deg);
-            background: white;
-            width: 40px;
-            height: 40px;
-            border: solid 2px red;
-            left: -2px;
-            top: -2px;
-            -webkit-animation: none;
-            animation: none;
-            -webkit-filter: grayscale(0);
-            filter: grayscale(0);
-        }
-        &:after {
-            content: " ";
-            position: absolute;
-            background: white url("../img/cross_city.png") no-repeat 0 0;
-            background-size: 40px 40px;
-            width: 40px;
-            height: 40px;
-            -webkit-animation: none;
-            animation: none;
-            -webkit-filter: grayscale(0);
-            filter: grayscale(0);
-            transform: rotate(0);
-            border: none;
-            border-radius: 0;
-            left: 0;
-            top: 0;
-        }
+        width:55px;
+        height:55px;
+        &.red {background-image: url('../img/town-red.png') !important;};
+        &.blue {background-image: url('../img/town-blue.png') !important;};
+        &.violet {background-image: url('../img/town-violet.png') !important;};
     }
 }
 .road {
@@ -285,14 +197,21 @@ body {
     width: 85px;
     height: 9px;
     transform-origin: 0 50% 0;
-    &:after {
-        content: " ";
-        position: absolute;
-        top:0;
-        width: 85px;
-        height: 9px;
-        background: url("/img/road.png")no-repeat 0 0;
+    background: url("/img/road.png") no-repeat 0 0;
+    z-index:3;
+    &.red {
+        -webkit-filter: hue-rotate(260deg);
+        filter:hue-rotate(260deg);
     }
+    &.blue {
+        -webkit-filter: hue-rotate(120deg);
+        filter:hue-rotate(120deg);
+    }
+    &.violet {
+        -webkit-filter: hue-rotate(192deg);
+        filter:hue-rotate(192deg);
+    }
+
     &.seaRoad {
         display: none;
         &:after {
@@ -300,25 +219,14 @@ body {
         }
     }
     &.available {
-        background: url("/img/road_1.png")no-repeat 0 0;
-        &:after {
-            content: " ";
-            position: absolute;
-            width: 85px;
-            height: 9px;
-            background: url("/img/road-red_1.png")no-repeat 0 0;
-            -webkit-filter: grayscale(1);
-            filter: grayscale(1);
-            -webkit-animation: blinking-opacity 1s linear infinite !important;
-            animation: blinking-opacity 1s linear infinite !important;
-        }
+        background: url("/img/road_1.png") no-repeat 0 0 !important;
+        -webkit-animation: blinking-opacity 1s linear infinite !important;
+        animation: blinking-opacity 1s linear infinite !important;
     }
-    &.blinking:after {
+    &.blinking {
+        background: url("/img/road.png") no-repeat 0 0 !important;
         -webkit-animation: blinking 1s linear infinite !important;
         animation: blinking 1s linear infinite !important;
-    }
-    &.highway:after {
-        background: url("/img/road-red_1.png")no-repeat 0 0;
     }
     &.harbor-road {
         &:before {
@@ -348,27 +256,6 @@ body {
         &.general-harbor {background: url('../img/general-harbor.png');}
     }
 }
-
-.crossroad.red, .crossroad.blue, .crossroad.violet,
-.crossroad:before.red, .crossroad:before.blue, .crossroad:before.green
-.crossroad:after.red, .crossroad:after.blue, .crossroad:after.green
-.road.red, .road.blue, .road.violet {
-    -webkit-filter: grayscale(0);
-    filter: grayscale(0);
-}
-.crossroad.red, .road.red:after {
-    -webkit-filter: hue-rotate(0);
-    filter:hue-rotate(0deg);
-}
-.crossroad.blue, .road.blue:after {
-    -webkit-filter: hue-rotate(600deg);
-    filter:hue-rotate(600deg);
-}
-.crossroad.violet, .road.violet:after {
-    -webkit-filter: hue-rotate(288deg);
-    filter:hue-rotate(288deg);
-}
-
 .players {
     display: inline-block;
     & > div {
@@ -409,6 +296,9 @@ body {
     right: 0;
     top:50%;
     transform: translateY(-50%);
+    padding: 15px;
+    border-radius: 20px;
+    background: url('/img/dialog-inner.jpg');
     & > div {
         &.disabled,
         &:not(.active){
@@ -469,77 +359,62 @@ body {
     }
 }
 
+.control-element {
+    display: block;
+    height:60px;
+    width:60px;
+    margin:0 auto 20px;
+    cursor:pointer;
+}
+
 .build {
+    @extend .control-element;
     display:none;
     left:300px;
-    background: green;
+    background: url('/img/galochka.png') no-repeat 0 0;
+    background-size: 100%;
     &.disabled{
-        background: grey;
+        display: none;
     }
 }
-.control-element {
-    height:50px;
-    width:50px;
-    border:solid 1px black;
-    margin-bottom:20px;
+
+.refuse-building {
+    @extend .control-element;
+    width:40px;
+    height:40px;
+    background: url('/img/cross.png') no-repeat 0 0;
+    background-size: 100%;
+    display:none;
 }
 
 .start-game {
     @extend .control-element;
-    left:100px;
     &:after {
         content:"Start game!";
     }
 }
 .end-turn {
     @extend .control-element;
-    left:200px;
-    &:after {
-        content:"Finish your turn!";
-    }
+    background: url('/img/turn-icon.png') no-repeat 0 0;
+    background-size: 100%;
 }
 .choose-for-building {
     @extend .control-element;
-    top:60%;
-    left:100px;
-    &:after {
-        content:"Building";
-    }
+    background: url('/img/build-icon.png') no-repeat 0 0;
+    background-size: 100%;
 }
 .do-rob {
     @extend .control-element;
     display:none;
-    top:60%;
-    left:200px;
-    background: green;
-}
-.build {
-    @extend .control-element;
-    &:after {
-        content: "Build";
-    }
-}
-.change-with-bank {
-    @extend .control-element;
-    left:400px;
-    &:after {
-        content: "Exchange in bank"
-    }
-}
-.end-turn.active,
-.change-with-bank.active,
-.choose-for-building.active {
     background: green;
 }
 
-.refuse-building {
-    background: red;
-    width:20px;
-    height:20px;
-    border-radius: 50%;
-    position:absolute;
-    display:none;
+.change-with-bank {
+    @extend .control-element;
+    background: url('/img/trade-icon.png') no-repeat 0 0;
+    background-size: 100%;
 }
+
 
 .box {
     display:none;
@@ -600,8 +475,6 @@ body {
 .resources-from-bank {
     .res {
         &.empty {
-//            width:25px;
-//            height:25px;
             background: none;
             border-radius:50%;
             -webkit-box-shadow: inset 3px 3px 4px #000;
@@ -705,22 +578,35 @@ body {
 }
 
 .building-objects {
+    position: relative;
     display: none;
     width: 400px;
-    margin: 100px auto;
-    height: 400px;
-    position: relative;
-    span {
-        background: grey;
+    margin: 55px auto 35px;
+    .object {
         display: inline-block;
-        width: 100px;
-        height: 25px;
-        text-align: center;
-        margin-right: 15px;
-        padding: 5px;
+        width:calc(100%/3 - 10px);
+        vertical-align: top;
+        cursor:pointer;
+        img {
+            width:100%;
+            height:auto;
+            opacity:0.3;
+        }
+        .resources {
+            margin:0;
+        }
+        .res {
+            width:20px;
+            height:20px;
+            margin-right:0;
+        }
+        .quantity {
+            font-size:12px;
+        }
         &.active {
-            background: yellow;
-            border: solid 1px orange;
+            img {
+                opacity:1;
+            }
         }
     }
 }
@@ -804,10 +690,10 @@ body {
 }
 
 .thief {
-    width:30px;
-    height:30px;
-    border-radius: 50%;
-    background: black;
+    width:65px;
+    height:90px;
+    background: url('../img/troll.png') no-repeat 0 0;
+    background-size: 100%;
     position: absolute;
     z-index:99;
     &.active {
