@@ -45,7 +45,7 @@ define([
                 mainGameLeave: function() {
                     this.$(".end-turn,.change-with-bank,.choose-for-building").removeClass("active");
 
-                    this.$(".build").removeClass("disabled").hide();
+                    this.$(".confirm").removeClass("disabled").hide();
                     this.$(".change-with-bank").off("click.mainGame");
                     this.$(".end-turn").off("click.mainGame");
                     this.$(".choose-for-building").off("click.mainGame");
