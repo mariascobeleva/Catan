@@ -36,7 +36,7 @@ define([
         className: "game",
         playerViews: [],
         events: {
-            "click .start-game": "startGame"
+            //"click .start-game": "startGame"
         },
         initialize: function() {
             this.addListeners();
@@ -48,6 +48,7 @@ define([
             this.renderPlayers();
             this.renderMap();
             this.renderDice();
+            this.renderStartGamePopup();
             return this;
         },
         addListeners: function() {
@@ -70,6 +71,21 @@ define([
         renderDice: function() {
             var diceView = new DiceView({model: this.model.get("dice")});
             this.$el.append(diceView.render().el);
+        },
+        renderStartGamePopup: function(){
+
+            //TODO: make as a state.
+            var that = this;
+            that.$('.box .title-main').text('Кратко об игре');
+            that.$('.short-rules').text(Const.rules).show();
+            that.$('.box,#overlay').addClass('active');
+            that.showPopupControlBtns('Начать Игру!');
+            that.$('.confirm-btn').one('click',function(){
+                that.$('.box,#overlay').removeClass('active');
+                that.$('.confirm-btn').text('').hide();
+                that.$('.short-rules').hide();
+                that.startGame();
+            });
         },
         renderCurrentPlayer: function() {
             //this.$(".players div .player").removeClass("active");
@@ -100,8 +116,18 @@ define([
             for (j in player.attributes.exchangeRate) {
                 this.$(".resources-for-change ." + j + " .rate").text("1 : " + player.attributes.exchangeRate[j]);
             }
+        },
+        showPopupControlBtns: function(btnConfirmText,btnRefuseText){
+            if(btnConfirmText){
+                this.$('.control-btns .confirm-btn').text(btnConfirmText).show();
+            }
+            if(btnRefuseText){
+                this.$('.control-btns .cancel').text(btnRefuseText).show();
+            }
+        },
+        hidePopupControlBtns: function(){
+            this.$('.control-btns .confirm-btn, .control-btns .cancel').text("").off('click').hide();
         }
-
     });
     firstTurns(GameView);
     secondTurn(GameView);

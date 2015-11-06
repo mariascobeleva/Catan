@@ -291,6 +291,15 @@ body {
     }
 }
 
+
+.short-rules {
+    display: none;
+    color:#e9bf71;
+    font-size:14px;
+    padding:0 15px;
+    line-height:25px;
+}
+
 .menu {
     position:absolute;
     right: 0;
@@ -333,7 +342,8 @@ body {
         background-repeat: no-repeat;
         background-size: 100%;
         margin-right:10px;
-        &:last-child{margin-right:0}
+        &:last-child,
+        &:nth-child(5){margin-right:0}
         &.brick {
             background-image: url('../img/res_brick_color.png');
         }
@@ -367,9 +377,8 @@ body {
     cursor:pointer;
 }
 
-.build {
+.confirm {
     @extend .control-element;
-    display:none;
     left:300px;
     background: url('/img/galochka.png') no-repeat 0 0;
     background-size: 100%;
@@ -378,21 +387,14 @@ body {
     }
 }
 
-.refuse-building {
+.refuse {
     @extend .control-element;
     width:40px;
     height:40px;
     background: url('/img/cross.png') no-repeat 0 0;
     background-size: 100%;
-    display:none;
 }
 
-.start-game {
-    @extend .control-element;
-    &:after {
-        content:"Start game!";
-    }
-}
 .end-turn {
     @extend .control-element;
     background: url('/img/turn-icon.png') no-repeat 0 0;
@@ -423,9 +425,8 @@ body {
     height:500px;
     top: 50%;
     left: 50%;
-    margin-top: -300px;
-    margin-left: -300px;
-    background:#fff;
+    margin-top: -250px;
+    margin-left: -250px;
     background:url('../img/dialog-inner.jpg') repeat 0 0;
     z-index:101;
     box-sizing: border-box;
@@ -456,51 +457,110 @@ body {
     }
 }
 
-.change-resources {
+.box-container {
+    position: relative;
     width: 500px;
     margin: 55px auto 35px;
-    position:relative;
-    display:none;
-    &.active {display: block;}
-}
-
-.resources-to-bank,
-.player-resources,
-.resources-from-bank {
-    text-align: left;
-    margin:0 50px;
-}
-
-.resources-to-bank,
-.resources-from-bank {
-    .res {
-        &.empty {
-            background: none;
-            border-radius:50%;
-            -webkit-box-shadow: inset 3px 3px 4px #000;
-            -moz-box-shadow: inset 3px 3px 4px #000;
-            box-shadow: inset 3px 3px 4px #000;
+    .only-for-rob-state {
+        display: none;
+    }
+    .resources-to-bank,
+    .player-resources,
+    .resources-from-bank {
+        display: none;
+        text-align: left;
+        margin: 0 50px;
+    }
+    .resources-to-bank,
+    .resources-from-bank {
+        .res {
+            &.empty {
+                background: none;
+                border-radius: 50%;
+                -webkit-box-shadow: inset 3px 3px 4px #000;
+                -moz-box-shadow: inset 3px 3px 4px #000;
+                box-shadow: inset 3px 3px 4px #000;
+            }
         }
     }
+    .resources-to-bank {
+        .quantity {
+            @include text-shadow(#fd9494);
+        }
+    }
+    .resources-from-bank {
+        .quantity {
+            @include text-shadow(#affd94);
+        }
+    }
+    .building-objects {
+        display: none;
+    }
+    .choose-player {
+        display: none;
+    }
+    .control-btns {
+        margin-top: 55px;
+        text-align: center;
+        a {
+            display: none;
+        }
+    }
+    &.choose-res-for-rob {
+        .title {
+            display: block;
+            text-align: center;
+            margin: 10px 0 45px;
+        }
+        .resources {
+            display: block;
+        }
+        .only-for-rob-state {
+            display: block;
+        }
+        h4.title {
+            display: none;
+        }
+        .control-btns {
+            margin-top: 50px;
+        }
+        .resources-to-bank,
+        .player-resources {
+            display: block;
+        }
+    }
+    &.building {
+        .building-objects {
+            display: block;
+        }
+    }
+    &.choose-player-for-robber {
+        .choose-player {
+            display: block;
+        }
+    }
+    &.change-resources {
+        .resources-to-bank,
+        .player-resources,
+        .resources-from-bank {
+            display: block;
+        }
+
+    }
 }
 
-.resources-to-bank {
-    .quantity {
-        @include text-shadow(#fd9494);
-    }
-}
-.resources-from-bank {
-    .quantity {
-        @include text-shadow(#affd94);
-    }
-}
+//.change-resources {
+//    width: 500px;
+//    margin: 55px auto 35px;
+//    position:relative;
+//    display:none;
+//    &.active {display: block;}
+//}
+
+
 
 .resources-for-change {
     display: inline-block;
-}
-.control-btns {
-    margin-top:55px;
-    text-align: center;
 }
 #overlay {
     display:none;
@@ -569,13 +629,6 @@ body {
     }
 }
 .player-resources p,
-.robber p {
-    text-align:center;
-}
-.robber {
-    position:absolute;
-    bottom:0;
-}
 
 .building-objects {
     position: relative;
@@ -586,7 +639,6 @@ body {
         display: inline-block;
         width:calc(100%/3 - 10px);
         vertical-align: top;
-        cursor:pointer;
         img {
             width:100%;
             height:auto;
@@ -604,15 +656,12 @@ body {
             font-size:12px;
         }
         &.active {
+            cursor:pointer;
             img {
                 opacity:1;
             }
         }
     }
-}
-
-.choose-res-for-rob {
-    display:none;
 }
 
 
@@ -672,6 +721,7 @@ body {
     50% {opacity: 0.3;}
     100% {opacity: 0.5;}
 }
+
 .dice {
     display: inline-block;
     position:absolute;
@@ -697,14 +747,26 @@ body {
     position: absolute;
     z-index:99;
     &.active {
-        border:solid 2px white;
+        transform-origin: 50% 90%;
+        -webkit-animation:swinging 0.5s linear infinite;
+        animation:swinging 0.5s linear infinite;
     }
 }
+
+@-webkit-keyframes swinging {
+    0% {transform:rotateZ(0deg);}
+    25% {transform:rotateZ(3deg);}
+    50%{transform:rotateZ(0deg);}
+    75%{transform:rotateZ(-3deg);}
+    100% {transform:rotateZ(0deg);}
+}
+
 .choose-player-for-robber {
     display:none;
     p {
-        font-size: 22px;
-        line-height: 517px;
+        color:#e9bf71;
+        font-size:22px;
+        text-align: center;
         display: block;
     }
 }

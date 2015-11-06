@@ -16,8 +16,9 @@ define([
                 rollDiceEnter: function() {
                     // Show rolling dice;
                     this.model.get("dice").setDiceValue();
-//                    this.model.get("dice").set("value_1",3);
-//                    this.model.get("dice").set("value_2",4);
+                    // Activate Rob for test //TODO: delete it after popup for rob will be complete
+                    //this.model.get("dice").set("value_1",3);
+                    //this.model.get("dice").set("value_2",4);
 
                     var diceAmount = this.model.get("dice").getDiceAmount();
                     if (diceAmount !== 7) {

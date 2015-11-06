@@ -1,6 +1,7 @@
 define([
-    'jquery'
-], function($) {
+    'jquery',
+    'models/const'
+], function($, Const) {
         return function (GameView) {
             var robber = {
                 states: {
@@ -55,41 +56,86 @@ define([
 
                     that.displayPlayerResourcesForChange(player);
                     var robResAmount = Math.floor(player.getTotalAmountOfPlayerRes() / 2);
-
+                    that.$('.box-container').addClass('choose-res-for-rob');
                     that.$(".choose-res-for-rob .name").text(player.get("name"));
                     that.$(".choose-res-for-rob .amount").text(robResAmount);
+                    that.$(".box .title-main").text('Ограбление!');
                     that.$("#overlay, .box").addClass("active");
-                    that.$("#close").hide();
-                    that.$(".choose-res-for-rob").show();
 
-                    that.$(".ctrl.add").on('click.robAll', null, function() {
-                        var $amountForRob = $(this).siblings(".value");
-                        var $res = $(this).parent(".controls").siblings("span");
 
-                        if (parseInt($res.text()) !== 0) {
-                            $res.text(parseInt($res.text()) - 1);
-                            $amountForRob.text(parseInt($amountForRob.text()) + 1);
+                    that.$(".choose-res-for-rob .player-resources .res").draggable({
+                        helper: "clone",
+                        cursor: "move",
+                        containment: ".box.active",
+                        start: function(){
+                            if(parseInt($(this).find('.quantity').text()) <= 0){
+                                return false;
+                            }
                         }
                     });
 
-                    that.$(".ctrl.decrease").on('click.robAll', null, function() {
-                        var $amountForRob = $(this).siblings(".value");
-                        var $res = $(this).parent(".controls").siblings("span");
-
-                        if (parseInt($amountForRob.text()) !== 0) {
-                            $res.text(parseInt($res.text()) + 1);
-                            $amountForRob.text(parseInt($amountForRob.text()) - 1);
+                    that.$(".player-resources .res").droppable({
+                        accept: ".resources-to-bank .res",
+                        activeClass: "ui-state-highlight",
+                        drop: function(event, ui) {
+                            var res = $(this).attr('name');
+                            if (ui.draggable.attr('name') !== res) {
+                                return false;
+                            }
+                            else {
+                                var curResQuantity = parseInt($(this).find(' .quantity').text());
+                                var $resToBank = $('.choose-res-for-rob .resources-to-bank .resources > .res.' + res).first();
+                                var quantity = parseInt($resToBank.find('.quantity').text()) - 1;
+                                if (quantity === 0) {
+                                    $resToBank.addClass('empty').find('.clone').remove();
+                                    $resToBank.find('.quantity').text("");
+                                    $resToBank.draggable('disable');
+                                }
+                                else {
+                                    $resToBank.find('.quantity').empty().text(quantity);
+                                }
+                                $(this).find('.quantity').text(curResQuantity + 1);
+                            }
                         }
                     });
 
-                    that.$(".confirm").on('click.robAll', null, function() {
+
+                    that.$(".resources-to-bank .res").droppable({
+                        accept: ".player-resources .res",
+                        activeClass: "ui-state-highlight",
+
+                        drop: function(event, ui) {
+                            var res = $(this).attr('name');
+                            if (ui.draggable.attr('name') !== res) {
+                                return false;
+                            }
+                            else {
+                                var $curRes = $('.choose-res-for-rob .player-resources .res.' + res).not('.ui-draggable-dragging').first();
+                                var curResQuantity = parseInt($curRes.find(' .quantity').text());
+                                var quantity = ($(this).hasClass('empty')) ? 1 : parseInt($(this).find('.quantity').text()) + 1;
+                                var $item = ui.draggable.clone();
+                                $('.choose-res-for-rob .player-resources .res-' + res + ' .quantity').empty().text(curResQuantity - 1);
+                                $item.addClass('clone');
+                                $(this).removeClass('empty').html($item).find('.quantity').text(quantity);
+                                $(this).draggable({
+                                    helper: "clone",
+                                    cursor: "move",
+                                    containment: ".box.active"
+
+                                });
+                                $(this).draggable('enable');
+                            }
+                        }
+                    });
+                    that.showPopupControlBtns('Отдать ресурсы');
+                    that.$(".control-btns .confirm-btn").on('click.robAll', null, function() {
                         var choosenResAmount = 0;
                         var robedRes = {};
-                        that.$(".controls .value").each(function() {
-                            var res = $(this).parent(".controls").siblings("span").attr("name");
-                            var amount = parseInt($(this).text());
+                        that.$('.choose-res-for-rob .resources-to-bank .resources > .res').each(function(){
+                            var res = $(this).attr("name");
+                            var amount = ($(this).find('.quantity').text() === "") ? 0 : parseInt($(this).find('.quantity').text());
                             robedRes[res] = -amount;
-                            choosenResAmount = choosenResAmount + parseInt($(this).text());
+                            choosenResAmount = choosenResAmount + amount;
                         });
                         if (robResAmount === choosenResAmount) {
                             player.spendResource(robedRes);
@@ -101,62 +147,88 @@ define([
                             else {
                                 that.trigger("playersRobed");
                             }
-
                         }
                         else {
                             alert("You gave to rob wrong amount of resources!");
                             robedRes = {};
+                            return false;
                         }
                     });
 
                 },
                 robAllLeave: function() {
-                    this.$(".ctrl.add").off("click.robAll");
-                    this.$(".ctrl.decrease").off("click.robAll");
-                    this.$(".confirm").off("click.robAll");
+                    this.hidePopupControlBtns();
                     this.$("#overlay, .box").removeClass("active");
-                    this.$(".choose-res-for-rob").hide();
-                    this.$("#close").show();
-
-                    this.$(".controls .value").each(function(){
-                         $(this).text("0");
+                    this.$(".choose-res-for-rob .name").text("");
+                    this.$(".choose-res-for-rob .amount").text("");
+                    this.$(".box .title-main").text('');
+                    this.$(".choose-res-for-rob .resources-to-bank .resources > .res").each(function(){
+                        $(this).find('.clone').remove();
+                        $(this).addClass('empty').find(".quantity").text("");
                     });
+                    this.$('.box-container').removeClass('choose-res-for-rob');
 
                 },
                 robberMoveEnter: function() {
                     var that = this;
                     var currentPlayer = this.model.getCurrentPlayer();
+
                     that.$(".thief").addClass("active").draggable({
-                        containment: ".field"
+                        containment: ".field",
+                        create: function(){$(this).data('position',$(this).position());}
                     });
-                    that.$(".do-rob").show();
-                    that.$(".do-rob").click(function() {
+                    that.$('.menu .confirm').show();
+                    that.$('.hex').droppable({
+                        accept:'.thief',
+                        drop: function( event, ui ) {
+                            var fieldX = event.pageX - that.$('.field').offset().left;
+                            var fieldY = event.pageY - that.$('.field').offset().top;
+
+                            var coordsQR = Const.getQRByXY(fieldX, fieldY);
+                            console.log(coordsQR);
+                            ui.draggable.data('q',coordsQR.q);
+                            ui.draggable.data('r',coordsQR.r);
+                            var coordsXY = Const.getXYByQR(coordsQR);
+
+                            var left = coordsXY.x + Const.HEX_WIDTH/2 - Const.THIEF_WIDTH/2;
+                            var top = coordsXY.y + Const.HEX_HEIGHT/2 - Const.THIEF_HEIGHT/2;
+                            ui.draggable.animate({top:top,left:left},{duration:200,easing:'linear'});
+                        }
+                    });
+                    that.$(".confirm").click(function() {
                         var $thief = that.$(".thief");
                         var thiefCoords = that.model.getThiefCoords($thief);
                         var robedHex = that.model.get("map").getHexByCoords(thiefCoords);
-                        that.model.setRobedHex(robedHex);
-
-                        var playersRb = robedHex.getPlayersWhichBuiltOnHex(currentPlayer);
-                        var choosenPlayer = playersRb[0];
-                        if (playersRb.length > 1) {
-                            that.trigger("robberMoveOnHexWithFewPl", playersRb);
+                        if(robedHex){
+                            that.model.setRobedHex(robedHex);
+                            var playersRb = robedHex.getPlayersWhichBuiltOnHex(currentPlayer);
+                            var choosenPlayer = playersRb[0];
+                            if (playersRb.length > 1) {
+                                that.trigger("robberMoveOnHexWithFewPl", playersRb);
+                            }
+                            else {
+                                if (playersRb.length && choosenPlayer.checkIfPlayerHaveResources()){
+                                    currentPlayer.stealResource(choosenPlayer);
+                                }
+                                that.trigger("robberMoveAndRob");
+                            }
                         }
                         else {
-                            if (playersRb.length && choosenPlayer.checkIfPlayerHaveResources()){
-                                currentPlayer.stealResource(choosenPlayer);
-                            }
-                            that.trigger("robberMoveAndRob");
+                            alert("Вор должен находится на поле!");
                         }
                     });
                 },
                 robberMoveLeave: function() {
-                    this.$(".do-rob").off("click");
-                    this.$(".do-rob").hide();
+                    this.$(".confirm").off("click");
+                    this.$(".confirm").hide();
                     this.$(".thief").removeClass("active");
                     this.$(".thief").draggable("destroy");
                 },
                 robberChooseVictimEnter: function(playersRb) {
                     var that = this;
+                    that.$('.box-container').addClass('choose-player-for-robber');
+                    that.$('.box .title-main').text('Ограбление');
+
                     var currentPlayer = this.model.getCurrentPlayer();
                     var choosenPlayer;
                     for (var i = 0; i < playersRb.length; i++) {
@@ -177,7 +249,7 @@ define([
                 robberChooseVictimLeave: function() {
                     this.$(".choose-player-for-robber span").off("click.robberChoose");
                     this.$("#overlay, .box").removeClass("active");
-                    this.$(".choose-player-for-robber").hide();
+                    this.$('.box-container').addClass('choose-player-for-robber');
                 }
             };
 

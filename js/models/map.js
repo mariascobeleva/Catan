@@ -86,9 +86,12 @@ define([
                 }
             }
         },
+        getHexByCoords: function(coords) {
+            return this.getHex(coords.q,coords.r);
+        },
         createCrossroads: function() {
-            for (var i = 0; i < this.get("hexes").length; i++) {
-                var hex = this.get("hexes")[i];
+        for (var i = 0; i < this.get("hexes").length; i++) {
+            var hex = this.get("hexes")[i];
                 for (var j = 0; j < Const.crossroadsCoords.length; j++) {
                     var crossroad_q = hex.get('coords').q + Const.crossroadsCoords[j].q;
                     var crossroad_r = hex.get('coords').r + Const.crossroadsCoords[j].r;
@@ -109,7 +112,6 @@ define([
                     hex.get("crossroads").push(crossroad);
                 }
             }
-
             var that = this;
             var createPort = function(coords) {
                 var harbor_type = that.randomChoice(Const.HARBOR_TYPES);
@@ -119,8 +121,8 @@ define([
                 crossroad_1.set("harborType", harbor_type);
                 crossroad_2.set("harborType", harbor_type);
             };
-            for (var l = 0; l < Const.coordsOfHarbor.length; l++) {
-                createPort(Const.coordsOfHarbor[l]);
+            for (var k = 0; k < Const.coordsOfHarbor.length; k++) {
+                createPort(Const.coordsOfHarbor[k]);
             }
         },
         createRoads: function() {
@@ -242,15 +244,12 @@ define([
             }
         },
 
-
-
         findAvailableRoadsByCrossroad: function(player, crossroadView) {
             var availableRoads = [];
             var visitedRoads = [];
             var crossroad = crossroadView.model;
             this.visitCrossroad(crossroad, player, availableRoads, visitedRoads);
             return availableRoads;
-
         },
 
         findAvailableRoads: function(player) {
@@ -331,14 +330,6 @@ define([
                 this.get("crossroads")[i].trigger("removeHighlightingAsCity");
             }
         },
-        getHexByCoords: function(coords) {
-            for (var i = 0; i < this.get("hexes").length; i++) {
-                var hex = this.get("hexes")[i];
-                if (hex.get("coords").q === coords.q && hex.get("coords").r === coords.r) {
-                    return hex;
-                }
-            }
-        }
 
     });
     return Map;

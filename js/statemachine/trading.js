@@ -15,9 +15,10 @@ define([
                 },
                 tradingEnter: function() {
                     var that = this;
-                    that.$("#overlay, .box, .change-resources").addClass("active");
-
-
+                    that.$("#overlay, .box").addClass("active");
+                    that.$('.box-container').addClass("change-resources");
+                    that.$('.title-main').text('Торговля с банком');
+                    that.showPopupControlBtns('Обменять','Отменить');
                     var currentPlayer = this.model.getCurrentPlayer();
                     that.displayPlayerResourcesForChange(currentPlayer);
                     that.displayExchangeRate(currentPlayer);
@@ -25,6 +26,7 @@ define([
                     that.$(".player-resources .res").draggable({
                         helper: "clone",
                         cursor: "move",
+                        containment: ".box.active",
                         start: function(){
                             if(parseInt($(this).find('.quantity').text()) <= 0){
                                 return false;
@@ -55,7 +57,8 @@ define([
                                 $(this).removeClass('empty').html($item).find('.quantity').text(quantity);
                                 $(this).draggable({
                                     helper: "clone",
-                                    cursor: "move"
+                                    cursor: "move",
+                                    containment: ".box.active"
                                 });
                                 $(this).draggable('enable');
                             }
@@ -80,7 +83,6 @@ define([
                                 if (quantity === 0) {
                                     $resToBank.addClass('empty').find('.clone').remove();
                                     $resToBank.find('.quantity').text("");
-                                    //$resToBank.draggable('disable');
                                 }
                                 else {
                                     $resToBank.find('.quantity').empty().text(quantity);
@@ -92,7 +94,7 @@ define([
                     });
 
 
-                    that.$(".control-btns .confirm").on("click.trading",null, function(){
+                    that.$(".control-btns .confirm-btn").on("click.trading",null, function(){
 
                         var allowableAmount = 0;
                         var amountResFromBank = 0;
@@ -134,6 +136,9 @@ define([
                                 $(this).addClass('empty').find(".quantity").text("");
                             });
                         }
+                        else {
+                            alert('Выберите ресурсы для обмена.');
+                        }
                     });
 
                     that.$(".control-btns .cancel").on("click.trading",null, function(){
@@ -147,11 +152,11 @@ define([
                 },
                 tradingLeave: function() {
                     this.$("#overlay, .box, .change-resources").removeClass("active");
+                    this.$('.box-container').removeClass('change-resources');
                     this.$(".player-resources .res.ui-draggable").draggable('destroy');
                     this.$(".player-resources .res.ui-droppable").droppable('destroy');
                     this.$(".resources-to-bank .res.ui-droppable, .resources-from-bank .res.ui-droppable").droppable('destroy');
-                    this.$(".control-btns .cancel").off("click.trading");
-                    this.$(".control-btns .confirm").off("click.trading");
+                    this.hidePopupControlBtns();
                 }
             };
             $.extend(true, GameView.prototype, trading);

@@ -248,6 +248,13 @@ body {
     color: #e9bf71;
     margin-bottom: 10px; }
 
+.short-rules {
+  display: none;
+  color: #e9bf71;
+  font-size: 14px;
+  padding: 0 15px;
+  line-height: 25px; }
+
 .menu {
   position: absolute;
   right: 0;
@@ -286,8 +293,9 @@ body {
     background-repeat: no-repeat;
     background-size: 100%;
     margin-right: 10px; }
-    .resources .res:last-child,
-    .player-resources .res:last-child {
+    .resources .res:last-child, .resources .res:nth-child(5),
+    .player-resources .res:last-child,
+    .player-resources .res:nth-child(5) {
       margin-right: 0; }
     .resources .res.brick,
     .player-resources .res.brick {
@@ -311,30 +319,25 @@ body {
     right: 0;
     text-shadow: 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff; }
 
-.control-element, .build, .refuse-building, .start-game, .end-turn, .choose-for-building, .do-rob, .change-with-bank {
+.control-element, .confirm, .refuse, .end-turn, .choose-for-building, .do-rob, .change-with-bank {
   display: block;
   height: 60px;
   width: 60px;
   margin: 0 auto 20px;
   cursor: pointer; }
 
-.build {
-  display: none;
+.confirm {
   left: 300px;
   background: url("/img/galochka.png") no-repeat 0 0;
   background-size: 100%; }
-  .build.disabled {
+  .confirm.disabled {
     display: none; }
 
-.refuse-building {
+.refuse {
   width: 40px;
   height: 40px;
   background: url("/img/cross.png") no-repeat 0 0;
-  background-size: 100%;
-  display: none; }
-
-.start-game:after {
-  content: "Start game!"; }
+  background-size: 100%; }
 
 .end-turn {
   background: url("/img/turn-icon.png") no-repeat 0 0;
@@ -359,9 +362,8 @@ body {
   height: 500px;
   top: 50%;
   left: 50%;
-  margin-top: -300px;
-  margin-left: -300px;
-  background: #fff;
+  margin-top: -250px;
+  margin-left: -250px;
   background: url("../img/dialog-inner.jpg") repeat 0 0;
   z-index: 101;
   box-sizing: border-box;
@@ -388,40 +390,64 @@ body {
     margin: 0 20px 20px 0;
     vertical-align: middle; }
 
-.change-resources {
-  width: 500px;
-  margin: 55px auto 35px;
+.box-container {
   position: relative;
-  display: none; }
-  .change-resources.active {
+  width: 500px;
+  margin: 55px auto 35px; }
+  .box-container .only-for-rob-state {
+    display: none; }
+  .box-container .resources-to-bank,
+  .box-container .player-resources,
+  .box-container .resources-from-bank {
+    display: none;
+    text-align: left;
+    margin: 0 50px; }
+  .box-container .resources-to-bank .res.empty,
+  .box-container .resources-from-bank .res.empty {
+    background: none;
+    border-radius: 50%;
+    -webkit-box-shadow: inset 3px 3px 4px #000;
+    -moz-box-shadow: inset 3px 3px 4px #000;
+    box-shadow: inset 3px 3px 4px #000; }
+  .box-container .resources-to-bank .quantity {
+    text-shadow: 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494; }
+  .box-container .resources-from-bank .quantity {
+    text-shadow: 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94; }
+  .box-container .building-objects {
+    display: none; }
+  .box-container .choose-player {
+    display: none; }
+  .box-container .control-btns {
+    margin-top: 55px;
+    text-align: center; }
+    .box-container .control-btns a {
+      display: none; }
+  .box-container.choose-res-for-rob .title {
+    display: block;
+    text-align: center;
+    margin: 10px 0 45px; }
+  .box-container.choose-res-for-rob .resources {
     display: block; }
-
-.resources-to-bank,
-.player-resources,
-.resources-from-bank {
-  text-align: left;
-  margin: 0 50px; }
-
-.resources-to-bank .res.empty,
-.resources-from-bank .res.empty {
-  background: none;
-  border-radius: 50%;
-  -webkit-box-shadow: inset 3px 3px 4px #000;
-  -moz-box-shadow: inset 3px 3px 4px #000;
-  box-shadow: inset 3px 3px 4px #000; }
-
-.resources-to-bank .quantity {
-  text-shadow: 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494, 0 0 5px #fd9494; }
-
-.resources-from-bank .quantity {
-  text-shadow: 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94, 0 0 5px #affd94; }
+  .box-container.choose-res-for-rob .only-for-rob-state {
+    display: block; }
+  .box-container.choose-res-for-rob h4.title {
+    display: none; }
+  .box-container.choose-res-for-rob .control-btns {
+    margin-top: 50px; }
+  .box-container.choose-res-for-rob .resources-to-bank,
+  .box-container.choose-res-for-rob .player-resources {
+    display: block; }
+  .box-container.building .building-objects {
+    display: block; }
+  .box-container.choose-player-for-robber .choose-player {
+    display: block; }
+  .box-container.change-resources .resources-to-bank,
+  .box-container.change-resources .player-resources,
+  .box-container.change-resources .resources-from-bank {
+    display: block; }
 
 .resources-for-change {
   display: inline-block; }
-
-.control-btns {
-  margin-top: 55px;
-  text-align: center; }
 
 #overlay {
   display: none;
@@ -477,40 +503,38 @@ body {
   margin-right: 0; }
 
 .player-resources p,
-.robber p {
-  text-align: center; }
-
-.robber {
-  position: absolute;
-  bottom: 0; }
-
 .building-objects {
   position: relative;
   display: none;
   width: 400px;
   margin: 55px auto 35px; }
+  .player-resources p .object,
   .building-objects .object {
     display: inline-block;
     width: calc(100%/3 - 10px);
-    vertical-align: top;
-    cursor: pointer; }
+    vertical-align: top; }
+    .player-resources p .object img,
     .building-objects .object img {
       width: 100%;
       height: auto;
       opacity: 0.3; }
+    .player-resources p .object .resources,
     .building-objects .object .resources {
       margin: 0; }
+    .player-resources p .object .res,
     .building-objects .object .res {
       width: 20px;
       height: 20px;
       margin-right: 0; }
+    .player-resources p .object .quantity,
     .building-objects .object .quantity {
       font-size: 12px; }
-    .building-objects .object.active img {
-      opacity: 1; }
-
-.choose-res-for-rob {
-  display: none; }
+    .player-resources p .object.active,
+    .building-objects .object.active {
+      cursor: pointer; }
+      .player-resources p .object.active img,
+      .building-objects .object.active img {
+        opacity: 1; }
 
 .border-red {
   border: solid 2px red;
@@ -604,13 +628,27 @@ body {
   position: absolute;
   z-index: 99; }
   .thief.active {
-    border: solid 2px white; }
+    transform-origin: 50% 90%;
+    -webkit-animation: swinging 0.5s linear infinite;
+    animation: swinging 0.5s linear infinite; }
 
+@-webkit-keyframes swinging {
+  0% {
+    transform: rotateZ(0deg); }
+  25% {
+    transform: rotateZ(3deg); }
+  50% {
+    transform: rotateZ(0deg); }
+  75% {
+    transform: rotateZ(-3deg); }
+  100% {
+    transform: rotateZ(0deg); } }
 .choose-player-for-robber {
   display: none; }
   .choose-player-for-robber p {
+    color: #e9bf71;
     font-size: 22px;
-    line-height: 517px;
+    text-align: center;
     display: block; }
 
 span.victim {

@@ -17,31 +17,31 @@ define([
             this.$el.val(this.$el.val() + "\n" + value);
         },
         doFirstTurns: function() {
-            $('.start-game').click();
+            $('.confirm-btn').click();
             $(".crossroads .crossroad:nth-child(48)").click();
-            $('.build').click();
+            $('.confirm').click();
             $(".roads .road:nth-child(73)").click();
-            $('.build').click();
+            $('.confirm').click();
             $(".crossroads .crossroad:nth-child(4)").click();
-            $('.build').click();
+            $('.confirm').click();
             $(".roads .road:nth-child(75)").click();
-            $('.build').click();
+            $('.confirm').click();
             $(".crossroads .crossroad:nth-child(9)").click();
-            $('.build').click();
+            $('.confirm').click();
             $(".roads .road:nth-child(80)").click();
-            $('.build').click();
+            $('.confirm').click();
             $(".crossroads .crossroad:nth-child(51)").click();
-            $('.build').click();
+            $('.confirm').click();
             $(".roads .road:nth-child(111)").click();
-            $('.build').click();
+            $('.confirm').click();
             $(".crossroads .crossroad:nth-child(54)").click();
-            $('.build').click();
+            $('.confirm').click();
             $(".roads .road:nth-child(109)").click();
-            $('.build').click();
+            $('.confirm').click();
             $(".crossroads .crossroad:nth-child(40)").click();
-            $('.build').click();
+            $('.confirm').click();
             $(".roads .road:nth-child(103)").click();
-            $('.build').click();
+            $('.confirm').click();
             return true;
         }
     };

@@ -47,9 +47,9 @@ define([
             this.set("dice", newDice);
 
 
-            var p1 = new Player({name: "Masha", color: "red" });
-            var p2 = new Player({name: "Sasha", color: "blue" });
-            var p3 = new Player({name: "Everest", color: "violet" });
+            var p1 = new Player({name: "Игрок 1", color: "red" });
+            var p2 = new Player({name: "Игрок 2", color: "blue" });
+            var p3 = new Player({name: "Игрок 3", color: "violet" });
 
             // TODO: Shuffle players;
 
@@ -131,18 +131,9 @@ define([
             return false;
         },
         getThiefCoords: function($thief) {
-            var top = $thief.offset().top - $thief.parents('.field').offset().top;
-            var left = $thief.offset().left - $thief.parents('.field').offset().left;
-            var THIEF_HEIGHT = 30;
-            left = left - Const.FIELD_WIDTH;
-            top = top - Const.FIELD_HEIGHT;
-            left = left + (THIEF_HEIGHT / 2);
-            top = top + (THIEF_HEIGHT / 2);
-            var q = 2 / 3 * left / Const.HEX_EDGE_SIZE;
-            var r = (-1 / 3 * left + 1 / 3 * Math.sqrt(3) * top) / Const.HEX_EDGE_SIZE;
-            q = Math.round(q);
-            r = Math.round(r);
-            var thiefCoords = {"q": q, "r": r};
+            var thiefCoords = {};
+            thiefCoords.q = $thief.data('q');
+            thiefCoords.r = $thief.data('r');
             return thiefCoords;
         },
         setRobedHex: function(hex) {
