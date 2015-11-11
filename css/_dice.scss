@@ -69,13 +69,7 @@ $dice_size:50px;
 .dice-platform {
   margin-top:100px;
 }
-.dice span {
-  position:absolute;
-  margin:100px 0 0 100px;
-  display: block;
-  font-size: 2.5em;
-  padding: 10px;
-}
+
 .dice {
   width: $dice_size;
   height: $dice_size;
@@ -105,7 +99,65 @@ $dice_size:50px;
   &.value-6{
     transform: rotateX(182deg);
   }
+  span {
+    position:absolute;
+    margin:100px 0 0 100px;
+    display: block;
+    font-size: 2.5em;
+    padding: 10px;
+  }
+  .cover,.inner {
+    background: #e0e0e0;
+    box-shadow: none;
+  }
+  .cover {
+    border-radius: 0;
+    transform: translateZ(0px);
+  }
+  .cover.x {
+    transform: rotateY(90deg);
+  }
+  .cover.z {
+    transform: rotateX(90deg);
+  }
+  .front  {
+    transform: translateZ($dice_size/2);
+    &.inner  {
+      transform: translateZ($dice_size/2 - $dice_size/100 - 1);
+    }
+  }
+  .back {
+    transform: rotateX(-180deg) translateZ($dice_size/2);
+    &.inner {
+      transform: rotateX(-180deg) translateZ($dice_size/2 - $dice_size/100 - 1);
+    }
+  }
+  .right {
+    transform: rotateY(90deg) translateZ($dice_size/2);
+    .right.inner {
+      transform: rotateY(90deg) translateZ($dice_size/2 - $dice_size/100- 1);
+    }
+  }
+  .left {
+    transform: rotateY(-90deg) translateZ($dice_size/2);
+    &.inner {
+      transform: rotateY(-90deg) translateZ($dice_size/2 - $dice_size/100 - 1);
+    }
+  }
+  .top {
+    transform: rotateX(90deg) translateZ($dice_size/2);
+    &.inner {
+      transform: rotateX(90deg) translateZ($dice_size/2 - $dice_size/100- 1);
+    }
+  }
+  .bottom {
+    transform: rotateX(-90deg) translateZ($dice_size/2);
+    &.inner {
+      transform: rotateX(-90deg) translateZ($dice_size/2 - $dice_size/100- 1);
+    }
+  }
 }
+
 .side {
   position: absolute;
   width: $dice_size;
@@ -114,59 +166,11 @@ $dice_size:50px;
   box-shadow:inset 0 0 $dice_size/5 #ccc;
   border-radius: $dice_size/10;
   -webkit-backface-visibility: hidden; /* Chrome, Safari, Opera */
+  -moz-backface-visibility: hidden; /* Chrome, Safari, Opera */
   backface-visibility: hidden;
   -webkit-transform-style: preserve-3d;
-
-}
-.dice .cover, .dice .inner {
-  background: #e0e0e0;
-  box-shadow: none;
-}
-.dice .cover {
-  border-radius: 0;
-  transform: translateZ(0px);
-}
-.dice .cover.x {
-  transform: rotateY(90deg);
-}
-.dice .cover.z {
-  transform: rotateX(90deg);
-}
-.dice .front  {
-  transform: translateZ($dice_size/2);
-}
-.dice .front.inner  {
-  transform: translateZ($dice_size/2 - $dice_size/100 - 1);
-}
-.dice .back {
-  transform: rotateX(-180deg) translateZ($dice_size/2);
-}
-.dice .back.inner {
-  transform: rotateX(-180deg) translateZ($dice_size/2 - $dice_size/100 - 1);
-}
-.dice .right {
-  transform: rotateY(90deg) translateZ($dice_size/2);
-}
-.dice .right.inner {
-  transform: rotateY(90deg) translateZ($dice_size/2 - $dice_size/100- 1);
-}
-.dice .left {
-  transform: rotateY(-90deg) translateZ($dice_size/2);
-}
-.dice .left.inner {
-  transform: rotateY(-90deg) translateZ($dice_size/2 - $dice_size/100 - 1);
-}
-.dice .top {
-  transform: rotateX(90deg) translateZ($dice_size/2);
-}
-.dice .top.inner {
-  transform: rotateX(90deg) translateZ($dice_size/2 - $dice_size/100- 1);
-}
-.dice .bottom {
-  transform: rotateX(-90deg) translateZ($dice_size/2);
-}
-.dice .bottom.inner {
-  transform: rotateX(-90deg) translateZ($dice_size/2 - $dice_size/100- 1);
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 .dot {
   position:absolute;
@@ -175,25 +179,25 @@ $dice_size:50px;
   border-radius:($dice_size/5 + ($dice_size * 3/100)) / 2;
   background:#444;
   box-shadow:inset 5px 0 10px #000;
-}
-.dot.center {
-  margin:$dice_size * 77/200 0 0 $dice_size * 77/200;
-}
-.dot.dtop {
-  margin-top:$dice_size * 20/200;
-}
-.dot.dleft {
-  margin-left:$dice_size * 134/200;
-}
-.dot.dright {
-  margin-left:$dice_size * 20/200;
-}
-.dot.dbottom {
-  margin-top:$dice_size * 134/200;
-}
-.dot.center.dleft {
-  margin:$dice_size * 77/200 0 0 $dice_size * 20/200;
-}
-.dot.center.dright {
-  margin:$dice_size * 77/200 0 0 $dice_size * 134/200;
+  &.center {
+    margin:$dice_size * 77/200 0 0 $dice_size * 77/200;
+  }
+  &.dtop {
+    margin-top:$dice_size * 20/200;
+  }
+  &.dleft {
+    margin-left:$dice_size * 134/200;
+  }
+  &.dright {
+    margin-left:$dice_size * 20/200;
+  }
+  &.dbottom {
+    margin-top:$dice_size * 134/200;
+  }
+  &.center.dleft {
+    margin:$dice_size * 77/200 0 0 $dice_size * 20/200;
+  }
+  &.center.dright {
+    margin:$dice_size * 77/200 0 0 $dice_size * 134/200;
+  }
 }
