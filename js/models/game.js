@@ -124,6 +124,14 @@ define([
             }
             return false;
         },
+        checkPlayersAvailableSettlements: function(player){
+            for(var i=0; i < player.get('settlements').length; i++){
+                if(player.get('settlements')[i].get('type') === 1){
+                    return true;
+                }
+            }
+            return false;
+        },
         checkPlayerResourcesForHighway: function(player) {
             if (player.getResources("tree") >= 1 && player.getResources("brick") >= 1) {
                 return true;

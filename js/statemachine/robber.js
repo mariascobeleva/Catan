@@ -127,6 +127,7 @@ define([
                             }
                         }
                     });
+
                     that.showPopupControlBtns('Отдать ресурсы');
                     that.$(".control-btns .confirm-btn").on('click.robAll', null, function() {
                         var choosenResAmount = 0;
@@ -149,7 +150,7 @@ define([
                             }
                         }
                         else {
-                            alert("You gave to rob wrong amount of resources!");
+                            alert("Вора не проведешь!Отдайте запрашиваемое количество ресурсов!");
                             robedRes = {};
                             return false;
                         }
@@ -199,7 +200,7 @@ define([
                         var $thief = that.$(".thief");
                         var thiefCoords = that.model.getThiefCoords($thief);
                         var robedHex = that.model.get("map").getHexByCoords(thiefCoords);
-                        if(robedHex){
+                        if(robedHex && robedHex.get('type') !== 'seaHex'){
                             that.model.setRobedHex(robedHex);
                             var playersRb = robedHex.getPlayersWhichBuiltOnHex(currentPlayer);
                             var choosenPlayer = playersRb[0];
@@ -214,7 +215,7 @@ define([
                             }
                         }
                         else {
-                            alert("Вор должен находится на поле!");
+                            alert("Вор должен находится на игровом поле!");
                         }
                     });
                 },
@@ -249,7 +250,7 @@ define([
                 robberChooseVictimLeave: function() {
                     this.$(".choose-player-for-robber span").off("click.robberChoose");
                     this.$("#overlay, .box").removeClass("active");
-                    this.$('.box-container').addClass('choose-player-for-robber');
+                    this.$('.box-container').removeClass('choose-player-for-robber');
                 }
             };
 

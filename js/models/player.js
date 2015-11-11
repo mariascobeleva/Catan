@@ -34,7 +34,7 @@ define([
                 "wheat": 4
             },
             roads: [],
-            settlements: []
+            settlements: [],
         },
         initialize: function(options) {
 

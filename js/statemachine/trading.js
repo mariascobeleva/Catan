@@ -110,7 +110,7 @@ define([
                                     resForDeal[res] = -amount;
                                 }
                                 else if (amount !== 0) {
-                                    alert("Вы не можете обменять " + amount + res + ". Ваш обменный курс для этого ресурса 1:" + rate);
+                                    alert("Вы не можете обменять " + amount  + " " + res + ". Ваш обменный курс для этого ресурса 1:" + rate);
                                     allowableAmount = 0;
                                     return false;
                                 }
@@ -153,9 +153,9 @@ define([
                 tradingLeave: function() {
                     this.$("#overlay, .box, .change-resources").removeClass("active");
                     this.$('.box-container').removeClass('change-resources');
-                    this.$(".player-resources .res.ui-draggable").draggable('destroy');
-                    this.$(".player-resources .res.ui-droppable").droppable('destroy');
-                    this.$(".resources-to-bank .res.ui-droppable, .resources-from-bank .res.ui-droppable").droppable('destroy');
+                    //this.$(".player-resources .res.ui-draggable").draggable('destroy');
+                    //this.$(".player-resources .res.ui-droppable").droppable('destroy');
+                    //this.$(".resources-to-bank .res.ui-droppable, .resources-from-bank .res.ui-droppable").droppable('destroy');
                     this.hidePopupControlBtns();
                 }
             };
