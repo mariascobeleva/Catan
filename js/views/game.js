@@ -114,7 +114,7 @@ define([
         displayExchangeRate: function(player) {
             var j;
             for (j in player.attributes.exchangeRate) {
-                this.$(".resources-for-change ." + j + " .rate").text("1 : " + player.attributes.exchangeRate[j]);
+                this.$(".player-resources .res." + j + " .exchange-rate").text("1 : " + player.attributes.exchangeRate[j]);
             }
         },
         showPopupControlBtns: function(btnConfirmText,btnRefuseText){

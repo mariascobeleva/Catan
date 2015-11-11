@@ -12,7 +12,6 @@ define([
             this.model.on("change:res_brick", this.updatePlayerResources, this);
             this.model.on("change:res_sheep", this.updatePlayerResources, this);
             this.model.on("change:res_rock", this.updatePlayerResources, this);
-            this.model.on("change:victoryPoints", this.renderVictoryPoints, this);
         },
         render: function() {
             var htmlTemplate = _.template(PlayerTemplate);
@@ -32,6 +31,7 @@ define([
         updatePlayerResources: function(model, value, options) {
             var attr = options.type;
             this.$(".resources .res." + attr + " .quantity").text(value);
+            this.$('.resources span').text(this.model.getTotalAmountOfPlayerRes());
         },
         renderVictoryPoints: function(){
             this.$(".vp").text(this.model.getVictoryPoints());

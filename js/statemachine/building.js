@@ -58,7 +58,7 @@ define([
                     if (this.model.checkPlayerResourcesForSettlement(currentPlayer) && this.model.get("map").findAvailableCrossroads(currentPlayer, true).length !== 0) {
                         that.$(".building-objects .object.settlement").addClass("active");
                     }
-                    if (this.model.checkPlayerResourcesForCity(currentPlayer)) {
+                    if (this.model.checkPlayerResourcesForCity(currentPlayer) && this.model.checkPlayersAvailableSettlements(currentPlayer)) {
                         that.$(".building-objects .object.city").addClass("active");
                     }
                     if (this.model.checkPlayerResourcesForHighway(currentPlayer) && this.model.get("map").findAvailableRoads(currentPlayer).length !== 0) {
@@ -70,7 +70,6 @@ define([
                         var availableCrossroads = that.model.get("map").findAvailableCrossroads(currentPlayer, true);
                         that.trigger("buildSettlement", availableCrossroads);
                     });
-
                     that.$(".building-objects .object.city.active").on('click.building', null, function() {
                         that.trigger("buildCity");
                     });
@@ -104,6 +103,7 @@ define([
                     this.model.get("map").highlightRoads(roads);
                     that.$(".confirm").show().addClass("disabled");
                     that.$(".refuse").show();
+
                     that.$('.road.available').on('click.highwayBuilding', null, function() {
                         that.$(".confirm").removeClass("disabled");
                         that.$('.blinking.' + color + '.road').removeClass("blinking").removeClass(color);
@@ -141,11 +141,13 @@ define([
                     that.model.get("map").highlightAvailableCrossroads(crossroads);
                     that.$(".confirm").show().addClass("disabled");
                     that.$(".refuse").show();
+
                     that.$('.crossroad.available').on('click.settlementBuilding', null, function() {
                         that.$(".confirm").removeClass("disabled");
                         that.$(".crossroad.blinking").removeClass("blinking").removeClass(color);
                         $(this).addClass('blinking').addClass(color);
                     });
+
                     that.$(".confirm").on('click.settlementBuilding', null, function() {
                         if (!$(this).is(".disabled")) {
                             var view = that.$(".crossroad.blinking").data('view');
@@ -159,13 +161,14 @@ define([
 
                         }
                     });
+
                     that.$(".refuse").on('click.settlementBuilding', null, function() {
                         that.trigger("builtSettlement");
                     });
                 },
                 settlementBuildingLeave: function() {
                     var that = this;
-                    that.$('.crossroad').off("click.settlementBuilding");
+                    that.$('.crossroad.available').off("click.settlementBuilding");
                     that.$(".confirm").off("click.settlementBuilding");
                     that.$(".refuse").off("click.settlementBuilding");
                     that.$(".refuse").hide();
@@ -187,11 +190,14 @@ define([
                     that.model.get("map").highlightSettlementsForCityBuilding(availableCities);
                     that.$(".confirm").show().addClass("disabled");
                     that.$(".refuse").show();
-                    that.$(".crossroad.available-for-city").on('click.cityBuilding', null, function() {
+
+                    that.$(".crossroad.available-for-city").on('click.cityBuilding', null, function(){
                         that.$(".confirm").removeClass("disabled");
                         that.$(".crossroad.available-for-city").removeClass("blinking city");
                         $(this).addClass('blinking city');
+
                     });
+
                     that.$(".confirm").on('click.cityBuilding', null, function() {
                         if (!$(this).is(".disabled")) {
                             var view = that.$(".crossroad.blinking").data('view');
@@ -209,16 +215,17 @@ define([
                     });
                 },
                 cityBuildingLeave: function() {
+                    this.$(".crossroad").off('click');
+
                     console.log(123);
                     var that = this;
                     var currentPlayer = that.model.getCurrentPlayer();
                     var color = currentPlayer.get("color");
 
-                    that.$(".confirm").off("click.cityBuilding");
                     that.$(".confirm").addClass("disabled").hide();
 
-                    that.$(".crossroad.available-for-city").off("click.cityBuilding");
                     that.$(".refuse").off("click.cityBuilding");
+                    that.$(".confirm").off("click.cityBuilding");
                     that.$(".refuse").hide();
 
                     that.$(".crossroad.available-for-city").removeClass("available-for-city");
