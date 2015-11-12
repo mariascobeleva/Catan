@@ -476,7 +476,7 @@ body {
   transform: translateY(-50%);
   padding: 15px;
   border-radius: 20px;
-  background: url("/img/dialog-inner.jpg"); }
+  background: url("../img/dialog-inner.jpg"); }
   .menu > div.disabled, .menu > div:not(.active) {
     display: none; }
 
@@ -541,7 +541,7 @@ body {
 
 .confirm {
   left: 300px;
-  background: url("/img/galochka.png") no-repeat 0 0;
+  background: url("../img/galochka.png") no-repeat 0 0;
   background-size: 100%; }
   .confirm.disabled {
     display: none; }
@@ -549,15 +549,15 @@ body {
 .refuse {
   width: 40px;
   height: 40px;
-  background: url("/img/cross.png") no-repeat 0 0;
+  background: url("../img/cross.png") no-repeat 0 0;
   background-size: 100%; }
 
 .end-turn {
-  background: url("/img/turn-icon.png") no-repeat 0 0;
+  background: url("../img/turn-icon.png") no-repeat 0 0;
   background-size: 100%; }
 
 .choose-for-building {
-  background: url("/img/build-icon.png") no-repeat 0 0;
+  background: url("../img/build-icon.png") no-repeat 0 0;
   background-size: 100%; }
 
 .do-rob {
@@ -565,7 +565,7 @@ body {
   background: green; }
 
 .change-with-bank {
-  background: url("/img/trade-icon.png") no-repeat 0 0;
+  background: url("../img/trade-icon.png") no-repeat 0 0;
   background-size: 100%; }
 
 /* Popups */

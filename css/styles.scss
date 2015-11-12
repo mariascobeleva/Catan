@@ -400,7 +400,7 @@ body {
   transform: translateY(-50%);
   padding: 15px;
   border-radius: 20px;
-  background: url('/img/dialog-inner.jpg');
+  background: url('../img/dialog-inner.jpg');
   & > div {
     &.disabled,
     &:not(.active) {
@@ -475,7 +475,7 @@ body {
 .confirm {
   @extend .control-element;
   left: 300px;
-  background: url('/img/galochka.png') no-repeat 0 0;
+  background: url('../img/galochka.png') no-repeat 0 0;
   background-size: 100%;
   &.disabled {
     display: none;
@@ -486,19 +486,19 @@ body {
   @extend .control-element;
   width: 40px;
   height: 40px;
-  background: url('/img/cross.png') no-repeat 0 0;
+  background: url('../img/cross.png') no-repeat 0 0;
   background-size: 100%;
 }
 
 .end-turn {
   @extend .control-element;
-  background: url('/img/turn-icon.png') no-repeat 0 0;
+  background: url('../img/turn-icon.png') no-repeat 0 0;
   background-size: 100%;
 }
 
 .choose-for-building {
   @extend .control-element;
-  background: url('/img/build-icon.png') no-repeat 0 0;
+  background: url('../img/build-icon.png') no-repeat 0 0;
   background-size: 100%;
 }
 
@@ -510,7 +510,7 @@ body {
 
 .change-with-bank {
   @extend .control-element;
-  background: url('/img/trade-icon.png') no-repeat 0 0;
+  background: url('../img/trade-icon.png') no-repeat 0 0;
   background-size: 100%;
 }
 
