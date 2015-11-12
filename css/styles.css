@@ -32,34 +32,21 @@
   0% {
     transform: translate3d(-50px, -12.5px, -100px); }
   12% {
-    transform: translate3d(0px, 0, -25px); }
+    transform: translate3d(0, 0, -25px); }
   25% {
     transform: translate3d(50px, -12.5px, -100px); }
   37% {
-    transform: translate3d(0px, -25px, -800px); }
+    transform: translate3d(0, -25px, -12.5px); }
   50% {
     transform: translate3d(-50px, -12.5px, -100px); }
   62% {
-    transform: translate3d(0px, 0, -25px); }
+    transform: translate3d(0, 0, -25px); }
   75% {
     transform: translate3d(50px, -12.5px, -100px); }
   87% {
-    transform: translate3d(0px, -25px, -800px); }
+    transform: translate3d(0, -25px, -12.5px); }
   100% {
     transform: translate3d(-50px, -12.5px, -100px); } }
-#roll:checked ~ .platform > .dice {
-  animation: spin-duplicate 2s infinite linear; }
-
-#roll:checked ~ .platform {
-  width: 200px;
-  height: 200px;
-  transform-style: preserve-3d;
-  animation: roll 1.6s infinite linear; }
-
-#secondroll:checked ~ #roll:checked ~ .platform > .dice,
-#secondroll:checked ~ #roll:checked ~ .platform {
-  animation-play-state: paused; }
-
 .dices {
   position: absolute;
   left: 0;
@@ -85,25 +72,24 @@
 .dice {
   width: 50px;
   height: 50px;
-  transform-style: preserve-3d; }
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d; }
   .dice.animated {
-    animation: spin 5s infinite linear;
-    -webkit-backface-visibility: hidden;
-    /* Chrome, Safari, Opera */
-    backface-visibility: hidden;
-    -webkit-transform-style: preserve-3d; }
+    animation: spin 3s infinite linear; }
   .dice.value-1 {
     transform: rotate(0deg); }
   .dice.value-2 {
-    transform: rotateX(272deg); }
+    transform: rotateX(270deg); }
   .dice.value-3 {
-    transform: rotateY(273deg); }
+    transform: rotateY(270deg); }
   .dice.value-4 {
-    transform: rotateY(92deg); }
+    transform: rotateY(90deg); }
   .dice.value-5 {
-    transform: rotateX(92deg); }
+    transform: rotateX(90deg); }
   .dice.value-6 {
-    transform: rotateX(182deg); }
+    transform: rotateX(180deg); }
   .dice span {
     position: absolute;
     margin: 100px 0 0 100px;
@@ -130,7 +116,7 @@
       transform: rotateX(-180deg) translateZ(23.5px); }
   .dice .right {
     transform: rotateY(90deg) translateZ(25px); }
-    .dice .right .right.inner {
+    .dice .right.inner {
       transform: rotateY(90deg) translateZ(23.5px); }
   .dice .left {
     transform: rotateY(-90deg) translateZ(25px); }
@@ -144,6 +130,9 @@
     transform: rotateX(-90deg) translateZ(25px); }
     .dice .bottom.inner {
       transform: rotateX(-90deg) translateZ(23.5px); }
+
+.second .dice.animated {
+  animation-direction: reverse; }
 
 .side {
   position: absolute;
@@ -187,6 +176,13 @@ body {
   margin: 0;
   padding: 0; }
 
+* {
+  user-select: none;
+  -o-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none; }
+
 .clearfix:after, .field:after {
   display: block;
   content: '' !important;
@@ -208,6 +204,7 @@ body {
 .title-general, .player .name, .active-player-menu .name, .box .title-main, .box .title {
   color: #e9bf71;
   font-size: 30px;
+  line-height: 42px;
   text-align: center;
   text-shadow: 1px 1px 2px #000; }
 
@@ -317,7 +314,8 @@ body {
   opacity: 1;
   background-size: 100%;
   background-repeat: no-repeat;
-  z-index: 4; }
+  z-index: 4;
+  pointer-events: none; }
   .crossroad.settlement {
     width: 50px;
     height: 50px; }
@@ -331,9 +329,13 @@ body {
     width: 50px;
     height: 50px;
     background-image: url("../img/settlement-white.png");
-    background-size: 100%; }
+    background-size: 100%;
+    cursor: pointer;
+    pointer-events: auto; }
   .crossroad.available-for-city {
-    background-image: url("../img/town-white.png") !important; }
+    background-image: url("../img/town-white.png") !important;
+    cursor: pointer;
+    pointer-events: auto; }
   .crossroad.city {
     width: 55px;
     height: 55px; }
@@ -347,10 +349,11 @@ body {
 .road {
   position: absolute;
   width: 85px;
-  height: 9px;
+  height: 15px;
   transform-origin: 0 50% 0;
   background: url("/img/road.png") no-repeat 0 0;
-  z-index: 3; }
+  z-index: 3;
+  pointer-events: none; }
   .road.red {
     -webkit-filter: hue-rotate(260deg);
     filter: hue-rotate(260deg); }
@@ -367,7 +370,9 @@ body {
   .road.available {
     background: url("/img/road_1.png") no-repeat 0 0 !important;
     -webkit-animation: blinking-opacity 1s linear infinite !important;
-    animation: blinking-opacity 1s linear infinite !important; }
+    animation: blinking-opacity 1s linear infinite !important;
+    cursor: pointer;
+    pointer-events: auto; }
   .road.blinking {
     background: url("/img/road.png") no-repeat 0 0 !important;
     -webkit-animation: blinking 1s linear infinite !important;
@@ -438,16 +443,23 @@ body {
     margin-bottom: 10px;
     text-align: left; }
   .player .color {
-    width: 30px;
-    height: 30px;
+    display: inline-block;
+    line-height: 42px;
+    width: 38px;
+    height: 38px;
     margin: auto;
-    border-radius: 50%; }
+    border-radius: 50%;
+    vertical-align: top;
+    border: solid 2px black; }
   .player.pc-violet .color {
-    background: #9900CC; }
+    background: #9900CC;
+    border-color: #550099; }
   .player.pc-red .color {
-    background: #CC0000; }
+    background: #CC0000;
+    border-color: #990000; }
   .player.pc-blue .color {
-    background: #0033CC; }
+    background: #0033CC;
+    border-color: #001199; }
 
 /* Menu Elements */
 .short-rules {
@@ -473,7 +485,6 @@ body {
   bottom: 0;
   left: 50%;
   width: 400px;
-  height: 77px;
   padding: 10px;
   transform: translateX(-50%);
   background: url("../img/dialog-inner.jpg") repeat;
@@ -695,7 +706,7 @@ body {
   .player-resources p .object,
   .building-objects .object {
     display: inline-block;
-    width: calc(100%/3 - 10px);
+    width: calc(100% / 3 - 10px);
     vertical-align: top; }
     .player-resources p .object img,
     .building-objects .object img {

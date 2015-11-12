@@ -1,793 +1,900 @@
 @import 'dice';
 
 body {
-    margin:0;
-    padding:0;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  user-select: none;
+  -o-user-select:none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
 }
 
 .clearfix:after {
-    display: block;
-    content: '' !important;
-    clear: both;
+  display: block;
+  content: '' !important;
+  clear: both;
 }
 
 .resource {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    text-align: center;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  text-align: center;
 }
 
 .number {
-    font-family: Arial, sans-serif;
-    font-size: 26px;
-    font-weight:bold;
+  font-family: Arial, sans-serif;
+  font-size: 26px;
+  font-weight: bold;
 }
 
 .title-general {
-    color:#e9bf71;
-    font-size:30px;
-    text-align: center;
-    text-shadow:1px 1px 2px #000;
+  color: #e9bf71;
+  font-size: 30px;
+  line-height: 42px;
+  text-align: center;
+  text-shadow: 1px 1px 2px #000;
 }
 
 .btn {
-    padding:10px;
-    border:solid 1px rgba(81,64,46,0.7);
-    text-decoration:none;
-    font-size:30px;
-    margin-right:20px;
-    cursor:pointer;
-    box-shadow: 1px 1px 5px #000;
+  padding: 10px;
+  border: solid 1px rgba(81, 64, 46, 0.7);
+  text-decoration: none;
+  font-size: 30px;
+  margin-right: 20px;
+  cursor: pointer;
+  box-shadow: 1px 1px 5px #000;
 }
 
 .btn-green {
-    background: rgba(37,38,15,0.5);
-    color:#93e971;
+  background: rgba(37, 38, 15, 0.5);
+  color: #93e971;
 }
 
 .btn-red {
-    background: rgba(47,21,18,0.5);
-    color:#ac2424;
+  background: rgba(47, 21, 18, 0.5);
+  color: #ac2424;
 }
 
 @mixin bordered-image($size) {
-    -webkit-border-image: url('../img/dialog-border.jpg') $size;
-    -moz-border-image: url('../img/dialog-border.jpg') $size;
-    -ms-border-image: url('../img/dialog-border.jpg') $size;
-    border-image: url('../img/dialog-border.jpg') $size;
+  -webkit-border-image: url('../img/dialog-border.jpg') $size;
+  -moz-border-image: url('../img/dialog-border.jpg') $size;
+  -ms-border-image: url('../img/dialog-border.jpg') $size;
+  border-image: url('../img/dialog-border.jpg') $size;
 }
 
-@mixin text-shadow ($color) {
-    text-shadow: 0 0 5px $color,0 0 5px $color,0 0 5px $color,0 0 5px $color,0 0 5px $color,0 0 5px $color,0 0 5px $color,0 0 5px $color,0 0 5px $color,0 0 5px $color;
+@mixin text-shadow($color) {
+  text-shadow: 0 0 5px $color, 0 0 5px $color, 0 0 5px $color, 0 0 5px $color, 0 0 5px $color, 0 0 5px $color, 0 0 5px $color, 0 0 5px $color, 0 0 5px $color, 0 0 5px $color;
 }
 
 .game {
-    position: absolute;
-    top:0;
-    bottom:0;
-    right:0;
-    left:0;
-    min-width:1050px;
-    min-height:1026px; //TODO:fix for tablet;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: url('../img/hex_water.png') repeat 0 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  min-width: 1050px;
+  min-height: 1026px; //TODO:fix for tablet;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('../img/hex_water.png') repeat 0 0;
 }
 
 .field {
-    @extend .clearfix;
-    position:relative;
-    width:680px; /*hex edge size*8*/
-    height:800px; /*hex edge size*8.5*/
-    margin:auto;
-    font-family:Georgia;
+  @extend .clearfix;
+  position: relative;
+  width: 680px; /*hex edge size*8*/
+  height: 800px; /*hex edge size*8.5*/
+  margin: auto;
+  font-family: Georgia;
 }
 
 .hex {
-    position:absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width:170px;
-    height:147px;
-    text-align: center;
-    font-size: 70px;
-    font-weight: bold;
-    background-size: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 170px;
+  height: 147px;
+  text-align: center;
+  font-size: 70px;
+  font-weight: bold;
+  background-size: 100%;
 
-    &.wheat {background-image:url("../img/hex_grain.png");}
-    &.rock { background-image:url("../img/hex_stone.png");}
-    &.tree { background-image:url("../img/hex_wood.png");}
-    &.sheep {background-image:url("../img/hex_sheep.png");}
-    &.brick {background-image:url("../img/hex_brick.png");}
-    &.desert {
-        background-image:url("../img/hex_desert.png");
-        .number {
-            display: none;
-        }
-    }
-    &.seaHex {
-        &:after {
-            content:"";
-            width:45px;
-            height:45px;
-            background-size: 100%;
-            background-repeat: no-repeat;
-        }
-    }
-    &.harbor-general-harbor {
-        &:after {
-            background-image: url('../img/general-harbor.png');
-        }
-    }
-    &.harbor-wheat {
-        &:after {
-            background-image: url('../img/res_grain_color.png');
-        }
-    }
-    &.harbor-brick {
-        &:after {
-            background-image: url('../img/res_brick_color.png');
-        }
-    }
-    &.harbor-sheep {
-        &:after {
-            background-image: url('../img/res_sheep_color.png');
-        }
-    }
-    &.harbor-rock {
-        &:after {
-            background-image: url('../img/res_stone_color.png');
-        }
-    }
-    &.harbor-tree {
-        &:after {
-            background-image: url('../img/res_wood_color.png');
-        }
-    }
+  &.wheat {
+    background-image: url("../img/hex_grain.png");
+  }
+  &.rock {
+    background-image: url("../img/hex_stone.png");
+  }
+  &.tree {
+    background-image: url("../img/hex_wood.png");
+  }
+  &.sheep {
+    background-image: url("../img/hex_sheep.png");
+  }
+  &.brick {
+    background-image: url("../img/hex_brick.png");
+  }
+  &.desert {
+    background-image: url("../img/hex_desert.png");
     .number {
-        @extend .number;
-        position: relative;
-        width: 47px;
-        text-align: center;
-        background: rgba(250, 250, 250, 0.7);
-        border-radius: 50%;
-        padding: 10px 0px 6px 0;
-        border: solid 1px rgba(255,255,255,0.5);
-        @include text-shadow(#fff);
-        &.popular {
-            background:rgba(160, 73, 47, 0.5);
-            border: solid 1px rgba(160, 73, 47, 0.5);
-
-        }
+      display: none;
     }
+  }
+  &.seaHex {
+    &:after {
+      content: "";
+      width: 45px;
+      height: 45px;
+      background-size: 100%;
+      background-repeat: no-repeat;
+    }
+  }
+  &.harbor-general-harbor {
+    &:after {
+      background-image: url('../img/general-harbor.png');
+    }
+  }
+  &.harbor-wheat {
+    &:after {
+      background-image: url('../img/res_grain_color.png');
+    }
+  }
+  &.harbor-brick {
+    &:after {
+      background-image: url('../img/res_brick_color.png');
+    }
+  }
+  &.harbor-sheep {
+    &:after {
+      background-image: url('../img/res_sheep_color.png');
+    }
+  }
+  &.harbor-rock {
+    &:after {
+      background-image: url('../img/res_stone_color.png');
+    }
+  }
+  &.harbor-tree {
+    &:after {
+      background-image: url('../img/res_wood_color.png');
+    }
+  }
+  .number {
+    @extend .number;
+    position: relative;
+    width: 47px;
+    text-align: center;
+    background: rgba(250, 250, 250, 0.7);
+    border-radius: 50%;
+    padding: 10px 0px 6px 0;
+    border: solid 1px rgba(255, 255, 255, 0.5);
+    @include text-shadow(#fff);
+    &.popular {
+      background: rgba(160, 73, 47, 0.5);
+      border: solid 1px rgba(160, 73, 47, 0.5);
+
+    }
+  }
 }
 
 .crossroad {
-    position: absolute;
-    opacity: 1;
-    background-size: 100%;
-    background-repeat: no-repeat;
-    z-index:4;
-    &.settlement {
-        width: 50px;
-        height: 50px;
-    }
-    &.violet,&.violet.blinking {background-image: url('../img/settlement-violet.png');}
-    &.red, &.red.blinking {background-image: url('../img/settlement-red.png');}
-    &.blue, &.blue.blinking {background-image: url('../img/settlement-blue.png');}
+  position: absolute;
+  opacity: 1;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  z-index: 4;
+  pointer-events: none;
+  &.settlement {
+    width: 50px;
+    height: 50px;
+  }
+  &.violet, &.violet.blinking {
+    background-image: url('../img/settlement-violet.png');
+  }
+  &.red, &.red.blinking {
+    background-image: url('../img/settlement-red.png');
+  }
+  &.blue, &.blue.blinking {
+    background-image: url('../img/settlement-blue.png');
+  }
 
-    &.available {
-        width: 50px;
-        height: 50px;
-        background-image: url('../img/settlement-white.png');
-        background-size:100%;
+  &.available {
+    width: 50px;
+    height: 50px;
+    background-image: url('../img/settlement-white.png');
+    background-size: 100%;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+  &.available-for-city {
+    background-image: url('../img/town-white.png') !important;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+  &.city {
+    width: 55px;
+    height: 55px;
+    &.red {
+      background-image: url('../img/town-red.png') !important;
     }
-    &.available-for-city {
-        background-image:url('../img/town-white.png') !important;
+  ;
+    &.blue {
+      background-image: url('../img/town-blue.png') !important;
     }
-    &.city {
-        width:55px;
-        height:55px;
-        &.red {background-image: url('../img/town-red.png') !important;};
-        &.blue {background-image: url('../img/town-blue.png') !important;};
-        &.violet {background-image: url('../img/town-violet.png') !important;};
+  ;
+    &.violet {
+      background-image: url('../img/town-violet.png') !important;
     }
+  ;
+  }
 }
 
 .road {
-    position: absolute;
-    width: 85px;
-    height: 9px;
-    transform-origin: 0 50% 0;
-    background: url("/img/road.png") no-repeat 0 0;
-    z-index:3;
-    &.red {
-        -webkit-filter: hue-rotate(260deg);
-        filter:hue-rotate(260deg);
-    }
-    &.blue {
-        -webkit-filter: hue-rotate(120deg);
-        filter:hue-rotate(120deg);
-    }
-    &.violet {
-        -webkit-filter: hue-rotate(192deg);
-        filter:hue-rotate(192deg);
-    }
+  position: absolute;
+  width: 85px;
+  height: 15px;
+  transform-origin: 0 50% 0;
+  background: url("/img/road.png") no-repeat 0 0;
+  z-index: 3;
+  pointer-events: none;
 
-    &.seaRoad {
-        display: none;
-        &:after {
-            display: none;
-        }
+  &.red {
+    -webkit-filter: hue-rotate(260deg);
+    filter: hue-rotate(260deg);
+  }
+  &.blue {
+    -webkit-filter: hue-rotate(120deg);
+    filter: hue-rotate(120deg);
+  }
+  &.violet {
+    -webkit-filter: hue-rotate(192deg);
+    filter: hue-rotate(192deg);
+  }
+
+  &.seaRoad {
+    display: none;
+    &:after {
+      display: none;
     }
-    &.available {
-        background: url("/img/road_1.png") no-repeat 0 0 !important;
-        -webkit-animation: blinking-opacity 1s linear infinite !important;
-        animation: blinking-opacity 1s linear infinite !important;
+  }
+  &.available {
+    background: url("/img/road_1.png") no-repeat 0 0 !important;
+    -webkit-animation: blinking-opacity 1s linear infinite !important;
+    animation: blinking-opacity 1s linear infinite !important;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+  &.blinking {
+    background: url("/img/road.png") no-repeat 0 0 !important;
+    -webkit-animation: blinking 1s linear infinite !important;
+    animation: blinking 1s linear infinite !important;
+  }
+  &.harbor-road {
+    &:before {
+      content: "";
+      position: absolute;
+      width: 107px;
+      height: 134px;
+      background: url("../img/port.png") no-repeat 0 0;
+      z-index: 2;
+      right: -30px;
+      top: -60px;
+      transform: rotate(-120deg);
     }
-    &.blinking {
-        background: url("/img/road.png") no-repeat 0 0 !important;
-        -webkit-animation: blinking 1s linear infinite !important;
-        animation: blinking 1s linear infinite !important;
+  }
+  span {
+    width: 42px;
+    height: 42px;
+    display: block;
+    margin: 60px auto 0;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    &.tree {
+      background-image: url('../img/res_wood.png');
     }
-    &.harbor-road {
-        &:before {
-            content: "";
-            position: absolute;
-            width: 107px;
-            height: 134px;
-            background: url("../img/port.png") no-repeat 0 0;
-            z-index: 2;
-            right: -30px;
-            top: -60px;
-            transform: rotate(-120deg);
-        }
+    &.wheat {
+      background-image: url('../img/res_grain.png');
     }
-    span {
-        width:42px;
-        height:42px;
-        display: block;
-        margin:60px auto 0;
-        background-size:100%;
-        background-repeat: no-repeat;
-        &.tree {background-image: url('../img/res_wood.png');}
-        &.wheat {background-image: url('../img/res_grain.png');}
-        &.sheep {background-image: url('../img/res_sheep.png');}
-        &.brick {background-image: url('../img/res_brick.png');}
-        &.rock {background-image: url('../img/res_stone.png');}
-        &.general-harbor {background: url('../img/general-harbor.png');}
+    &.sheep {
+      background-image: url('../img/res_sheep.png');
     }
+    &.brick {
+      background-image: url('../img/res_brick.png');
+    }
+    &.rock {
+      background-image: url('../img/res_stone.png');
+    }
+    &.general-harbor {
+      background: url('../img/general-harbor.png');
+    }
+  }
 }
 
 .players {
-    display: inline-block;
-    & > div {
-        position: absolute;
-        &:first-child {
-            top: 0;
-            left: 0;
-        }
-        &:nth-child(2) {
-            top: 0;
-            right: 0;
-        }
-        &:last-child {
-            bottom: 0;
-            left: 0;
-        }
+  display: inline-block;
+  & > div {
+    position: absolute;
+    &:first-child {
+      top: 0;
+      left: 0;
     }
+    &:nth-child(2) {
+      top: 0;
+      right: 0;
+    }
+    &:last-child {
+      bottom: 0;
+      left: 0;
+    }
+  }
 }
 
 .player {
-    width:200px;
-    padding:10px;
-    background: url('../img/dialog-inner.jpg') no-repeat 0 0;
-    @include bordered-image(5);
-    .name {
-        @extend .title-general;
-        margin-bottom: 10px;
-        @include bordered-image(5px);
-    }
-    .score,
-    .settlements,
-    .resources {
-        font-size:20px;
-        color:#e9bf71;
-        margin-bottom:10px;
-        text-align: left;
-    }
+  width: 200px;
+  padding: 10px;
+  background: url('../img/dialog-inner.jpg') no-repeat 0 0;
+  @include bordered-image(5);
+  .name {
+    @extend .title-general;
+    margin-bottom: 10px;
+    @include bordered-image(5px);
+  }
+  .score,
+  .settlements,
+  .resources {
+    font-size: 20px;
+    color: #e9bf71;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+  .color {
+    display: inline-block;
+    line-height: 42px;
+    width: 38px;
+    height: 38px;
+    margin: auto;
+    border-radius: 50%;
+    vertical-align: top;
+    border: solid 2px black;
+  }
+  &.pc-violet {
     .color {
-        width:30px;
-        height:30px;
-        margin:auto;
-        border-radius: 50%;
+      background: #9900CC;
+      border-color: #550099;
     }
-    &.pc-violet {
-        .color{background: #9900CC;}
+  }
+  &.pc-red {
+    .color {
+      background: #CC0000;
+      border-color: #990000;
     }
-    &.pc-red {
-        .color{background: #CC0000;}
+  }
+  &.pc-blue {
+    .color {
+      background: #0033CC;
+      border-color: #001199;
     }
-    &.pc-blue {
-        .color{background: #0033CC;}
-    }
+  }
 }
 
 /* Menu Elements */
 .short-rules {
-    display: none;
-    color:#e9bf71;
-    font-size:14px;
-    padding:0 15px;
-    line-height:25px;
+  display: none;
+  color: #e9bf71;
+  font-size: 14px;
+  padding: 0 15px;
+  line-height: 25px;
 }
 
 .menu {
-    position:absolute;
-    right: 0;
-    top:50%;
-    transform: translateY(-50%);
-    padding: 15px;
-    border-radius: 20px;
-    background: url('/img/dialog-inner.jpg');
-    & > div {
-        &.disabled,
-        &:not(.active){
-            display: none;
-        }
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 15px;
+  border-radius: 20px;
+  background: url('/img/dialog-inner.jpg');
+  & > div {
+    &.disabled,
+    &:not(.active) {
+      display: none;
     }
+  }
 }
 
 .active-player-menu {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 400px;
-    height:77px;
-    padding:10px;
-    transform: translateX(-50%);
-    background: url('../img/dialog-inner.jpg') repeat ;
-    @include bordered-image(5);
-    .name {
-        @extend .title-general;
-        margin-bottom:10px;
-    }
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 400px;
+  padding: 10px;
+  transform: translateX(-50%);
+  background: url('../img/dialog-inner.jpg') repeat;
+  @include bordered-image(5);
+  .name {
+    @extend .title-general;
+    margin-bottom: 10px;
+  }
 }
 
 .resources,
-.player-resources{
-    text-align: center;
-    .res {
-        @extend .resource;
-        position: relative;
-        width: 42px;
-        height: 42px;
-        background-repeat: no-repeat;
-        background-size: 100%;
-        margin-right:10px;
-        &:last-child,
-        &:nth-child(5){margin-right:0}
-        &.brick {
-            background-image: url('../img/res_brick_color.png');
-        }
-        &.wheat {
-            background-image: url('../img/res_grain_color.png');
-        }
-        &.rock {
-            background-image: url('../img/res_stone_color.png');
-        }
-        &.tree {
-            background-image: url('../img/res_wood_color.png');
-        }
-        &.sheep {
-            background-image: url('../img/res_sheep_color.png');
-        }
+.player-resources {
+  text-align: center;
+  .res {
+    @extend .resource;
+    position: relative;
+    width: 42px;
+    height: 42px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    margin-right: 10px;
+    &:last-child,
+    &:nth-child(5) {
+      margin-right: 0
     }
-    .quantity {
-        @extend .number;
-        position: absolute;
-        bottom: -5px;
-        right: 0;
-        @include text-shadow(#fff);
+    &.brick {
+      background-image: url('../img/res_brick_color.png');
     }
+    &.wheat {
+      background-image: url('../img/res_grain_color.png');
+    }
+    &.rock {
+      background-image: url('../img/res_stone_color.png');
+    }
+    &.tree {
+      background-image: url('../img/res_wood_color.png');
+    }
+    &.sheep {
+      background-image: url('../img/res_sheep_color.png');
+    }
+  }
+  .quantity {
+    @extend .number;
+    position: absolute;
+    bottom: -5px;
+    right: 0;
+    @include text-shadow(#fff);
+  }
 }
 
 .control-element {
-    display: block;
-    height:60px;
-    width:60px;
-    margin:0 auto 20px;
-    cursor:pointer;
+  display: block;
+  height: 60px;
+  width: 60px;
+  margin: 0 auto 20px;
+  cursor: pointer;
 }
 
 .confirm {
-    @extend .control-element;
-    left:300px;
-    background: url('/img/galochka.png') no-repeat 0 0;
-    background-size: 100%;
-    &.disabled{
-        display: none;
-    }
+  @extend .control-element;
+  left: 300px;
+  background: url('/img/galochka.png') no-repeat 0 0;
+  background-size: 100%;
+  &.disabled {
+    display: none;
+  }
 }
 
 .refuse {
-    @extend .control-element;
-    width:40px;
-    height:40px;
-    background: url('/img/cross.png') no-repeat 0 0;
-    background-size: 100%;
+  @extend .control-element;
+  width: 40px;
+  height: 40px;
+  background: url('/img/cross.png') no-repeat 0 0;
+  background-size: 100%;
 }
 
 .end-turn {
-    @extend .control-element;
-    background: url('/img/turn-icon.png') no-repeat 0 0;
-    background-size: 100%;
+  @extend .control-element;
+  background: url('/img/turn-icon.png') no-repeat 0 0;
+  background-size: 100%;
 }
+
 .choose-for-building {
-    @extend .control-element;
-    background: url('/img/build-icon.png') no-repeat 0 0;
-    background-size: 100%;
+  @extend .control-element;
+  background: url('/img/build-icon.png') no-repeat 0 0;
+  background-size: 100%;
 }
+
 .do-rob {
-    @extend .control-element;
-    display:none;
-    background: green;
+  @extend .control-element;
+  display: none;
+  background: green;
 }
 
 .change-with-bank {
-    @extend .control-element;
-    background: url('/img/trade-icon.png') no-repeat 0 0;
-    background-size: 100%;
+  @extend .control-element;
+  background: url('/img/trade-icon.png') no-repeat 0 0;
+  background-size: 100%;
 }
-
 
 /* Popups */
 
 #overlay {
-    display:none;
-    position:fixed; /* keeps the lightbox window in the current viewport */
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.6);
-    text-align:center;
-    z-index:100;
-    opacity:0;
-    -webkit-transition: opacity 3s ;
-    -moz-transition: opacity 3s ;
-    -ms-transition: opacity 3s;
-    -o-transition: opacity 3s;
-    transition: opacity 3s;
-    &.active {
-        display:block;
-        opacity:1;
-    }
+  display: none;
+  position: fixed; /* keeps the lightbox window in the current viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  z-index: 100;
+  opacity: 0;
+  -webkit-transition: opacity 3s;
+  -moz-transition: opacity 3s;
+  -ms-transition: opacity 3s;
+  -o-transition: opacity 3s;
+  transition: opacity 3s;
+  &.active {
+    display: block;
+    opacity: 1;
+  }
 }
 
 .box {
-    display:none;
-    position:fixed;
-    width:500px;
-    height:500px;
-    top: 50%;
-    left: 50%;
-    margin-top: -250px;
-    margin-left: -250px;
-    background:url('../img/dialog-inner.jpg') repeat 0 0;
-    z-index:101;
-    box-sizing: border-box;
-    text-align: center;
-    @include bordered-image(10);
-    &.active {
-        display:block;
-    }
-    .title-main {
-        @extend .title-general;
-        width:100%;
-        padding: 15px 0;
-        margin:0;
-        border-bottom:solid 2px #201612;
-    }
-    .title {
-        @extend .title-general;
-        display: inline-block;
-        margin:0;
-        font-size:18px;
-        text-align: right;
-        vertical-align: middle;
-    }
-    .resources {
-        display: inline-block;
-        margin:0 20px 20px 0;
-        vertical-align: middle;
-    }
+  display: none;
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  top: 50%;
+  left: 50%;
+  margin-top: -250px;
+  margin-left: -250px;
+  background: url('../img/dialog-inner.jpg') repeat 0 0;
+  z-index: 101;
+  box-sizing: border-box;
+  text-align: center;
+  @include bordered-image(10);
+  &.active {
+    display: block;
+  }
+  .title-main {
+    @extend .title-general;
+    width: 100%;
+    padding: 15px 0;
+    margin: 0;
+    border-bottom: solid 2px #201612;
+  }
+  .title {
+    @extend .title-general;
+    display: inline-block;
+    margin: 0;
+    font-size: 18px;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .resources {
+    display: inline-block;
+    margin: 0 20px 20px 0;
+    vertical-align: middle;
+  }
 }
 
 .box-container {
-    position: relative;
-    width: 500px;
-    margin: 55px auto 35px;
-    .only-for-rob-state {
-        display: none;
+  position: relative;
+  width: 500px;
+  margin: 55px auto 35px;
+  .only-for-rob-state {
+    display: none;
+  }
+  .resources-to-bank,
+  .player-resources,
+  .resources-from-bank {
+    display: none;
+    text-align: left;
+    margin: 0 50px;
+  }
+  .resources-to-bank,
+  .resources-from-bank {
+    .res {
+      &.empty {
+        background: none;
+        border-radius: 50%;
+        -webkit-box-shadow: inset 3px 3px 4px #000;
+        -moz-box-shadow: inset 3px 3px 4px #000;
+        box-shadow: inset 3px 3px 4px #000;
+      }
     }
+  }
+  .resources-to-bank {
+    .quantity {
+      @include text-shadow(#fd9494);
+    }
+  }
+  .resources-from-bank {
+    .quantity {
+      @include text-shadow(#affd94);
+    }
+  }
+  .exchange-rate {
+    display: none;
+  }
+  //    .resources-for-change {
+  //        display: inline-block;
+  //    }
+  .building-objects {
+    display: none;
+  }
+  .choose-player {
+    display: none;
+  }
+  .control-btns {
+    margin-top: 55px;
+    text-align: center;
+    a {
+      display: none;
+    }
+  }
+  .play-one-more-time {
+    display: none !important;
+  }
+  &.choose-res-for-rob {
+    .title {
+      display: block;
+      text-align: center;
+      margin: 10px 0 45px;
+    }
+    .resources {
+      display: block;
+    }
+    .only-for-rob-state {
+      display: block;
+    }
+    h4.title {
+      display: none;
+    }
+    .control-btns {
+      margin-top: 50px;
+    }
+    .resources-to-bank,
+    .player-resources {
+      display: block;
+    }
+  }
+  &.building {
+    .building-objects {
+      display: block;
+    }
+  }
+  &.choose-player-for-robber {
+    .choose-player {
+      display: block;
+    }
+  }
+  &.change-resources {
     .resources-to-bank,
     .player-resources,
     .resources-from-bank {
-        display: none;
-        text-align: left;
-        margin: 0 50px;
-    }
-    .resources-to-bank,
-    .resources-from-bank {
-        .res {
-            &.empty {
-                background: none;
-                border-radius: 50%;
-                -webkit-box-shadow: inset 3px 3px 4px #000;
-                -moz-box-shadow: inset 3px 3px 4px #000;
-                box-shadow: inset 3px 3px 4px #000;
-            }
-        }
-    }
-    .resources-to-bank {
-        .quantity {
-            @include text-shadow(#fd9494);
-        }
-    }
-    .resources-from-bank {
-        .quantity {
-            @include text-shadow(#affd94);
-        }
+      display: block;
     }
     .exchange-rate {
-        display:none;
+      display: block;
+      position: absolute;
+      bottom: -20px;
+      width: 100%;
+      text-align: center;
+      color: #e9bf71;
     }
-//    .resources-for-change {
-//        display: inline-block;
-//    }
-    .building-objects {
-        display: none;
+  }
+  &.end-of-game {
+    .confirm-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%);
     }
-    .choose-player {
-        display: none;
-    }
-    .control-btns {
-        margin-top: 55px;
-        text-align: center;
-        a {
-            display: none;
-        }
-    }
-    .play-one-more-time {
-        display: none !important;
-    }
-    &.choose-res-for-rob {
-        .title {
-            display: block;
-            text-align: center;
-            margin: 10px 0 45px;
-        }
-        .resources {
-            display: block;
-        }
-        .only-for-rob-state {
-            display: block;
-        }
-        h4.title {
-            display: none;
-        }
-        .control-btns {
-            margin-top: 50px;
-        }
-        .resources-to-bank,
-        .player-resources {
-            display: block;
-        }
-    }
-    &.building {
-        .building-objects {
-            display: block;
-        }
-    }
-    &.choose-player-for-robber {
-        .choose-player {
-            display: block;
-        }
-    }
-    &.change-resources {
-        .resources-to-bank,
-        .player-resources,
-        .resources-from-bank {
-            display: block;
-        }
-        .exchange-rate {
-            display: block;
-            position: absolute;
-            bottom: -20px;
-            width: 100%;
-            text-align: center;
-            color:#e9bf71;
-        }
-    }
-    &.end-of-game {
-        .confirm-btn {
-            position:absolute;
-            top:50%;
-            left:50%;
-            transform: translate(-50%);
-        }
-    }
+  }
 }
 
 .player-resources p,
 .building-objects {
-    position: relative;
-    display: none;
-    width: 400px;
-    margin: 55px auto 35px;
-    .object {
-        display: inline-block;
-        width:calc(100%/3 - 10px);
-        vertical-align: top;
-        img {
-            width:100%;
-            height:auto;
-            opacity:0.3;
-        }
-        .resources {
-            margin:0;
-        }
-        .res {
-            width:20px;
-            height:20px;
-            margin-right:0;
-        }
-        .quantity {
-            font-size:12px;
-        }
-        &.active {
-            cursor:pointer;
-            img {
-                opacity:1;
-            }
-        }
+  position: relative;
+  display: none;
+  width: 400px;
+  margin: 55px auto 35px;
+  .object {
+    display: inline-block;
+    width: calc(100% / 3 - 10px);
+    vertical-align: top;
+    img {
+      width: 100%;
+      height: auto;
+      opacity: 0.3;
     }
+    .resources {
+      margin: 0;
+    }
+    .res {
+      width: 20px;
+      height: 20px;
+      margin-right: 0;
+    }
+    .quantity {
+      font-size: 12px;
+    }
+    &.active {
+      cursor: pointer;
+      img {
+        opacity: 1;
+      }
+    }
+  }
 }
 
-.blinking{
-    -webkit-animation: blinking 1s linear infinite !important;
-    animation: blinking 1s linear infinite !important;
+.blinking {
+  -webkit-animation: blinking 1s linear infinite !important;
+  animation: blinking 1s linear infinite !important;
 }
 
 @keyframes blinking {
-    0% {opacity: 1;}
-    50% {opacity: 0.3;}
-    100% {opacity: 1;}
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
 }
+
 /* Chrome, Safari, Opera */
 @-webkit-keyframes blinking {
-    0% {opacity: 1;}
-    50% {opacity: 0.3;}
-    100% {opacity: 1;}
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes blinking-border {
-    0% {border: solid 2px rgba(255,0,0,1);}
-    50% {border: solid 2px rgba(255,0,0,0.5);}
-    100% {border: solid 2px rgba(255,0,0,1);}
+  0% {
+    border: solid 2px rgba(255, 0, 0, 1);
+  }
+  50% {
+    border: solid 2px rgba(255, 0, 0, 0.5);
+  }
+  100% {
+    border: solid 2px rgba(255, 0, 0, 1);
+  }
 }
+
 /* Chrome, Safari, Opera */
 @-webkit-keyframes blinking-border {
-    0% {border: solid 2px rgba(255,0,0,1);  }
-    50% {border: solid 2px rgba(255,0,0,0.5);  }
-    100% {border: solid 2px rgba(255,0,0,1); }
+  0% {
+    border: solid 2px rgba(255, 0, 0, 1);
+  }
+  50% {
+    border: solid 2px rgba(255, 0, 0, 0.5);
+  }
+  100% {
+    border: solid 2px rgba(255, 0, 0, 1);
+  }
 }
+
 @keyframes blinking-bg {
-    0% {background: rgba(255,255,255,1); }
-    50% {background: rgba(255,255,255,0.85); }
-    100% { background: rgba(255,255,255,1);}
+  0% {
+    background: rgba(255, 255, 255, 1);
+  }
+  50% {
+    background: rgba(255, 255, 255, 0.85);
+  }
+  100% {
+    background: rgba(255, 255, 255, 1);
+  }
 }
+
 /* Chrome, Safari, Opera */
 @-webkit-keyframes blinking-bg {
-    0% { background: rgba(255,255,255,1); }
-    50% { background: rgba(255,255,255,0.85); }
-    100% { background: rgba(255,255,255,1);}
+  0% {
+    background: rgba(255, 255, 255, 1);
+  }
+  50% {
+    background: rgba(255, 255, 255, 0.85);
+  }
+  100% {
+    background: rgba(255, 255, 255, 1);
+  }
 }
+
 @keyframes blinking-opacity {
-    0% {opacity: 0.5;}
-    50% {opacity: 0.3;}
-    100% {opacity: 0.5;}
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.5;
+  }
 }
+
 /* Chrome, Safari, Opera */
 @-webkit-keyframes blinking-opacity {
-    0% {opacity: 0.5;}
-    50% {opacity: 0.3;}
-    100% {opacity: 0.5;}
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.5;
+  }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .thief {
-    width:65px;
-    height:90px;
-    background: url('../img/troll.png') no-repeat 0 0;
-    background-size: 100%;
-    position: absolute;
-    z-index:99;
-    &.active {
-        transform-origin: 50% 90%;
-        -webkit-animation:swinging 0.5s linear infinite;
-        animation:swinging 0.5s linear infinite;
-    }
+  width: 65px;
+  height: 90px;
+  background: url('../img/troll.png') no-repeat 0 0;
+  background-size: 100%;
+  position: absolute;
+  z-index: 99;
+  &.active {
+    transform-origin: 50% 90%;
+    -webkit-animation: swinging 0.5s linear infinite;
+    animation: swinging 0.5s linear infinite;
+  }
 }
 
 @-webkit-keyframes swinging {
-    0% {transform:rotateZ(0deg);}
-    25% {transform:rotateZ(3deg);}
-    50%{transform:rotateZ(0deg);}
-    75%{transform:rotateZ(-3deg);}
-    100% {transform:rotateZ(0deg);}
+  0% {
+    transform: rotateZ(0deg);
+  }
+  25% {
+    transform: rotateZ(3deg);
+  }
+  50% {
+    transform: rotateZ(0deg);
+  }
+  75% {
+    transform: rotateZ(-3deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
 }
 
 .choose-player-for-robber {
-    display:none;
-    p {
-        color:#e9bf71;
-        font-size:22px;
-        text-align: center;
-        display: block;
-    }
+  display: none;
+  p {
+    color: #e9bf71;
+    font-size: 22px;
+    text-align: center;
+    display: block;
+  }
 }
 
 span.victim {
-    color: blue;
-    text-decoration: underline;
-    cursor:pointer;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .end-of-game {
-    display:none;
+  display: none;
 }
-.play-one-more-time{
-    width:100px;
-    height:50px;
-    margin:10px;
-    text-align: center;
-    background: yellow;
+
+.play-one-more-time {
+  width: 100px;
+  height: 50px;
+  margin: 10px;
+  text-align: center;
+  background: yellow;
 }
 
 #debug {
-    width: 100%;
-    height: 300px;
-    display:none;
+  width: 100%;
+  height: 300px;
+  display: none;
 }

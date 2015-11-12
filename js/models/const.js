@@ -6,7 +6,7 @@ define([], function() {
         HEX_EDGE_COLS: 5,
         CROSSROAD_COUNT: 53,
         CROSSROAD_HEIGHT: 60,
-        ROAD_HEIGHT: 9,
+        ROAD_HEIGHT: 15,
         VICTORY_POINTS_FOR_WIN: 5,
         HEX_TYPE_WHEAT: "wheat",
         HEX_TYPE_SHEEP: "sheep",
