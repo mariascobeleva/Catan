@@ -351,7 +351,7 @@ body {
   width: 85px;
   height: 15px;
   transform-origin: 0 50% 0;
-  background: url("/img/road.png") no-repeat 0 0;
+  background: url("../img/road.png") no-repeat 0 0;
   z-index: 3;
   pointer-events: none; }
   .road.red {
@@ -368,13 +368,13 @@ body {
     .road.seaRoad:after {
       display: none; }
   .road.available {
-    background: url("/img/road_1.png") no-repeat 0 0 !important;
+    background: url("../img/road_1.png") no-repeat 0 0 !important;
     -webkit-animation: blinking-opacity 1s linear infinite !important;
     animation: blinking-opacity 1s linear infinite !important;
     cursor: pointer;
     pointer-events: auto; }
   .road.blinking {
-    background: url("/img/road.png") no-repeat 0 0 !important;
+    background: url("../img/road.png") no-repeat 0 0 !important;
     -webkit-animation: blinking 1s linear infinite !important;
     animation: blinking 1s linear infinite !important; }
   .road.harbor-road:before {
