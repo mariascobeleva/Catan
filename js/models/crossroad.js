@@ -44,12 +44,14 @@ define([
             }
         },
         isAvailable: function(player,needRoad){
-           if(this.get("type")===0) {
-               if (needRoad) {
-                   return this.checkIfRoadIsBuilt(player);
-               }
-               else {
-                   return true;
+           if(this.get("type") === 0) {
+               for(var i=0; i < this.get('hexes').length; i++){
+                   if(this.get('hexes')[i].get('type') === 'seaHex' && this.get('harborType') == "" ){
+                       return false;
+                   }
+                   else {
+                       return !needRoad || this.checkIfRoadIsBuilt(player);
+                   }
                }
            }
         },

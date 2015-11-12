@@ -17,37 +17,33 @@ define([
             this.$el.val(this.$el.val() + "\n" + value);
         },
         doFirstTurns: function() {
-
-
-            $('.start-game').click();
-            $(".crossroads .crossroad:nth-child(48)").click();
-            $('.build').click();
-            $(".roads .road:nth-child(73)").click();
-            $('.build').click();
-            $(".crossroads .crossroad:nth-child(4)").click();
-            $('.build').click();
-            $(".roads .road:nth-child(75)").click();
-            $('.build').click();
-            $(".crossroads .crossroad:nth-child(9)").click();
-            $('.build').click();
-            $(".roads .road:nth-child(80)").click();
-            $('.build').click();
-            $(".crossroads .crossroad:nth-child(51)").click();
-            $('.build').click();
-            $(".roads .road:nth-child(111)").click();
-            $('.build').click();
-            $(".crossroads .crossroad:nth-child(54)").click();
-            $('.build').click();
-            $(".roads .road:nth-child(109)").click();
-            $('.build').click();
-            $(".crossroads .crossroad:nth-child(40)").click();
-            $('.build').click();
-            $(".roads .road:nth-child(103)").click();
-            $('.build').click();
+            //$('.confirm-btn').click();
+            //$(".crossroads .crossroad:nth-child(48)").click();
+            //$('.confirm').click();
+            //$(".roads .road:nth-child(73)").click();
+            //$('.confirm').click();
+            //$(".crossroads .crossroad:nth-child(4)").click();
+            //$('.confirm').click();
+            //$(".roads .road:nth-child(75)").click();
+            //$('.confirm').click();
+            //$(".crossroads .crossroad:nth-child(9)").click();
+            //$('.confirm').click();
+            //$(".roads .road:nth-child(80)").click();
+            //$('.confirm').click();
+            //$(".crossroads .crossroad:nth-child(51)").click();
+            //$('.confirm').click();
+            //$(".roads .road:nth-child(111)").click();
+            //$('.confirm').click();
+            //$(".crossroads .crossroad:nth-child(54)").click();
+            //$('.confirm').click();
+            //$(".roads .road:nth-child(109)").click();
+            //$('.confirm').click();
+            //$(".crossroads .crossroad:nth-child(40)").click();
+            //$('.confirm').click();
+            //$(".roads .road:nth-child(103)").click();
+            //$('.confirm').click();
             return true;
         }
-
-
     };
     Debug.init();
     return Debug;

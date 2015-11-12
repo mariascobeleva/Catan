@@ -14,11 +14,11 @@ define([
             army: 0,
             longestRoad: 0,
 
-            "res_rock": 4,
-            "res_tree": 4,
-            "res_brick": 4,
-            "res_sheep": 4,
-            "res_wheat": 4,
+            "res_rock": 1,
+            "res_tree": 1,
+            "res_brick": 1,
+            "res_sheep": 1,
+            "res_wheat": 1,
             devCards: {
                 "monopoly": 0,
                 "knight": 0,

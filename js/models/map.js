@@ -12,6 +12,7 @@ define([
         defaults: {
             "game": {},
             "hexes": [],
+            "seaHexes":[],
             "crossroads": [],
             "roads": []
         },
@@ -26,6 +27,7 @@ define([
                 this.set("game", options.game);
             }
             this.createHexes();
+            this.createSeaHexes();
             this.createCrossroads();
             this.createRoads();
         },
@@ -48,6 +50,9 @@ define([
                 else if (i >= 15 && i < 18) {
                     resources.push(Const.HEX_TYPE_BRICK);
                 }
+                //else if(i >= 18 && i <36){
+                //    resources.push(Const.HEX_TYPE_SEA);
+                //}
                 else {
                     resources.push(Const.HEX_TYPE_DESERT);
                 }
@@ -64,6 +69,15 @@ define([
                 }));
             }
         },
+        createSeaHexes: function() {
+            for (var i=0; i<= Const.HEX_SEA_COUNT; i++){
+                this.get('hexes').push(new Hex({
+                    type: "seaHex",
+                    thief: false,
+                    coords: Const.coordsForSeaHexes[i]
+                }));
+            }
+        },
         getHex: function(q, r) {
             for (var i = 0; i < this.get("hexes").length; i++) {
                 var hex = this.get("hexes")[i];
@@ -72,9 +86,12 @@ define([
                 }
             }
         },
+        getHexByCoords: function(coords) {
+            return this.getHex(coords.q,coords.r);
+        },
         createCrossroads: function() {
-            for (var i = 0; i < this.get("hexes").length; i++) {
-                var hex = this.get("hexes")[i];
+        for (var i = 0; i < this.get("hexes").length; i++) {
+            var hex = this.get("hexes")[i];
                 for (var j = 0; j < Const.crossroadsCoords.length; j++) {
                     var crossroad_q = hex.get('coords').q + Const.crossroadsCoords[j].q;
                     var crossroad_r = hex.get('coords').r + Const.crossroadsCoords[j].r;
@@ -95,10 +112,8 @@ define([
                     hex.get("crossroads").push(crossroad);
                 }
             }
-
             var that = this;
             var createPort = function(coords) {
-
                 var harbor_type = that.randomChoice(Const.HARBOR_TYPES);
                 var hex = that.getHex(coords.q, coords.r);
                 var crossroad_1 = hex.get("crossroads")[coords.indexOfCrossroad];
@@ -106,14 +121,14 @@ define([
                 crossroad_1.set("harborType", harbor_type);
                 crossroad_2.set("harborType", harbor_type);
             };
-            for (var l = 0; l < Const.coordsOfHarbor.length; l++) {
-                createPort(Const.coordsOfHarbor[l]);
+            for (var k = 0; k < Const.coordsOfHarbor.length; k++) {
+                createPort(Const.coordsOfHarbor[k]);
             }
         },
         createRoads: function() {
             var isRoadPushed = function(crossroad,road){
                 var roadIsNotThere = true;
-                for(var z = 0;z<crossroad.get("roads").length;z++){
+                for(var z = 0; z < crossroad.get("roads").length;z++){
                     if(crossroad.get("roads")[z] === road){
                         roadIsNotThere = false;
                         break;
@@ -143,10 +158,11 @@ define([
                     if (!road) {
                         road = new Road({
                             "game": this.get("game"),
-                            "road": false,
+                            "highway": false,
                             "from": crossroad_from,
                             "to": crossroad_to,
-                            "coords": {q: crossroad_q, r: crossroad_r}
+                            "coords": {q: crossroad_q, r: crossroad_r},
+                            "seaRoad": hex.get('type') === "seaHex"
                         });
                         this.get("roads").push(road);
                     }
@@ -159,7 +175,6 @@ define([
                     }
                 }
             }
-            console.log(this.get("roads").length);
         },
         getCrossroad: function(q, r) {
             for (var t = 0; t < this.get("crossroads").length; t++) {
@@ -189,7 +204,7 @@ define([
             array.splice(array.indexOf(result), 1);
             return result;
         },
-        fillNumbersValue: function() {
+         fillNumbersValue: function() {
             var array = [];
             var value = 2;
             for (var i = 0; i < Const.HEX_COUNT; i++) {
@@ -229,15 +244,12 @@ define([
             }
         },
 
-
-
         findAvailableRoadsByCrossroad: function(player, crossroadView) {
             var availableRoads = [];
             var visitedRoads = [];
             var crossroad = crossroadView.model;
             this.visitCrossroad(crossroad, player, availableRoads, visitedRoads);
             return availableRoads;
-
         },
 
         findAvailableRoads: function(player) {
@@ -294,7 +306,7 @@ define([
                 availableRoads[i].trigger("highlight");
             }
         },
-        disabledRoadHighlighting: function() {
+        disableRoadHighlighting: function() {
             for (var i = 0; i < this.get("roads").length; i++) {
                 this.get("roads")[i].trigger("removeHighlighting");
             }
@@ -318,14 +330,6 @@ define([
                 this.get("crossroads")[i].trigger("removeHighlightingAsCity");
             }
         },
-        getHexByCoords: function(coords) {
-            for (var i = 0; i < this.get("hexes").length; i++) {
-                var hex = this.get("hexes")[i];
-                if (hex.get("coords").q === coords.q && hex.get("coords").r === coords.r) {
-                    return hex;
-                }
-            }
-        }
 
     });
     return Map;

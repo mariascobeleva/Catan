@@ -10,6 +10,7 @@ define([
 ], function($, _, Backbone, HexView, CrossroadView,RoadView, MapTemplate) {
     var MapView = Backbone.View.extend({
         className: "map",
+        seaHexView:[],
         hexViews:[],
         crossroadsViews:[],
         roadsViews:[],
@@ -62,9 +63,9 @@ define([
                     if (!crossroadView) {
                         crossroadView = new CrossroadView({model: this.model.get("hexes")[i].get("crossroads")[j]});
 
-//                        if (this.model.get('hexes')[i] === 2 && crossroad_q === 0.333 && crossroad_r === -0.66) {
-//                            this.model.get("hexes")[i].get("crossroads")[j].set("harborType", "1");
-//                        }
+                        //if (this.model.get('hexes')[i] === 2 && crossroad_q === 0.333 && crossroad_r === -0.66) {
+                        //    this.model.get("hexes")[i].get("crossroads")[j].set("harborType", "1");
+                        //}
 
                         this.crossroadsViews.push(crossroadView);
 
@@ -73,7 +74,6 @@ define([
                             $(crossroadView.render().el).addClass("harbor "  + harbor_type);
                         }
                         this.$(".field .crossroads").append(crossroadView.render().el);
-//
                     }
 //                    hexView.crossroadViews.push(crossroadView);
 //                    crossroadView.hexViews.push(hexView);
@@ -81,14 +81,15 @@ define([
             }
         },
         renderRoads: function() {
-            for (var i = 0; i < this.model.get('hexes').length; i++) {
-                for (var k = 0; k < this.model.get("hexes")[i].get("roads").length; k++) {
-                    var road_from = this.model.get("hexes")[i].get("roads")[k].get("from").get("coords");
-                    var road_to = this.model.get("hexes")[i].get("roads")[k].get("to").get("coords");
+            var hexes = this.model.get('hexes');
+            for (var i = 0; i < hexes.length; i++) {
+                for (var k = 0; k < hexes[i].get("roads").length; k++) {
+                    var road_from = hexes[i].get("roads")[k].get("from").get("coords");
+                    var road_to = hexes[i].get("roads")[k].get("to").get("coords");
 
                     var roadView = this.getRoadView(road_from, road_to);
                     if (!roadView) {
-                        roadView = new RoadView({model: this.model.get("hexes")[i].get("roads")[k]});
+                        roadView = new RoadView({model: hexes[i].get("roads")[k]});
                         this.roadsViews.push(roadView);
                         this.$(".field .roads").append(roadView.render().el);
                     }

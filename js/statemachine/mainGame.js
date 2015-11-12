@@ -21,8 +21,10 @@ define([
                 },
                 mainGameEnter: function() {
                     var that = this;
+                    var curPlayer = that.model.getCurrentPlayer();
+                    that.renderCurrentPlayerResources(curPlayer);
                     that.$(".end-turn,.change-with-bank").addClass("active");
-                    that.$(".choose-for-building").show().addClass("active");
+                    that.$(".choose-for-building").addClass("active");
 
                     that.$(".change-with-bank").on("click.mainGame",null, function(){
                         if ($(this).is(".active")) {
@@ -43,7 +45,7 @@ define([
                 mainGameLeave: function() {
                     this.$(".end-turn,.change-with-bank,.choose-for-building").removeClass("active");
 
-                    this.$(".build").removeClass("disabled").hide();
+                    this.$(".confirm").removeClass("disabled").hide();
                     this.$(".change-with-bank").off("click.mainGame");
                     this.$(".end-turn").off("click.mainGame");
                     this.$(".choose-for-building").off("click.mainGame");

@@ -1,0 +1,153 @@
+<div class="menu">
+    <div class='end-turn'></div>
+    <div class="choose-for-building"></div>
+    <div class='change-with-bank'></div>
+    <div class='confirm'></div>
+    <div class="refuse"></div>
+</div>
+
+
+<div class="active-player-menu">
+    <div class="name"></div>
+    <div class="resources">
+        <span class="res tree" data-name="tree"><span class="quantity"></span></span>
+        <span class="res wheat" data-name="wheat"><span class="quantity"></span></span>
+        <span class="res sheep" data-name="sheep"><span class="quantity"></span></span>
+        <span class="res rock" data-name="rock"><span class="quantity"></span></span>
+        <span class="res brick" data-name="brick"><span class="quantity"></span></span>
+    </div>
+</div>
+
+<div id="overlay"></div>
+
+<div class="box">
+    <!--Field for changing resources in bank-->
+    <h3 class="title-main"></h3>
+
+    <div class="box-container">
+        <p class="title only-for-rob-state"><span class="name"></span>, тебя ограбили (: Нужно отдать <span
+                class="amount">5</span>
+            любых своих ресурсов.</p>
+        <div class="play-one-more-time">Играть еще раз</div>
+
+        <div class="resources-to-bank give">
+            <div class="resources">
+                <div class="tree res empty" name="tree">
+                    <span class="res-tree"></span>
+
+                    <div class="rate"></div>
+                </div>
+                <div class="wheat res empty" name="wheat">
+                    <span class="res-wheat"></span>
+
+                    <div class="rate"></div>
+                </div>
+                <div class="sheep res empty" name="sheep">
+                    <span class="res-sheep"></span>
+
+                    <div class="rate"></div>
+                </div>
+                <div class="rock res empty" name="rock">
+                    <span class="res-rock"></span>
+
+                    <div class="rate"></div>
+
+                </div>
+                <div class="brick res empty" name="brick">
+                    <span class="res-brick"></span>
+
+                    <div class="rate"></div>
+                </div>
+            </div>
+            <h4 class="title">Даете</h4>
+        </div>
+        <div class="player-resources">
+            <div class="resources">
+                <div class="tree res" name="tree">
+                    <span class="res-tree"><span class="quantity"></span></span>
+                    <div class="exchange-rate"></div>
+                </div>
+                <div class="wheat res" name="wheat">
+                    <span class="res-wheat"><span class="quantity"></span></span>
+                    <div class="exchange-rate"></div>
+                </div>
+                <div class="sheep res" name="sheep">
+                    <span class="res-sheep"><span class="quantity"></span></span>
+                    <div class="exchange-rate"></div>
+                </div>
+                <div class="rock res" name="rock">
+                    <span class="res-rock"><span class="quantity"></span></span>
+                    <div class="exchange-rate"></div>
+                </div>
+                <div class="brick res" name="brick">
+                    <span class="res-brick"><span class="quantity"></span></span>
+                    <div class="exchange-rate"></div>
+                </div>
+            </div>
+            <h4 class="title">Остаток</h4>
+        </div>
+        <div class="resources-from-bank receive">
+            <div class="resources">
+                <div class="tree res empty" name="tree">
+                    <span class="res-tree"><span class="quantity"></span></span>
+                </div>
+                <div class="wheat res empty" name="wheat">
+                    <span class="res-wheat"><span class="quantity"></span></span>
+                </div>
+                <div class="sheep res empty" name="sheep">
+                    <span class="res-sheep"><span class="quantity"></span></span>
+                </div>
+                <div class="rock res empty" name="rock">
+                    <span class="res-rock"><span class="quantity"></span></span>
+                </div>
+                <div class="brick res empty" name="brick">
+                    <span class="res-brick"><span class="quantity"></span></span>
+                </div>
+            </div>
+            <h4 class="title">Получаете</h4>
+        </div>
+        <div class="building-objects">
+            <div class="object highway">
+                <div class="title">Дорога</div>
+                <img src="/img/road-gen.png">
+
+                <div class="resources">
+                    <span class="res tree"><span class="quantity">1</span></span>
+                    <span class="res brick"><span class="quantity">1</span></span>
+                </div>
+            </div>
+            <div class="object settlement">
+                <div class="title">Поселение</div>
+                <img src="/img/settlement-gen.png">
+
+                <div class="resources">
+                    <span class="res tree"><span class="quantity">1</span></span>
+                    <span class="res wheat"><span class="quantity">1</span></span>
+                    <span class="res brick"><span class="quantity">1</span></span>
+                    <span class="res sheep"><span class="quantity">1</span></span>
+                </div>
+            </div>
+            <div class="object city">
+                <div class="title">Город</div>
+                <img src="/img/town-gen.png">
+
+                <div class="resources">
+                    <span class="res rock"><span class="quantity">3</span></span>
+                    <span class="res wheat"><span class="quantity">2</span></span>
+                </div>
+            </div>
+        </div>
+        <!--Field for choosing player for robber-->
+        <div class="choose-player">
+            <p>Вы хотите ограбить <span class="victim player1"></span> или <span class="victim player2"></span> ?</p>
+        </div>
+
+        <p class="short-rules"></p>
+
+        <div class="control-btns">
+            <a href="#" class="confirm-btn btn btn-green"></a>
+            <a href="#" class="cancel btn btn-red"></a>
+        </div>
+    </div>
+</div>
+</div>

@@ -6,7 +6,7 @@ define([
 
 ], function($, _, Backbone, DiceTemplate) {
     var DiceView = Backbone.View.extend({
-        className: "dice",
+        className: "dices",
         render : function(){
             var htmlTemplate = _.template(DiceTemplate);
             var $dice = $(htmlTemplate({

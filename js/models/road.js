@@ -6,12 +6,13 @@ define([
     var roadModel = Backbone.Model.extend({
         defaults: {
             "game":{},
-            "road":false,
+            "highway":false,
             "from":null,
             "to":null,
             "coords":{},
             "player":null,
-            crossroads: {}
+            crossroads: {},
+            seaRoad: false
         },
         getRoadCoordsFrom: function(){
             return this.get("from").get("coords");
